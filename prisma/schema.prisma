@@ -1,0 +1,966 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  STUDENT
+  OWNER
+  FOOD_PARTNER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING_VERIFICATION
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum GenderPreference {
+  MALE_ONLY
+  FEMALE_ONLY
+  CO_ED
+  ANY
+}
+
+enum PropertyType {
+  PG
+  HOSTEL
+  PRIVATE_ROOM
+  FLAT
+  HOUSE
+  SHARED_ACCOMMODATION
+}
+
+enum FurnishingStatus {
+  FULLY_FURNISHED
+  SEMI_FURNISHED
+  UNFURNISHED
+}
+
+enum ListingStatus {
+  DRAFT
+  UNDER_REVIEW
+  ACTIVE
+  REJECTED
+  SUSPENDED
+  INACTIVE
+}
+
+enum VerificationStatus {
+  PENDING
+  IN_REVIEW
+  VERIFIED
+  REJECTED
+  EXPIRED
+}
+
+enum BedStatus {
+  AVAILABLE
+  TEMPORARILY_HELD
+  RESERVED
+  OCCUPIED
+  MAINTENANCE
+  INACTIVE
+}
+
+enum VisitStatus {
+  REQUESTED
+  CONFIRMED
+  RESCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum BookingStatus {
+  REQUESTED
+  OWNER_APPROVED
+  PAYMENT_PENDING
+  CONFIRMED
+  CHECKED_IN
+  COMPLETED
+  CANCELLED
+  REFUND_PENDING
+  REFUNDED
+  DISPUTED
+}
+
+enum PaymentProvider {
+  RAZORPAY
+  CASHFREE
+  SYSTEM_MOCK
+}
+
+enum PaymentStatus {
+  CREATED
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum RefundStatus {
+  REQUESTED
+  ELIGIBILITY_CHECK
+  APPROVED
+  REFUND_PENDING
+  REFUNDED
+  REJECTED
+}
+
+enum CancellationReason {
+  STUDENT_CANCELLATION
+  OWNER_CANCELLATION
+  PROPERTY_MISREPRESENTATION
+  PLATFORM_FAILURE
+  VALID_DISPUTE
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED_STUDENT
+  RESOLVED_OWNER
+  PARTIAL_RESOLUTION
+  CLOSED
+}
+
+enum FoodOrderStatus {
+  PLACED
+  ACCEPTED
+  PREPARING
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  PANORAMA_360
+  DOCUMENT
+}
+
+enum MealPlanFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum DietaryType {
+  VEG
+  NON_VEG
+  EGG_ONLY
+  JAIN
+}
+
+// ==========================================
+// 1. CORE AUTH & USER MODELS
+// ==========================================
+
+model User {
+  id                 String              @id @default(uuid()) @db.Uuid
+  email              String              @unique @db.VarChar(255)
+  passwordHash       String              @db.VarChar(255)
+  role               UserRole
+  status             UserStatus          @default(ACTIVE)
+  emailVerified      Boolean             @default(false)
+  emailVerifyToken   String?             @db.VarChar(255)
+  passwordResetToken String?             @db.VarChar(255)
+  passwordResetExp   DateTime?
+  lastLoginAt        DateTime?
+  createdAt          DateTime            @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime            @updatedAt @db.Timestamptz(6)
+  deletedAt          DateTime?           @db.Timestamptz(6)
+
+  // One-to-one Profile relations
+  studentProfile     StudentProfile?
+  ownerProfile       OwnerProfile?
+  foodPartnerProfile FoodPartnerProfile?
+
+  // Cross-cutting relations
+  sentMessages       Message[]
+  conversations      ConversationParticipant[]
+  notifications      Notification[]
+  auditLogs          AuditLog[]
+  reportsFiled       Report[]            @relation("Reporter")
+  reportsAgainst     Report[]            @relation("ReportedUser")
+
+  @@index([email, role])
+  @@index([status])
+  @@map("users")
+}
+
+model StudentProfile {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @unique @db.Uuid
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName          String             @db.VarChar(100)
+  lastName           String             @db.VarChar(100)
+  phone              String?            @db.VarChar(20)
+  collegeId          String?            @db.Uuid
+  college            College?           @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  studentIdCardUrl   String?            @db.VarChar(512)
+  gender             GenderPreference?
+  budgetMin          Decimal?           @db.Decimal(10, 2)
+  budgetMax          Decimal?           @db.Decimal(10, 2)
+  preferredSharing   Int?
+  acPreference       Boolean?
+  foodPreference     DietaryType?
+  emergencyContact   String?            @db.VarChar(20)
+  createdAt          DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @db.Timestamptz(6)
+
+  favorites          Favorite[]
+  visits             Visit[]
+  bookings           Booking[]
+  foodOrders         FoodOrder[]
+  foodSubscriptions  FoodSubscription[]
+  reviews            Review[]
+  disputes           Dispute[]
+
+  @@index([collegeId])
+  @@map("student_profiles")
+}
+
+model OwnerProfile {
+  id                  String             @id @default(uuid()) @db.Uuid
+  userId              String             @unique @db.Uuid
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName            String             @db.VarChar(200)
+  businessName        String?            @db.VarChar(200)
+  phone               String             @db.VarChar(20)
+  panNumber           String?            @db.VarChar(20)
+  aadhaarLastFour     String?            @db.Char(4)
+  isIdentityVerified  Boolean            @default(false)
+  bankAccountNumber   String?            @db.VarChar(50)
+  bankIfscCode        String?            @db.VarChar(20)
+  bankBeneficiaryName String?            @db.VarChar(100)
+  createdAt           DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime           @updatedAt @db.Timestamptz(6)
+
+  properties          Property[]
+  visits              Visit[]
+  disputes            Dispute[]
+
+  @@index([phone])
+  @@map("owner_profiles")
+}
+
+model FoodPartnerProfile {
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @unique @db.Uuid
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kitchenName        String             @db.VarChar(200)
+  contactPerson      String             @db.VarChar(100)
+  phone              String             @db.VarChar(20)
+  fssaiLicenseNumber String?            @db.VarChar(50)
+  fssaiDocUrl        String?            @db.VarChar(512)
+  isFssaiVerified    Boolean            @default(false)
+  address            String             @db.Text
+  latitude           Decimal            @db.Decimal(10, 7)
+  longitude          Decimal            @db.Decimal(10, 7)
+  deliveryRadiusKm   Decimal            @default(5.0) @db.Decimal(4, 2)
+  deliveryCharge     Decimal            @default(0.0) @db.Decimal(8, 2)
+  serviceStartTime   String             @db.VarChar(10) // "07:00"
+  serviceEndTime     String             @db.VarChar(10) // "22:00"
+  pureVeg            Boolean            @default(false)
+  rating             Decimal            @default(0.0) @db.Decimal(3, 2)
+  reviewCount        Int                @default(0)
+  createdAt          DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @db.Timestamptz(6)
+
+  menus              Menu[]
+  mealPlans          MealPlan[]
+  foodOrders         FoodOrder[]
+  foodSubscriptions  FoodSubscription[]
+
+  @@index([latitude, longitude])
+  @@map("food_partner_profiles")
+}
+
+// ==========================================
+// 2. COLLEGE & GEOSPATIAL SEARCH
+// ==========================================
+
+model College {
+  id        String           @id @default(uuid()) @db.Uuid
+  name      String           @unique @db.VarChar(255)
+  slug      String           @unique @db.VarChar(255)
+  address   String           @db.Text
+  city      String           @db.VarChar(100)
+  state     String           @db.VarChar(100)
+  pincode   String           @db.VarChar(10)
+  latitude  Decimal          @db.Decimal(10, 7)
+  longitude Decimal          @db.Decimal(10, 7)
+  createdAt DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime         @updatedAt @db.Timestamptz(6)
+
+  students  StudentProfile[]
+
+  @@index([city])
+  @@index([latitude, longitude])
+  @@map("colleges")
+}
+
+// ==========================================
+// 3. PROPERTY, ROOM & BED INVENTORY
+// ==========================================
+
+model Address {
+  id         String    @id @default(uuid()) @db.Uuid
+  propertyId String    @unique @db.Uuid
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  street     String    @db.VarChar(255)
+  landmark   String?   @db.VarChar(255)
+  city       String    @db.VarChar(100)
+  state      String    @db.VarChar(100)
+  pincode    String    @db.VarChar(10)
+  latitude   Decimal   @db.Decimal(10, 7)
+  longitude  Decimal   @db.Decimal(10, 7)
+
+  @@index([city, pincode])
+  @@index([latitude, longitude])
+  @@map("addresses")
+}
+
+model Property {
+  id                   String                 @id @default(uuid()) @db.Uuid
+  ownerId              String                 @db.Uuid
+  owner                OwnerProfile           @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  name                 String                 @db.VarChar(255)
+  slug                 String                 @unique @db.VarChar(255)
+  description          String                 @db.Text
+  propertyType         PropertyType
+  genderPreference     GenderPreference
+  furnishing           FurnishingStatus
+  status               ListingStatus          @default(DRAFT)
+  isVerified           Boolean                @default(false)
+  verificationScore    Int                    @default(0)
+
+  // Cost breakdown
+  securityDeposit      Decimal                @db.Decimal(10, 2)
+  maintenanceCharges   Decimal                @default(0.0) @db.Decimal(10, 2)
+  estimatedElectricity Decimal?               @db.Decimal(10, 2)
+  waterCharges         Decimal?               @db.Decimal(10, 2)
+  foodAvailability     Boolean                @default(false)
+  foodIncludedInRent   Boolean                @default(false)
+
+  // House Rules
+  noticePeriodDays     Int                    @default(30)
+  gateClosingTime      String?                @db.VarChar(10)
+  smokingAllowed       Boolean                @default(false)
+  alcoholAllowed       Boolean                @default(false)
+  visitorsAllowed      Boolean                @default(true)
+
+  // Metadata
+  averageRating        Decimal                @default(0.0) @db.Decimal(3, 2)
+  reviewCount          Int                    @default(0)
+  listingExpiry        DateTime?              @db.Timestamptz(6)
+  deletedAt            DateTime?              @db.Timestamptz(6)
+  createdAt            DateTime               @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime               @updatedAt @db.Timestamptz(6)
+
+  address              Address?
+  media                PropertyMedia[]
+  verifications        PropertyVerification[]
+  amenities            PropertyAmenity[]
+  roomTypes            RoomType[]
+  visits               Visit[]
+  favorites            Favorite[]
+  reviews              Review[]
+  cancellationPolicies CancellationPolicy[]
+
+  @@index([status, isVerified])
+  @@index([propertyType, genderPreference])
+  @@index([ownerId])
+  @@map("properties")
+}
+
+model PropertyMedia {
+  id           String    @id @default(uuid()) @db.Uuid
+  propertyId   String    @db.Uuid
+  property     Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  type         MediaType
+  storageKey   String    @db.VarChar(512)
+  cdnUrl       String    @db.VarChar(512)
+  caption      String?   @db.VarChar(255)
+  displayOrder Int       @default(0)
+  isPrimary    Boolean   @default(false)
+  metadata     Json?
+  createdAt    DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@index([propertyId, displayOrder])
+  @@map("property_media")
+}
+
+model PropertyVerification {
+  id           String             @id @default(uuid()) @db.Uuid
+  propertyId   String             @db.Uuid
+  property     Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  status       VerificationStatus @default(PENDING)
+  documentType String             @db.VarChar(100)
+  storageKey   String             @db.VarChar(512)
+  reviewedBy   String?            @db.Uuid
+  reviewNotes  String?            @db.Text
+  submittedAt  DateTime           @default(now()) @db.Timestamptz(6)
+  reviewedAt   DateTime?          @db.Timestamptz(6)
+
+  @@index([propertyId, status])
+  @@map("property_verifications")
+}
+
+model Amenity {
+  id          String            @id @default(uuid()) @db.Uuid
+  name        String            @unique @db.VarChar(100)
+  icon        String            @db.VarChar(100)
+  category    String            @db.VarChar(50)
+  description String?           @db.VarChar(255)
+
+  properties  PropertyAmenity[]
+
+  @@map("amenities")
+}
+
+model PropertyAmenity {
+  propertyId String   @db.Uuid
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenityId  String   @db.Uuid
+  amenity    Amenity  @relation(fields: [amenityId], references: [id], onDelete: Restrict)
+
+  @@id([propertyId, amenityId])
+  @@map("property_amenities")
+}
+
+model RoomType {
+  id              String    @id @default(uuid()) @db.Uuid
+  propertyId      String    @db.Uuid
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  name            String    @db.VarChar(100)
+  sharingCount    Int
+  baseRent        Decimal   @db.Decimal(10, 2)
+  hasAttachedBath Boolean   @default(false)
+  hasBalcony      Boolean   @default(false)
+  hasAirCondition Boolean   @default(false)
+  createdAt       DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @db.Timestamptz(6)
+
+  rooms           Room[]
+
+  @@index([propertyId, sharingCount])
+  @@map("room_types")
+}
+
+model Room {
+  id           String    @id @default(uuid()) @db.Uuid
+  roomTypeId   String    @db.Uuid
+  roomType     RoomType  @relation(fields: [roomTypeId], references: [id], onDelete: Cascade)
+  roomNumber   String    @db.VarChar(50)
+  floor        Int       @default(0)
+  isUnderMaint Boolean   @default(false)
+  createdAt    DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime  @updatedAt @db.Timestamptz(6)
+
+  beds         Bed[]
+
+  @@unique([roomTypeId, roomNumber])
+  @@map("rooms")
+}
+
+model Bed {
+  id               String    @id @default(uuid()) @db.Uuid
+  roomId           String    @db.Uuid
+  room             Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  bedIdentifier    String    @db.VarChar(20)
+  status           BedStatus @default(AVAILABLE)
+  currentBookingId String?   @db.Uuid
+  holdExpiresAt    DateTime? @db.Timestamptz(6)
+  version          Int       @default(0)
+  createdAt        DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime  @updatedAt @db.Timestamptz(6)
+
+  bookings         Booking[]
+
+  @@unique([roomId, bedIdentifier])
+  @@index([status, holdExpiresAt])
+  @@map("beds")
+}
+
+// ==========================================
+// 4. VISITS, BOOKINGS & CONCURRENCY
+// ==========================================
+
+model Visit {
+  id                 String         @id @default(uuid()) @db.Uuid
+  studentId          String         @db.Uuid
+  student            StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  propertyId         String         @db.Uuid
+  property           Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  ownerId            String         @db.Uuid
+  owner              OwnerProfile   @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  requestedDate      DateTime       @db.Date
+  requestedSlot      String         @db.VarChar(50)
+  confirmedSlot      String?        @db.VarChar(50)
+  status             VisitStatus    @default(REQUESTED)
+  cancellationReason String?        @db.Text
+  createdAt          DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime       @updatedAt @db.Timestamptz(6)
+
+  @@index([studentId, status])
+  @@index([propertyId, status])
+  @@index([ownerId, requestedDate])
+  @@map("visits")
+}
+
+model Booking {
+  id              String         @id @default(uuid()) @db.Uuid
+  bookingCode     String         @unique @db.VarChar(32)
+  studentId       String         @db.Uuid
+  student         StudentProfile @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  bedId           String         @db.Uuid
+  bed             Bed            @relation(fields: [bedId], references: [id], onDelete: Restrict)
+  status          BookingStatus  @default(REQUESTED)
+
+  // Financial snapshot
+  monthlyRent     Decimal        @db.Decimal(10, 2)
+  securityDeposit Decimal        @db.Decimal(10, 2)
+  bookingAmount   Decimal        @db.Decimal(10, 2)
+  platformFee     Decimal        @default(0.0) @db.Decimal(8, 2)
+
+  startDate       DateTime       @db.Date
+  endDate         DateTime?      @db.Date
+  actualCheckIn   DateTime?      @db.Timestamptz(6)
+  actualCheckOut  DateTime?      @db.Timestamptz(6)
+
+  createdAt       DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime       @updatedAt @db.Timestamptz(6)
+
+  statusHistory   BookingStatusHistory[]
+  payment         Payment?
+  refund          Refund?
+  disputes        Dispute[]
+  review          Review?
+
+  @@index([studentId, status])
+  @@index([bedId, status])
+  @@index([createdAt])
+  @@map("bookings")
+}
+
+model BookingStatusHistory {
+  id         String        @id @default(uuid()) @db.Uuid
+  bookingId  String        @db.Uuid
+  booking    Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fromStatus BookingStatus
+  toStatus   BookingStatus
+  actorId    String        @db.Uuid
+  reason     String?       @db.VarChar(255)
+  timestamp  DateTime      @default(now()) @db.Timestamptz(6)
+
+  @@index([bookingId, timestamp])
+  @@map("booking_status_histories")
+}
+
+// ==========================================
+// 5. PAYMENTS, REFUNDS & DISPUTES
+// ==========================================
+
+model Payment {
+  id                String          @id @default(uuid()) @db.Uuid
+  bookingId         String          @unique @db.Uuid
+  booking           Booking         @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  userId            String          @db.Uuid
+  provider          PaymentProvider
+  providerOrderId   String          @unique @db.VarChar(255)
+  providerPaymentId String?         @unique @db.VarChar(255)
+  providerSignature String?         @db.VarChar(512)
+  amount            Decimal         @db.Decimal(10, 2)
+  currency          String          @default("INR") @db.VarChar(3)
+  status            PaymentStatus   @default(CREATED)
+  errorMessage      String?         @db.Text
+  idempotencyKey    String          @unique @db.VarChar(255)
+  metadata          Json?
+  createdAt         DateTime        @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(6)
+
+  refunds           Refund[]
+
+  @@index([providerOrderId])
+  @@index([status])
+  @@map("payments")
+}
+
+model CancellationPolicy {
+  id                String    @id @default(uuid()) @db.Uuid
+  propertyId        String?   @db.Uuid
+  property          Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  daysBeforeCheckIn Int
+  refundPercentage  Decimal   @db.Decimal(5, 2)
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@index([propertyId, isActive])
+  @@map("cancellation_policies")
+}
+
+model Refund {
+  id                 String             @id @default(uuid()) @db.Uuid
+  bookingId          String             @unique @db.Uuid
+  booking            Booking            @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  paymentId          String             @db.Uuid
+  payment            Payment            @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  providerRefundId   String?            @unique @db.VarChar(255)
+  amount             Decimal            @db.Decimal(10, 2)
+  reason             CancellationReason
+  notes              String?            @db.Text
+  status             RefundStatus       @default(REQUESTED)
+  processedByAdminId String?            @db.Uuid
+  processedAt        DateTime?          @db.Timestamptz(6)
+  createdAt          DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @db.Timestamptz(6)
+
+  @@index([status])
+  @@map("refunds")
+}
+
+model Dispute {
+  id            String         @id @default(uuid()) @db.Uuid
+  bookingId     String         @db.Uuid
+  booking       Booking        @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  studentId     String         @db.Uuid
+  student       StudentProfile @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  ownerId       String         @db.Uuid
+  owner         OwnerProfile   @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  raisedByRole  UserRole
+  reason        String         @db.VarChar(255)
+  description   String         @db.Text
+  status        DisputeStatus  @default(OPEN)
+  adminDecision String?        @db.Text
+  refundAmount  Decimal?       @db.Decimal(10, 2)
+  closedAt      DateTime?      @db.Timestamptz(6)
+  createdAt     DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime       @updatedAt @db.Timestamptz(6)
+
+  evidence      DisputeEvidence[]
+
+  @@index([bookingId, status])
+  @@map("disputes")
+}
+
+model DisputeEvidence {
+  id          String   @id @default(uuid()) @db.Uuid
+  disputeId   String   @db.Uuid
+  dispute     Dispute  @relation(fields: [disputeId], references: [id], onDelete: Cascade)
+  uploadedBy  String   @db.Uuid
+  storageKey  String   @db.VarChar(512)
+  mimeType    String   @db.VarChar(100)
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([disputeId])
+  @@map("dispute_evidences")
+}
+
+// ==========================================
+// 6. FOOD MARKETPLACE & SUBSCRIPTIONS
+// ==========================================
+
+model Menu {
+  id            String             @id @default(uuid()) @db.Uuid
+  foodPartnerId String             @db.Uuid
+  foodPartner   FoodPartnerProfile @relation(fields: [foodPartnerId], references: [id], onDelete: Cascade)
+  title         String             @db.VarChar(100)
+  isActive      Boolean            @default(true)
+  createdAt     DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime           @updatedAt @db.Timestamptz(6)
+
+  categories    MenuCategory[]
+
+  @@index([foodPartnerId, isActive])
+  @@map("menus")
+}
+
+model MenuCategory {
+  id           String     @id @default(uuid()) @db.Uuid
+  menuId       String     @db.Uuid
+  menu         Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  name         String     @db.VarChar(100)
+  displayOrder Int        @default(0)
+
+  items        MenuItem[]
+
+  @@map("menu_categories")
+}
+
+model MenuItem {
+  id          String        @id @default(uuid()) @db.Uuid
+  categoryId  String        @db.Uuid
+  category    MenuCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name        String        @db.VarChar(200)
+  description String?       @db.Text
+  price       Decimal       @db.Decimal(8, 2)
+  dietaryType DietaryType   @default(VEG)
+  isAvailable Boolean       @default(true)
+  imageUrl    String?       @db.VarChar(512)
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime      @updatedAt @db.Timestamptz(6)
+
+  orderItems  FoodOrderItem[]
+
+  @@map("menu_items")
+}
+
+model MealPlan {
+  id                String             @id @default(uuid()) @db.Uuid
+  foodPartnerId     String             @db.Uuid
+  foodPartner       FoodPartnerProfile @relation(fields: [foodPartnerId], references: [id], onDelete: Cascade)
+  title             String             @db.VarChar(200)
+  description       String             @db.Text
+  frequency         MealPlanFrequency  @default(MONTHLY)
+  includesBreakfast Boolean            @default(false)
+  includesLunch     Boolean            @default(true)
+  includesDinner    Boolean            @default(true)
+  price             Decimal            @db.Decimal(10, 2)
+  dietaryType       DietaryType        @default(VEG)
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
+
+  subscriptions     FoodSubscription[]
+
+  @@index([foodPartnerId, isActive])
+  @@map("meal_plans")
+}
+
+model FoodOrder {
+  id              String             @id @default(uuid()) @db.Uuid
+  orderCode       String             @unique @db.VarChar(32)
+  studentId       String             @db.Uuid
+  student         StudentProfile     @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  foodPartnerId   String             @db.Uuid
+  foodPartner     FoodPartnerProfile @relation(fields: [foodPartnerId], references: [id], onDelete: Restrict)
+  status          FoodOrderStatus    @default(PLACED)
+  subtotal        Decimal            @db.Decimal(10, 2)
+  deliveryCharge  Decimal            @default(0.0) @db.Decimal(8, 2)
+  totalAmount     Decimal            @db.Decimal(10, 2)
+  deliveryAddress String             @db.Text
+  deliveryNotes   String?            @db.VarChar(255)
+  createdAt       DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime           @updatedAt @db.Timestamptz(6)
+
+  items           FoodOrderItem[]
+
+  @@index([studentId, status])
+  @@index([foodPartnerId, status])
+  @@map("food_orders")
+}
+
+model FoodOrderItem {
+  id         String    @id @default(uuid()) @db.Uuid
+  orderId    String    @db.Uuid
+  order      FoodOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String    @db.Uuid
+  menuItem   MenuItem  @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+  quantity   Int       @default(1)
+  unitPrice  Decimal   @db.Decimal(8, 2)
+  totalPrice Decimal   @db.Decimal(10, 2)
+
+  @@map("food_order_items")
+}
+
+model FoodSubscription {
+  id              String             @id @default(uuid()) @db.Uuid
+  studentId       String             @db.Uuid
+  student         StudentProfile     @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  foodPartnerId   String             @db.Uuid
+  foodPartner     FoodPartnerProfile @relation(fields: [foodPartnerId], references: [id], onDelete: Restrict)
+  mealPlanId      String             @db.Uuid
+  mealPlan        MealPlan           @relation(fields: [mealPlanId], references: [id], onDelete: Restrict)
+  startDate       DateTime           @db.Date
+  endDate         DateTime           @db.Date
+  status          SubscriptionStatus @default(PENDING)
+  priceSnapshot   Decimal            @db.Decimal(10, 2)
+  deliveryAddress String             @db.Text
+  pausedAt        DateTime?          @db.Timestamptz(6)
+  resumedAt       DateTime?          @db.Timestamptz(6)
+  createdAt       DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime           @updatedAt @db.Timestamptz(6)
+
+  @@index([studentId, status])
+  @@index([foodPartnerId, status])
+  @@map("food_subscriptions")
+}
+
+// ==========================================
+// 7. REVIEWS, FAVORITES & AUDIT LOGS
+// ==========================================
+
+model Review {
+  id             String         @id @default(uuid()) @db.Uuid
+  studentId      String         @db.Uuid
+  student        StudentProfile @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  propertyId     String         @db.Uuid
+  property       Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  bookingId      String         @unique @db.Uuid
+  booking        Booking        @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  overallRating  Int
+  comment        String         @db.Text
+  isVerifiedStay Boolean        @default(true)
+  isApproved     Boolean        @default(true)
+  createdAt      DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime       @updatedAt @db.Timestamptz(6)
+
+  categoryRatings ReviewCategoryRating[]
+
+  @@index([propertyId, isApproved])
+  @@map("reviews")
+}
+
+model ReviewCategoryRating {
+  id       String @id @default(uuid()) @db.Uuid
+  reviewId String @db.Uuid
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  category String @db.VarChar(50)
+  rating   Int
+
+  @@unique([reviewId, category])
+  @@map("review_category_ratings")
+}
+
+model Favorite {
+  id         String         @id @default(uuid()) @db.Uuid
+  studentId  String         @db.Uuid
+  student    StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  propertyId String         @db.Uuid
+  property   Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime       @default(now()) @db.Timestamptz(6)
+
+  @@unique([studentId, propertyId])
+  @@index([studentId])
+  @@map("favorites")
+}
+
+// ==========================================
+// 8. CHAT, NOTIFICATIONS & AUDIT
+// ==========================================
+
+model Conversation {
+  id           String                    @id @default(uuid()) @db.Uuid
+  createdAt    DateTime                  @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime                  @updatedAt @db.Timestamptz(6)
+
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@map("conversations")
+}
+
+model ConversationParticipant {
+  id             String       @id @default(uuid()) @db.Uuid
+  conversationId String       @db.Uuid
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String       @db.Uuid
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt     DateTime?    @db.Timestamptz(6)
+
+  @@unique([conversationId, userId])
+  @@map("conversation_participants")
+}
+
+model Message {
+  id             String       @id @default(uuid()) @db.Uuid
+  conversationId String       @db.Uuid
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String       @db.Uuid
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  content        String       @db.Text
+  createdAt      DateTime     @default(now()) @db.Timestamptz(6)
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String   @db.VarChar(200)
+  body      String   @db.Text
+  type      String   @db.VarChar(50)
+  linkUrl   String?  @db.VarChar(512)
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model Report {
+  id             String    @id @default(uuid()) @db.Uuid
+  reporterId     String    @db.Uuid
+  reporter       User      @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUserId String?   @db.Uuid
+  reportedUser   User?     @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: SetNull)
+  entityType     String    @db.VarChar(50)
+  entityId       String    @db.Uuid
+  reason         String    @db.VarChar(255)
+  details        String    @db.Text
+  isResolved     Boolean   @default(false)
+  resolvedNotes  String?   @db.Text
+  createdAt      DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@index([isResolved])
+  @@map("reports")
+}
+
+model CommissionRule {
+  id            String    @id @default(uuid()) @db.Uuid
+  role          UserRole  @default(OWNER)
+  percentage    Decimal   @db.Decimal(5, 2)
+  flatFee       Decimal   @default(0.0) @db.Decimal(8, 2)
+  appliesTo     String    @db.VarChar(50)
+  isActive      Boolean   @default(true)
+  effectiveFrom DateTime  @default(now()) @db.Timestamptz(6)
+  effectiveTo   DateTime? @db.Timestamptz(6)
+
+  @@index([role, appliesTo, isActive])
+  @@map("commission_rules")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String?  @db.Uuid
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String   @db.VarChar(100)
+  entityType String   @db.VarChar(50)
+  entityId   String   @db.VarChar(255)
+  metadata   Json?
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.VarChar(512)
+  timestamp  DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([entityType, entityId])
+  @@index([actorId, timestamp])
+  @@map("audit_logs")
+}

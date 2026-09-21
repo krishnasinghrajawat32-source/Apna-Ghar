@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # 1. DATABASE: PostgreSQL 16 + PostGIS
+  # ==========================================
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: apnaghar_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-apnaghar}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-apnaghar}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - apnaghar_network
+
+  # ==========================================
+  # 2. CACHE & LOCKS: Redis 7
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: apnaghar_redis
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - apnaghar_network
+
+  # ==========================================
+  # 3. BACKEND API: NestJS Gateway
+  # ==========================================
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: apnaghar_api
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:5432/${DB_NAME:-apnaghar}?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-apnaghar_jwt_access_secret_production_2026}
+      JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION:-15m}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-apnaghar_jwt_refresh_secret_production_2026}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-7d}
+      COOKIE_SECRET: ${COOKIE_SECRET:-apnaghar_cookie_encryption_secret_2026}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - apnaghar_network
+
+  # ==========================================
+  # 4. FRONTEND: Next.js 15 Web App
+  # ==========================================
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: apnaghar_web
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - apnaghar_network
+
+volumes:
+  pgdata:
+    driver: local
+  redisdata:
+    driver: local
+
+networks:
+  apnaghar_network:
+    driver: bridge
