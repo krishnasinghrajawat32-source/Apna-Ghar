@@ -12,7 +12,7 @@ export class MongoDbService implements OnModuleInit, OnModuleDestroy {
   private dbName: string = 'apnaghar';
 
   async onModuleInit() {
-    if (process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV === 'test' || process.env.JEST_WORKER_ID !== undefined) {
       this.connected = false;
       this.logger.log('[MongoDB] Test environment detected; skipping startup connection to keep e2e boot fast.');
       return;

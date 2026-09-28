@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateBookingDto {
   @ApiProperty({ description: 'ID of the specific bed to book' })
-  @IsUUID()
+  @IsString()
   @IsNotEmpty()
   bedId: string;
 

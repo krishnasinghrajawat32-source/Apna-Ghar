@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Public } from '../../common/decorators/public.decorator';
 import { ComparisonService } from './comparison.service';
@@ -17,5 +17,14 @@ export class ComparisonController {
   @ApiResponse({ status: 400, description: 'Invalid number of properties (requires 2-4)' })
   async compareProperties(@Body() dto: ComparePropertiesDto) {
     return this.comparisonService.generateComparisonMatrix(dto);
+  }
+
+  @Public()
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Generate comparative matrix via query string' })
+  async comparePropertiesQuery(@Query('propertyIds') propertyIds: string) {
+    const ids = (propertyIds || '').split(',').map((s) => s.trim()).filter(Boolean);
+    return this.comparisonService.generateComparisonMatrix({ propertyIds: ids });
   }
 }
