@@ -81,6 +81,10 @@ export function Navbar() {
           <Link href="/student/visits" className="hover:text-[#173327] transition-colors">
             My Visits
           </Link>
+          <span className="text-[#DDD7C7]">•</span>
+          <Link href="/student/bookings" className="hover:text-[#173327] transition-colors">
+            My Bookings
+          </Link>
         </nav>
 
         {/* Auth Actions */}

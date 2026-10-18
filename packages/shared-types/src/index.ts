@@ -330,6 +330,20 @@ export interface Visit {
   updatedAt: string;
 }
 
+export interface EmergencyContact {
+  name: string;
+  relationship: string;
+  phone: string;
+}
+
+export interface BookingChargeBreakdown {
+  rentAmount: number;
+  depositAmount: number;
+  maintenanceFee: number;
+  moveInCharges: number;
+  totalInitialPayment: number;
+}
+
 export interface Booking {
   id: string;
   bookingReference: string;
@@ -341,8 +355,17 @@ export interface Booking {
   moveInDate: string;
   rentAmount: number;
   depositAmount: number;
+  maintenanceFee: number;
+  moveInCharges: number;
   totalInitialPayment: number;
   status: BookingStatus;
+  emergencyContact: EmergencyContact;
+  studentIdCardRef?: string;
+  property?: Property;
+  room?: Room;
+  bed?: Bed;
+  roomType?: RoomType;
+  student?: { name: string; email: string; phone?: string };
   createdAt: string;
   updatedAt: string;
 }

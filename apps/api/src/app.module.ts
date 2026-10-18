@@ -14,6 +14,7 @@ import { PropertiesModule } from './modules/properties/properties.module';
 import { TrustModule } from './modules/trust/trust.module';
 import { PricingModule } from './modules/pricing/pricing.module';
 import { VisitsModule } from './modules/visits/visits.module';
+import { BookingsModule } from './modules/bookings/bookings.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -35,6 +36,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     TrustModule,
     PricingModule,
     VisitsModule,
+    BookingsModule,
   ],
   providers: [
     {

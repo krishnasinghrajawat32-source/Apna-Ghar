@@ -91,7 +91,9 @@ export function ActiveHoldBanner() {
 
             <Link
               href={
-                activeHold.propertySlug
+                activeHold.bedId
+                  ? `/booking/checkout?bedId=${activeHold.bedId}`
+                  : activeHold.propertySlug
                   ? `/property/${activeHold.propertySlug}`
                   : '#'
               }
