@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { QueryProvider } from '@/providers/query-provider';
+import { Navbar } from '@/components/layout/navbar';
 
 export const metadata: Metadata = {
   title: 'Apna Ghar — Har Sahar Apna Ghar',
@@ -14,8 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#FCFBF7] text-[#1E252B] antialiased">
-        <QueryProvider>{children}</QueryProvider>
+      <body className="min-h-screen bg-[#FCFBF7] text-[#1E252B] antialiased flex flex-col">
+        <QueryProvider>
+          <Navbar />
+          <div className="flex-1">{children}</div>
+        </QueryProvider>
       </body>
     </html>
   );

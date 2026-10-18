@@ -5,7 +5,10 @@ import { Connection } from 'mongoose';
 import { HealthCheckResponse } from '@apna-ghar/shared-types';
 import { RedisService } from '../../redis/redis.service';
 
+import { Public } from '../../common/decorators/public.decorator';
+
 @ApiTags('Health')
+@Public()
 @Controller('health')
 export class HealthController {
   private readonly startTime = Date.now();
