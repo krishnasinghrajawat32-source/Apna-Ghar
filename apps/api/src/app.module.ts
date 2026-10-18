@@ -11,6 +11,8 @@ import { CollegesModule } from './modules/colleges/colleges.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { SearchModule } from './modules/search/search.module';
 import { PropertiesModule } from './modules/properties/properties.module';
+import { TrustModule } from './modules/trust/trust.module';
+import { PricingModule } from './modules/pricing/pricing.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -29,6 +31,8 @@ import { RolesGuard } from './common/guards/roles.guard';
     InventoryModule,
     SearchModule,
     PropertiesModule,
+    TrustModule,
+    PricingModule,
   ],
   providers: [
     {

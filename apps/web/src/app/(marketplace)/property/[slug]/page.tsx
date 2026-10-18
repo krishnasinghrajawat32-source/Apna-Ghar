@@ -18,7 +18,9 @@ import {
 } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/utils';
-import { Property, RoomType, PropertyStatus } from '@apna-ghar/shared-types';
+import { Property, RoomType, PropertyStatus, TrustPassport } from '@apna-ghar/shared-types';
+import { TrustPassportCard } from '@/components/verification/trust-passport-card';
+import { TotalLivingCostWidget } from '@/components/pricing/total-living-cost-widget';
 
 interface PropertyDetailResponse {
   property: Property;
@@ -35,6 +37,16 @@ export default function PropertyDetailPage() {
     queryFn: () => apiClient<PropertyDetailResponse>(`/properties/${slug}`),
     enabled: !!slug,
   });
+
+  const propertyId = data?.property?.id;
+
+  const { data: passportRes } = useQuery<{ success: boolean; data: TrustPassport }>({
+    queryKey: ['property-trust-passport', propertyId],
+    queryFn: () => apiClient<{ success: boolean; data: TrustPassport }>(`/properties/${propertyId}/trust-passport`),
+    enabled: !!propertyId,
+  });
+
+  const passport = passportRes?.data || null;
 
   if (isLoading) {
     return (
@@ -156,6 +168,12 @@ export default function PropertyDetailPage() {
       {/* Main Content Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
+          {/* Trust Passport Verification Audit */}
+          <TrustPassportCard
+            passport={passport}
+            propertyName={property.name}
+          />
+
           {/* Description */}
           <section className="space-y-3">
             <h2 className="text-base font-bold text-[#173327]">About this accommodation</h2>
@@ -214,6 +232,12 @@ export default function PropertyDetailPage() {
               ))}
             </div>
           </section>
+
+          {/* Total Living Cost Interactive Breakdown */}
+          <TotalLivingCostWidget
+            propertyId={property.id}
+            roomTypes={roomTypes}
+          />
 
           {/* House Rules */}
           {property.rules && property.rules.length > 0 && (

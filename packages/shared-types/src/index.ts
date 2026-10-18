@@ -231,10 +231,12 @@ export interface TrustCheckpoint {
 }
 
 export interface TrustPassport {
+  id?: string;
   propertyId: string;
   isFullyVerified: boolean;
+  score?: number;
   lastVerifiedAt?: string;
-  checkpoints: Record<VerificationType, TrustCheckpoint>;
+  checkpoints: TrustCheckpoint[];
 }
 
 export interface AvailabilityFreshnessInfo {
