@@ -7,6 +7,10 @@ import { RedisModule } from './redis/redis.module';
 import { HealthModule } from './modules/health/health.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CollegesModule } from './modules/colleges/colleges.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
+import { SearchModule } from './modules/search/search.module';
+import { PropertiesModule } from './modules/properties/properties.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -21,6 +25,10 @@ import { RolesGuard } from './common/guards/roles.guard';
     HealthModule,
     UsersModule,
     AuthModule,
+    CollegesModule,
+    InventoryModule,
+    SearchModule,
+    PropertiesModule,
   ],
   providers: [
     {
