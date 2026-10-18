@@ -13,6 +13,7 @@ import { SearchModule } from './modules/search/search.module';
 import { PropertiesModule } from './modules/properties/properties.module';
 import { TrustModule } from './modules/trust/trust.module';
 import { PricingModule } from './modules/pricing/pricing.module';
+import { VisitsModule } from './modules/visits/visits.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -33,6 +34,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     PropertiesModule,
     TrustModule,
     PricingModule,
+    VisitsModule,
   ],
   providers: [
     {

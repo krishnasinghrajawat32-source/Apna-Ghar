@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -21,6 +21,7 @@ import { formatCurrency } from '@/lib/utils';
 import { Property, RoomType, PropertyStatus, TrustPassport } from '@apna-ghar/shared-types';
 import { TrustPassportCard } from '@/components/verification/trust-passport-card';
 import { TotalLivingCostWidget } from '@/components/pricing/total-living-cost-widget';
+import { ScheduleVisitModal } from '@/components/visits/schedule-visit-modal';
 
 interface PropertyDetailResponse {
   property: Property;
@@ -47,6 +48,7 @@ export default function PropertyDetailPage() {
   });
 
   const passport = passportRes?.data || null;
+  const [visitModalOpen, setVisitModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -297,6 +299,7 @@ export default function PropertyDetailPage() {
 
               <button
                 type="button"
+                onClick={() => setVisitModalOpen(true)}
                 className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-[#173327] bg-[#F0F5F2] hover:bg-[#DCE8E2] transition-colors flex items-center justify-center gap-2"
               >
                 <Calendar className="w-4 h-4 text-[#173327]" />
@@ -306,6 +309,14 @@ export default function PropertyDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Schedule Visit Modal */}
+      <ScheduleVisitModal
+        isOpen={visitModalOpen}
+        onClose={() => setVisitModalOpen(false)}
+        propertyId={property.id}
+        propertyName={property.name}
+      />
     </main>
   );
 }

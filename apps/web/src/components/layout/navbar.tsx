@@ -74,9 +74,13 @@ export function Navbar() {
             Home
           </Link>
           <span className="text-[#DDD7C7]">•</span>
-          <span className="text-gray-400 cursor-not-allowed">Marketplace (Phase 2)</span>
+          <Link href="/search" className="hover:text-[#173327] transition-colors">
+            Find Stays
+          </Link>
           <span className="text-[#DDD7C7]">•</span>
-          <span className="text-gray-400 cursor-not-allowed">Mess & Tiffin</span>
+          <Link href="/student/visits" className="hover:text-[#173327] transition-colors">
+            My Visits
+          </Link>
         </nav>
 
         {/* Auth Actions */}

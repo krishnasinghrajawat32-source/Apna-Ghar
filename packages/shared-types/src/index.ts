@@ -288,8 +288,12 @@ export interface Visit {
   propertyId: string;
   ownerId: string;
   scheduledAt: string;
+  slot?: string;
+  contactPhone?: string;
   status: VisitStatus;
   notes?: string;
+  property?: Property;
+  student?: { name: string; email: string; phone?: string };
   createdAt: string;
   updatedAt: string;
 }
