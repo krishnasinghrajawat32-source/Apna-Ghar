@@ -1,0 +1,16 @@
+{
+  "name": "@apna-ghar/shared-types",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'No lint for types'"
+  },
+  "devDependencies": {
+    "@apna-ghar/tsconfig": "workspace:*",
+    "typescript": "^5.6.3"
+  }
+}
