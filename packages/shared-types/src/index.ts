@@ -212,13 +212,18 @@ export interface Room {
   status: 'ACTIVE' | 'MAINTENANCE';
 }
 
+export type BedPosition = 'WINDOW' | 'CORNER' | 'DOOR' | 'STANDARD';
+export type DynamicBedStatus = 'AVAILABLE' | 'HELD_BY_YOU' | 'HELD_BY_OTHER' | 'OCCUPIED' | 'MAINTENANCE';
+
 export interface Bed {
   id: string;
   propertyId: string;
   roomId: string;
   roomTypeId: string;
   bedLabel: string;
+  position?: BedPosition;
   permanentStatus: BedStatus;
+  dynamicStatus?: DynamicBedStatus;
   expectedVacancyDate?: string;
 }
 
@@ -280,6 +285,33 @@ export interface HoldResponse {
   bedId: string;
   expiresAt: string; // ISO 8601 string
   ttlSecondsRemaining: number;
+}
+
+export interface BedHoldStatus {
+  isHeld: boolean;
+  heldByCurrentStudent: boolean;
+  ttlRemaining: number;
+  expiresAt?: string;
+  bedId: string;
+}
+
+export interface RoomWithBeds {
+  room: Room;
+  beds: Bed[];
+}
+
+export interface RoomTypeInventory {
+  roomType: RoomType;
+  availableBedsCount: number;
+  totalBedsCount: number;
+  rooms: RoomWithBeds[];
+}
+
+export interface PropertyInventoryResponse {
+  propertyId: string;
+  totalBeds: number;
+  availableBeds: number;
+  inventory: RoomTypeInventory[];
 }
 
 export interface Visit {

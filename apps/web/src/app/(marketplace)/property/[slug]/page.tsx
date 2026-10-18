@@ -22,6 +22,7 @@ import { Property, RoomType, PropertyStatus, TrustPassport } from '@apna-ghar/sh
 import { TrustPassportCard } from '@/components/verification/trust-passport-card';
 import { TotalLivingCostWidget } from '@/components/pricing/total-living-cost-widget';
 import { ScheduleVisitModal } from '@/components/visits/schedule-visit-modal';
+import { RoomBedSelector } from '@/components/inventory/room-bed-selector';
 
 interface PropertyDetailResponse {
   property: Property;
@@ -235,6 +236,15 @@ export default function PropertyDetailPage() {
             </div>
           </section>
 
+          {/* Real-time Room & Bed Selection with Redis Temporary Hold */}
+          <section id="room-bed-selection" className="scroll-mt-24">
+            <RoomBedSelector
+              propertyId={property.id}
+              propertyName={property.name}
+              propertySlug={property.slug}
+            />
+          </section>
+
           {/* Total Living Cost Interactive Breakdown */}
           <TotalLivingCostWidget
             propertyId={property.id}
@@ -289,18 +299,18 @@ export default function PropertyDetailPage() {
 
             {/* CTAs */}
             <div className="space-y-2 pt-2">
-              <Link
-                href={`/student/book/${roomTypes[0]?.id || ''}`}
-                className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors flex items-center justify-center gap-2 shadow-md"
+              <a
+                href="#room-bed-selection"
+                className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors flex items-center justify-center gap-2 shadow-md cursor-pointer"
               >
                 <span>Select Room & Bed</span>
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </a>
 
               <button
                 type="button"
                 onClick={() => setVisitModalOpen(true)}
-                className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-[#173327] bg-[#F0F5F2] hover:bg-[#DCE8E2] transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-[#173327] bg-[#F0F5F2] hover:bg-[#DCE8E2] transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-[#173327]" />
                 <span>Schedule a Free Visit</span>

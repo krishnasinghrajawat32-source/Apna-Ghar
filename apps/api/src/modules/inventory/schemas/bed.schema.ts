@@ -31,6 +31,13 @@ export class Bed {
 
   @Prop({
     type: String,
+    enum: ['WINDOW', 'CORNER', 'DOOR', 'STANDARD'],
+    default: 'STANDARD',
+  })
+  position!: 'WINDOW' | 'CORNER' | 'DOOR' | 'STANDARD';
+
+  @Prop({
+    type: String,
     enum: Object.values(BedStatus),
     default: BedStatus.AVAILABLE,
     index: true,

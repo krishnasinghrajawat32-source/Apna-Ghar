@@ -5,6 +5,8 @@ import { Room, RoomSchema } from './schemas/room.schema';
 import { Bed, BedSchema } from './schemas/bed.schema';
 import { InventoryService } from './inventory.service';
 
+import { InventoryController } from './inventory.controller';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -13,6 +15,7 @@ import { InventoryService } from './inventory.service';
       { name: Bed.name, schema: BedSchema },
     ]),
   ],
+  controllers: [InventoryController],
   providers: [InventoryService],
   exports: [InventoryService, MongooseModule],
 })

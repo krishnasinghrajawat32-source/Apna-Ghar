@@ -3,6 +3,8 @@ import './globals.css';
 import { QueryProvider } from '@/providers/query-provider';
 import { Navbar } from '@/components/layout/navbar';
 
+import { ActiveHoldBanner } from '@/components/inventory/active-hold-banner';
+
 export const metadata: Metadata = {
   title: 'Apna Ghar — Har Sahar Apna Ghar',
   description: 'Trust-First Verified Student Living Platform',
@@ -19,6 +21,7 @@ export default function RootLayout({
         <QueryProvider>
           <Navbar />
           <div className="flex-1">{children}</div>
+          <ActiveHoldBanner />
         </QueryProvider>
       </body>
     </html>
