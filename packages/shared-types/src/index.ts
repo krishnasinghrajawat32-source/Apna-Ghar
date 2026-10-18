@@ -370,6 +370,61 @@ export interface Booking {
   updatedAt: string;
 }
 
+export type PaymentMethod = 'UPI' | 'NETBANKING' | 'CARD' | 'WALLET' | 'SIMULATOR';
+
+export interface Payment {
+  id: string;
+  bookingId: string;
+  studentId: string;
+  propertyId: string;
+  orderId: string;
+  paymentId?: string;
+  signature?: string;
+  amount: number;
+  currency: string;
+  status: PaymentStatus;
+  method?: PaymentMethod;
+  failureReason?: string;
+  receiptNumber: string;
+  paidAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaymentOrderResponse {
+  orderId: string;
+  amount: number;
+  currency: string;
+  bookingId: string;
+  bookingReference: string;
+  receiptNumber: string;
+  keyId?: string;
+  testMode?: boolean;
+}
+
+export interface VerifyPaymentDto {
+  bookingId: string;
+  orderId: string;
+  paymentId: string;
+  signature: string;
+}
+
+export interface PaymentReceipt {
+  paymentId: string;
+  orderId: string;
+  bookingReference: string;
+  amount: number;
+  currency: string;
+  paidAt: string;
+  paymentMethod: string;
+  status: PaymentStatus;
+  studentName: string;
+  propertyName: string;
+  roomNumber: string;
+  bedLabel: string;
+  moveInDate: string;
+}
+
 export interface HealthCheckResponse {
   status: 'ok' | 'degraded' | 'error';
   timestamp: string;
