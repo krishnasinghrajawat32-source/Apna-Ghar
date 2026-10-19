@@ -21,6 +21,7 @@ import {
   CreditCard,
   X,
   Sparkles,
+  Utensils,
 } from 'lucide-react';
 import { AuthGuard } from '@/features/auth/auth-guard';
 import { useAuthStore } from '@/features/auth/auth-store';
@@ -35,6 +36,7 @@ import {
   TicketCategory,
   TicketPriority,
   RoommatePreferences,
+  MessSubscription,
 } from '@apna-ghar/shared-types';
 
 export default function StudentDashboardPage() {
@@ -84,6 +86,13 @@ export default function StudentDashboardPage() {
   const { data: preferences } = useQuery<RoommatePreferences>({
     queryKey: ['roommate-preferences'],
     queryFn: () => apiClient<RoommatePreferences>('/users/roommate-preferences'),
+    enabled: isAuthenticated,
+  });
+
+  // 5. Fetch Student Mess Subscriptions
+  const { data: messSubscriptions = [] } = useQuery<MessSubscription[]>({
+    queryKey: ['student-mess-subscriptions'],
+    queryFn: () => apiClient<MessSubscription[]>('/mess/subscriptions/student'),
     enabled: isAuthenticated,
   });
 
@@ -666,6 +675,69 @@ export default function StudentDashboardPage() {
                         month: 'short',
                       })}{' '}
                       • {visit.slot || 'Confirmed Slot'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* SECTION 4: Mess & Meal Plan Subscriptions */}
+        <div className="bg-white border border-[#ECE8DD] rounded-3xl p-6 sm:p-7 shadow-sm space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#ECE8DD]">
+            <div className="flex items-center gap-2">
+              <Utensils className="w-4 h-4 text-[#173327]" />
+              <h2 className="text-sm font-bold text-[#173327]">Campus Dining & Meal Subscriptions</h2>
+            </div>
+            <Link
+              href="/mess"
+              className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 transition"
+            >
+              Browse Mess Directory
+            </Link>
+          </div>
+
+          {messSubscriptions.length === 0 ? (
+            <div className="p-8 border border-dashed border-[#DDD7C7] rounded-2xl text-center space-y-2 bg-[#FCFBF7]">
+              <p className="text-xs font-semibold text-[#173327]">No active meal plan subscriptions.</p>
+              <p className="text-[11px] text-[#3D3A33] max-w-sm mx-auto">
+                Subscribe to verified pure veg, Jain, or multi-cuisine mess plans near your campus with daily rotating menus.
+              </p>
+              <div className="pt-2">
+                <Link
+                  href="/mess"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition"
+                >
+                  Explore Mess Plans
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {messSubscriptions.map((sub) => (
+                <div
+                  key={sub.id}
+                  className="p-4 rounded-2xl border border-[#ECE8DD] bg-[#FCFBF7] space-y-2.5 text-xs hover:border-[#173327]/30 transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900 truncate">
+                      {sub.mess?.name || 'Student Mess'}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                      {sub.status}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] text-slate-600">
+                    <span>Plan: <span className="font-semibold text-slate-900">{sub.planName}</span></span>
+                    <span>Diet: <span className="font-semibold text-slate-900">{sub.dietaryPreference}</span></span>
+                  </div>
+
+                  <div className="p-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-mono flex items-center justify-between">
+                    <span className="truncate pr-2">{sub.qrPassCode}</span>
+                    <span className="text-emerald-400 font-bold shrink-0">
+                      Valid Till {new Date(sub.endDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                     </span>
                   </div>
                 </div>

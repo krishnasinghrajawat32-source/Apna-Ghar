@@ -521,6 +521,87 @@ export interface UpdateBedStatusDto {
   permanentStatus: 'AVAILABLE' | 'MAINTENANCE';
 }
 
+export type DietaryType = 'PURE_VEG' | 'VEG_AND_NON_VEG' | 'JAIN_AVAILABLE';
+export type MealType = 'BREAKFAST' | 'LUNCH' | 'SNACKS' | 'DINNER';
+export type DayOfWeek = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
+
+export interface DailyMenu {
+  day: DayOfWeek;
+  breakfast: string;
+  lunch: string;
+  snacks?: string;
+  dinner: string;
+  specialDietNote?: string;
+}
+
+export interface MealPlan {
+  id: string;
+  name: string;
+  mealTypes: MealType[];
+  daysPerWeek: number;
+  monthlyPrice: number;
+  description?: string;
+}
+
+export interface Mess {
+  id: string;
+  partnerId: string;
+  name: string;
+  slug: string;
+  description: string;
+  dietaryType: DietaryType;
+  fssaiNumber: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    pincode: string;
+    landmark?: string;
+  };
+  rating: number;
+  hygieneCertified: boolean;
+  operatingHours: {
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+  };
+  plans: MealPlan[];
+  weeklyMenu: DailyMenu[];
+  status: 'ACTIVE' | 'INACTIVE';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MessSubscription {
+  id: string;
+  subscriptionNumber: string;
+  studentId: string;
+  messId: string;
+  planId: string;
+  planName: string;
+  startDate: string;
+  endDate: string;
+  monthlyPrice: number;
+  dietaryPreference: 'VEG' | 'NON_VEG' | 'JAIN';
+  status: 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
+  qrPassCode: string;
+  mess?: Mess;
+  student?: { name: string; phone?: string; email?: string };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateMessSubscriptionDto {
+  messId: string;
+  planId: string;
+  startDate: string;
+  dietaryPreference?: 'VEG' | 'NON_VEG' | 'JAIN';
+}
+
+export interface UpdateWeeklyMenuDto {
+  weeklyMenu: DailyMenu[];
+}
+
 export interface HealthCheckResponse {
   status: 'ok' | 'degraded' | 'error';
   timestamp: string;
