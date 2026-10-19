@@ -6,7 +6,7 @@
     "dev": "next dev --port 3000",
     "prebuild": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build",
     "build": "next build",
-    "start": "next start --port 3000",
+    "start": "next start -H 0.0.0.0",
     "lint": "echo 'web lint passed'",
     "typecheck": "tsc --noEmit",
     "test": "echo 'web unit tests passing'"

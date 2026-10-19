@@ -67,8 +67,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
 
-  await app.listen(port);
-  logger.log(`Apna Ghar Backend API listening on: http://localhost:${port}/${apiPrefix}`);
+  await app.listen(port, '0.0.0.0');
+  logger.log(`Apna Ghar Backend API listening on: http://0.0.0.0:${port}/${apiPrefix}`);
   logger.log(`Swagger OpenAPI documentation: http://localhost:${port}/${apiPrefix}/docs`);
 }
 
