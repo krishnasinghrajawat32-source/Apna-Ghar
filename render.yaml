@@ -5,7 +5,7 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build:api
+    buildCommand: pnpm install && pnpm run build:api
     startCommand: pnpm run start:api
     envVars:
       - key: NODE_ENV
@@ -23,7 +23,7 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build:web
+    buildCommand: pnpm install && pnpm run build:web
     startCommand: pnpm run start:web
     envVars:
       - key: NODE_ENV

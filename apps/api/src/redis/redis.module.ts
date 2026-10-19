@@ -30,13 +30,22 @@ export * from './redis.constants';
 
           await client.connect();
           logger.log(`Connected to live Redis at ${redisUrl}`);
+          (client as any).__isMock = false;
           return client;
         } catch (err: unknown) {
           const errMsg = err instanceof Error ? err.message : String(err);
-          logger.warn(
-            `Unable to connect to live Redis (${errMsg}). Initializing fully-compatible in-memory Redis mock for local development and testing.`,
-          );
+          const nodeEnv = configService.get<string>('nodeEnv') || process.env.NODE_ENV || 'development';
+          if (nodeEnv === 'production') {
+            logger.warn(
+              `⚠️ PRODUCTION ALERT: Could not connect to managed Redis (${errMsg}). Live distributed locks are unavailable. Ensure REDIS_URL is configured in Render dashboard.`,
+            );
+          } else {
+            logger.warn(
+              `Unable to connect to live Redis (${errMsg}). Initializing fully-compatible in-memory Redis mock for local development and testing.`,
+            );
+          }
           const mockClient = new RedisMock() as unknown as Redis;
+          (mockClient as any).__isMock = true;
           return mockClient;
         }
       },

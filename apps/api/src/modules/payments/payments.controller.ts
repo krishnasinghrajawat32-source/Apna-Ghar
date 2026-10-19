@@ -8,6 +8,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiHeader } from '@nestjs/swagger';
 import { PaymentsService } from './payments.service';
@@ -70,6 +71,11 @@ export class PaymentsController {
     @Body('orderId') orderId: string,
     @Body('method') method?: 'UPI' | 'NETBANKING' | 'CARD' | 'SIMULATOR',
   ) {
+    if (process.env.NODE_ENV === 'production' && process.env.ENABLE_PAYMENT_SIMULATOR !== 'true') {
+      throw new ForbiddenException(
+        'Payment simulation is strictly disabled in production environments. Please use verified gateway callbacks.',
+      );
+    }
     const result = await this.paymentsService.simulatePayment(studentId, orderId, method);
     return {
       success: true,

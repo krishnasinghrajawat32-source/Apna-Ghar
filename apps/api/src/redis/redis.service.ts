@@ -10,6 +10,10 @@ export class RedisService {
     return this.client;
   }
 
+  isLive(): boolean {
+    return !(this.client as any)?.__isMock;
+  }
+
   async get(key: string): Promise<string | null> {
     return this.client.get(key);
   }

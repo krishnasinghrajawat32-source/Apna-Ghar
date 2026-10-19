@@ -219,6 +219,17 @@ export class InventoryService {
       expiresAt,
     };
 
+    // Ensure production distributed safety: reject unsafe hold if Redis is degraded
+    if (
+      process.env.NODE_ENV === 'production' &&
+      !this.redisService.isLive() &&
+      process.env.ALLOW_REDIS_MOCK !== 'true'
+    ) {
+      throw new ConflictException(
+        'Managed Redis distributed lock is unavailable in production. Temporary holds cannot be guaranteed.',
+      );
+    }
+
     // Atomic acquisition with SET NX EX
     const acquired = await this.redisService.setNxEx(holdKey, JSON.stringify(payload), ttlSeconds);
     if (!acquired) {
