@@ -16,37 +16,36 @@ jobs:
         image: mongo:7.0
         ports:
           - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
       redis:
         image: redis:7.2-alpine
         ports:
           - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -59,9 +58,20 @@ jobs:
 
       - name: Build Gate
         run: pnpm build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
+          NEXT_PUBLIC_APP_URL: https://apnaghar.in
+          JWT_ACCESS_SECRET: ci_test_jwt_access_secret_min_32_characters_seed
+          JWT_REFRESH_SECRET: ci_test_jwt_refresh_secret_min_32_characters_seed
+          COOKIE_SECRET: ci_test_cookie_signing_secret
 
       - name: Unit & Integration Tests
         run: pnpm test
         env:
+          CI: 'true'
           MONGODB_URI: mongodb://127.0.0.1:27017/apna_ghar_test
           REDIS_URL: redis://127.0.0.1:6379
+          JWT_ACCESS_SECRET: ci_test_jwt_access_secret_min_32_characters_seed
+          JWT_REFRESH_SECRET: ci_test_jwt_refresh_secret_min_32_characters_seed
+          COOKIE_SECRET: ci_test_cookie_signing_secret

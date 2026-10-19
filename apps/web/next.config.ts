@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  transpilePackages: ['@apna-ghar/shared-types', '@apna-ghar/shared-constants'],
   images: {
     remotePatterns: [
       {
