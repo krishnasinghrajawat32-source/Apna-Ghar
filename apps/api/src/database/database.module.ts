@@ -12,7 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         if (uri.includes('127.0.0.1') || uri.includes('localhost')) {
           logger.warn(
-            '⚠️ Connecting to localhost MongoDB. On cloud platforms (Render), MONGODB_URI environment variable must be set to your cloud database (MongoDB Atlas).'
+            '⚠️  Notice: Connecting to localhost MongoDB. On cloud hosts (Render), set MONGODB_URI to your cloud MongoDB Atlas cluster.'
           );
         } else {
           const parts = uri.split('@');
@@ -22,9 +22,23 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return {
           uri,
-          autoIndex: process.env.NODE_ENV !== 'production',
-          serverSelectionTimeoutMS: 5000,
-          connectTimeoutMS: 10000,
+          autoIndex: false,
+          serverSelectionTimeoutMS: 2000,
+          connectTimeoutMS: 3000,
+          retryAttempts: 1,
+          retryDelay: 1000,
+          connectionFactory: (connection: any) => {
+            connection.on('connected', () => {
+              logger.log('✅ MongoDB connected successfully!');
+            });
+            connection.on('error', (err: any) => {
+              logger.warn(`⚠️  MongoDB connection notice (non-fatal): ${err.message}`);
+            });
+            connection.on('disconnected', () => {
+              logger.warn('⚠️  MongoDB disconnected. Continuing background reconnection...');
+            });
+            return connection;
+          },
         };
       },
       inject: [ConfigService],
