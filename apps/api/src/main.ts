@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { SecurityHeadersMiddleware } from './common/middleware/security-headers.middleware';
 
 async function bootstrap() {
   const logger = new Logger('ApnaGharAPI');
@@ -19,6 +20,10 @@ async function bootstrap() {
 
   // Enable graceful shutdown hooks
   app.enableShutdownHooks();
+
+  // Apply enterprise security headers
+  const securityMiddleware = new SecurityHeadersMiddleware();
+  app.use((req: any, res: any, next: any) => securityMiddleware.use(req, res, next));
 
   // Global URL prefix
   app.setGlobalPrefix(apiPrefix);

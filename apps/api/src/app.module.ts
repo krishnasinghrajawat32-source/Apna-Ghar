@@ -21,6 +21,7 @@ import { OwnerModule } from './modules/owner/owner.module';
 import { MessModule } from './modules/mess/mess.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -30,6 +31,12 @@ import { RolesGuard } from './common/guards/roles.guard';
       isGlobal: true,
       load: [configuration],
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 120,
+      },
+    ]),
     DatabaseModule,
     RedisModule,
     HealthModule,
@@ -51,6 +58,10 @@ import { RolesGuard } from './common/guards/roles.guard';
     AdminModule,
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

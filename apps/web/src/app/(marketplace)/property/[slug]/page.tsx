@@ -86,8 +86,46 @@ export default function PropertyDetailPage() {
       ? property.images[0]
       : 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80';
 
+  const lodgingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LodgingBusiness',
+    name: property.name,
+    description: property.description,
+    image: property.images || [primaryImage],
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: property.address.street,
+      addressLocality: property.address.city,
+      addressRegion: property.address.state,
+      postalCode: property.address.pincode,
+      addressCountry: 'IN',
+    },
+    geo: property.location?.coordinates ? {
+      '@type': 'GeoCoordinates',
+      longitude: property.location.coordinates[0],
+      latitude: property.location.coordinates[1],
+    } : undefined,
+    amenityFeature: (property.amenities || []).map((amenity) => ({
+      '@type': 'LocationFeatureSpecification',
+      name: amenity,
+      value: true,
+    })),
+    priceRange: roomTypes.length > 0 ? `₹${roomTypes[0]?.baseRent} - ₹${roomTypes[roomTypes.length - 1]?.baseRent}` : undefined,
+    aggregateRating: property.rating && property.reviewCount ? {
+      '@type': 'AggregateRating',
+      ratingValue: property.rating,
+      reviewCount: property.reviewCount,
+      bestRating: 5,
+      worstRating: 1,
+    } : undefined,
+  };
+
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(lodgingSchema) }}
+      />
       {/* Top Header */}
       <div className="space-y-3 pb-6 border-b border-[#ECE8DD]">
         <div className="flex flex-wrap items-center gap-2">
