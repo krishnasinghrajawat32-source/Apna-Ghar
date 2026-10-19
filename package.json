@@ -15,6 +15,11 @@
     "test": "pnpm -r test",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
   },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
     "prettier": "^3.3.3",
     "typescript": "^5.6.3"
