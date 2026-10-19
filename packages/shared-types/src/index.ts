@@ -489,6 +489,38 @@ export interface MoveInPass {
   status: 'PENDING_CHECKIN' | 'CHECKED_IN';
 }
 
+export interface OwnerOverviewMetrics {
+  totalProperties: number;
+  totalRooms: number;
+  totalBeds: number;
+  occupiedBeds: number;
+  availableBeds: number;
+  maintenanceBeds: number;
+  occupancyRate: number;
+  totalBookings: number;
+  confirmedBookings: number;
+  pendingVisits: number;
+  openTickets: number;
+}
+
+export interface OwnerPropertySummary {
+  id: string;
+  name: string;
+  slug: string;
+  propertyType: PropertyType;
+  city: string;
+  totalRooms: number;
+  totalBeds: number;
+  availableBeds: number;
+  occupiedBeds: number;
+  maintenanceBeds: number;
+  status: PropertyStatus;
+}
+
+export interface UpdateBedStatusDto {
+  permanentStatus: 'AVAILABLE' | 'MAINTENANCE';
+}
+
 export interface HealthCheckResponse {
   status: 'ok' | 'degraded' | 'error';
   timestamp: string;

@@ -73,6 +73,22 @@ export class TicketsService {
       .exec();
   }
 
+  async getOwnerTickets(ownerId: string): Promise<TicketDocument[]> {
+    const properties = await this.propertyModel
+      .find({ ownerId: new Types.ObjectId(ownerId) })
+      .select('_id')
+      .exec();
+
+    const propertyIds = properties.map((p) => p._id);
+
+    return this.ticketModel
+      .find({ propertyId: { $in: propertyIds } })
+      .populate('propertyId')
+      .populate('studentId', 'name email phone')
+      .sort({ createdAt: -1 })
+      .exec();
+  }
+
   async updateTicketStatus(
     ticketId: string,
     role: UserRole,

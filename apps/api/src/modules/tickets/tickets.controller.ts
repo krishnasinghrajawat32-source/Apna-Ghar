@@ -67,6 +67,19 @@ export class TicketsController {
     };
   }
 
+  @Get('owner')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.OWNER, UserRole.ADMIN)
+  @ApiOperation({ summary: 'Get all maintenance tickets across all properties owned by authenticated owner' })
+  @ApiResponse({ status: 200, description: 'List of owner tickets' })
+  async getOwnerTickets(@CurrentUser('id') ownerId: string) {
+    const tickets = await this.ticketsService.getOwnerTickets(ownerId);
+    return {
+      success: true,
+      data: tickets,
+    };
+  }
+
   @Patch(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.STUDENT, UserRole.OWNER, UserRole.ADMIN)

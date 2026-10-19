@@ -39,6 +39,7 @@ describe('TicketsService', () => {
 
   const mockPropertyModel = {
     findById: jest.fn(),
+    find: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -150,6 +151,29 @@ describe('TicketsService', () => {
       });
 
       const tickets = await service.getPropertyTickets(mockPropertyId.toString());
+      expect(tickets).toHaveLength(1);
+    });
+  });
+
+  describe('getOwnerTickets', () => {
+    it('should return list of tickets for properties owned by owner', async () => {
+      mockPropertyModel.find = jest.fn().mockReturnValue({
+        select: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue([{ _id: mockPropertyId }]),
+        }),
+      });
+
+      mockTicketModel.find.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockReturnValue({
+            sort: jest.fn().mockReturnValue({
+              exec: jest.fn().mockResolvedValue([mockTicketDoc]),
+            }),
+          }),
+        }),
+      });
+
+      const tickets = await service.getOwnerTickets(mockStudentId);
       expect(tickets).toHaveLength(1);
     });
   });
