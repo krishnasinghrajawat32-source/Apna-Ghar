@@ -1,0 +1,36 @@
+services:
+  # Apna Ghar — NestJS Production Backend API
+  - type: web
+    name: apna-ghar-api
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build:api
+    startCommand: pnpm run start:api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        value: https://apna-ghar-xgqu.vercel.app
+      - key: SERVICE_TYPE
+        value: api
+
+  # Apna Ghar — Next.js Production Web Application
+  - type: web
+    name: apna-ghar-web
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build:web
+    startCommand: pnpm run start:web
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: NEXT_PUBLIC_API_URL
+        value: https://apna-ghar-2-4766.onrender.com/api/v1
+      - key: SERVICE_TYPE
+        value: web

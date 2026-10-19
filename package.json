@@ -10,7 +10,7 @@
     "build": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/api build && pnpm --filter @apna-ghar/web build",
     "build:web": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/web build",
     "build:api": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/api build",
-    "start": "pnpm run start:web",
+    "start": "node server.js",
     "start:web": "pnpm --filter @apna-ghar/web start",
     "start:api": "pnpm --filter @apna-ghar/api start",
     "lint": "pnpm -r lint",
