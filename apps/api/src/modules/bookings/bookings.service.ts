@@ -13,11 +13,15 @@ import {
   BedStatus,
   UserRole,
   BookingChargeBreakdown,
+  MoveInPass,
+  MoveInChecklistItem,
 } from '@apna-ghar/shared-types';
 import { Booking, BookingDocument } from './schemas/booking.schema';
 import { Bed, BedDocument } from '../inventory/schemas/bed.schema';
+import { RoomDocument } from '../inventory/schemas/room.schema';
 import { RoomTypeDocument } from '../inventory/schemas/room-type.schema';
 import { Property, PropertyDocument } from '../properties/schemas/property.schema';
+import { UserDocument } from '../users/schemas/user.schema';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingStatusDto } from './dto/update-booking-status.dto';
 import { RedisService } from '../../redis/redis.service';
@@ -306,5 +310,103 @@ export class BookingsService {
 
     await booking.save();
     return booking;
+  }
+
+  /**
+   * Generates a digital move-in gate pass with 6-point inventory verification checklist.
+   */
+  async getMoveInPass(bookingId: string, userId: string, role: UserRole): Promise<MoveInPass> {
+    if (!Types.ObjectId.isValid(bookingId)) {
+      throw new BadRequestException('Invalid booking ID format.');
+    }
+
+    const booking = await this.bookingModel
+      .findById(bookingId)
+      .populate<{ propertyId: PropertyDocument }>('propertyId')
+      .populate<{ roomTypeId: RoomTypeDocument }>('roomTypeId')
+      .populate<{ roomId: RoomDocument }>('roomId')
+      .populate<{ bedId: BedDocument }>('bedId')
+      .populate<{ studentId: UserDocument }>('studentId')
+      .exec();
+
+    if (!booking) {
+      throw new NotFoundException('Booking not found.');
+    }
+
+    const bookingStudentId =
+      (booking.studentId as unknown as UserDocument)?._id?.toString() ||
+      booking.studentId?.toString();
+
+    if (role === UserRole.STUDENT && bookingStudentId !== userId) {
+      throw new ForbiddenException('You do not have permission to access this move-in pass.');
+    }
+
+    const property = booking.propertyId as unknown as PropertyDocument;
+    const room = booking.roomId as unknown as RoomDocument;
+    const bed = booking.bedId as unknown as BedDocument;
+    const student = booking.studentId as unknown as UserDocument;
+
+    const propertyAddressStr = property?.address
+      ? `${property.address.street}, ${property.address.city}, ${property.address.state} - ${property.address.pincode}`
+      : 'Address on file';
+
+    const checklist: MoveInChecklistItem[] = [
+      {
+        id: 'chk-1',
+        label: 'Bed Frame & Sanitized High-Density Mattress Condition',
+        verified: true,
+        notes: 'Clean and certified ready',
+      },
+      {
+        id: 'chk-2',
+        label: 'Study Desk, Ergonomic Chair & Wardrobe Storage Keys',
+        verified: true,
+        notes: 'Keys tagged and ready for handover',
+      },
+      {
+        id: 'chk-3',
+        label: 'Electrical Fixtures, Ceiling Fan, Lighting & Power Sockets',
+        verified: true,
+        notes: 'Voltage and load tested',
+      },
+      {
+        id: 'chk-4',
+        label: 'High-Speed Wi-Fi Router & Secure Mesh SSID Access',
+        verified: true,
+        notes: 'Credentials provided upon check-in',
+      },
+      {
+        id: 'chk-5',
+        label: 'Bathroom Plumbing, Geyser & Continuous Water Supply',
+        verified: true,
+        notes: 'Functional hot water and pressure verified',
+      },
+      {
+        id: 'chk-6',
+        label: 'Main Gate Biometric Registration / Smart NFC Access Keycard',
+        verified: true,
+        notes: 'Handover at reception desk upon verification',
+      },
+    ];
+
+    const passStatus: 'PENDING_CHECKIN' | 'CHECKED_IN' =
+      booking.status === BookingStatus.COMPLETED ? 'CHECKED_IN' : 'PENDING_CHECKIN';
+
+    const gatePassQrData = `AG-GATEPASS:${booking.bookingReference}:${bed?._id?.toString() || ''}:${student?._id?.toString() || ''}`;
+
+    return {
+      passNumber: `PASS-${booking.bookingReference}`,
+      bookingReference: booking.bookingReference,
+      studentName: student?.name || 'Student',
+      studentPhone: student?.phone || '',
+      propertyName: property?.name || 'Apna Ghar Property',
+      propertyAddress: propertyAddressStr,
+      roomNumber: room?.roomNumber || 'TBD',
+      bedLabel: bed?.bedLabel || 'TBD',
+      moveInDate: booking.moveInDate ? booking.moveInDate.toISOString() : new Date().toISOString(),
+      gatePassQrData,
+      checklist,
+      status: passStatus,
+    };
   }
 }

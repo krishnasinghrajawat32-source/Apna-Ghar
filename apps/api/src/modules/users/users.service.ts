@@ -133,4 +133,47 @@ export class UsersService {
       profile,
     };
   }
+
+  async getRoommatePreferences(userId: string) {
+    const profile = await this.studentProfileModel.findOne({ userId });
+    if (!profile) {
+      throw new NotFoundException('Student profile not found.');
+    }
+    return profile.roommatePreferences || {
+      sleepSchedule: 'FLEXIBLE',
+      foodPreference: 'ANY',
+      cleanlinessLevel: 'MODERATE',
+      studyHabits: 'SILENT',
+      smoking: false,
+      hobbies: [],
+    };
+  }
+
+  async updateRoommatePreferences(userId: string, dto: Partial<StudentProfile['roommatePreferences']> = {}) {
+    let profile = await this.studentProfileModel.findOne({ userId });
+    if (!profile) {
+      profile = await this.studentProfileModel.create({ userId });
+    }
+
+    const current = profile.roommatePreferences || {
+      sleepSchedule: 'FLEXIBLE',
+      foodPreference: 'ANY',
+      cleanlinessLevel: 'MODERATE',
+      studyHabits: 'SILENT',
+      smoking: false,
+      hobbies: [],
+    };
+
+    profile.roommatePreferences = {
+      sleepSchedule: dto.sleepSchedule ?? current.sleepSchedule,
+      foodPreference: dto.foodPreference ?? current.foodPreference,
+      cleanlinessLevel: dto.cleanlinessLevel ?? current.cleanlinessLevel,
+      studyHabits: dto.studyHabits ?? current.studyHabits,
+      smoking: dto.smoking !== undefined ? dto.smoking : current.smoking,
+      hobbies: dto.hobbies ?? current.hobbies,
+    };
+
+    await profile.save();
+    return profile.roommatePreferences;
+  }
 }

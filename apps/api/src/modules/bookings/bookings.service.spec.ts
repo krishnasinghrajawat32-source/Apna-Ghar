@@ -290,4 +290,112 @@ describe('BookingsService', () => {
       ).rejects.toThrow(NotFoundException);
     });
   });
+
+  describe('getMoveInPass', () => {
+    it('should throw BadRequestException if bookingId is invalid', async () => {
+      await expect(
+        service.getMoveInPass('invalid-id', mockStudentId, UserRole.STUDENT),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should throw NotFoundException if booking not found', async () => {
+      mockBookingModel.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockReturnValue({
+            populate: jest.fn().mockReturnValue({
+              populate: jest.fn().mockReturnValue({
+                populate: jest.fn().mockReturnValue({
+                  exec: jest.fn().mockResolvedValue(null),
+                }),
+              }),
+            }),
+          }),
+        }),
+      });
+
+      await expect(
+        service.getMoveInPass(mockBookingId.toString(), mockStudentId, UserRole.STUDENT),
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw ForbiddenException if student does not own booking', async () => {
+      const mockForeignDoc = {
+        ...mockBookingDoc,
+        studentId: new Types.ObjectId(mockOtherStudentId),
+      };
+
+      mockBookingModel.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockReturnValue({
+            populate: jest.fn().mockReturnValue({
+              populate: jest.fn().mockReturnValue({
+                populate: jest.fn().mockReturnValue({
+                  exec: jest.fn().mockResolvedValue(mockForeignDoc),
+                }),
+              }),
+            }),
+          }),
+        }),
+      });
+
+      await expect(
+        service.getMoveInPass(mockBookingId.toString(), mockStudentId, UserRole.STUDENT),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
+    it('should return complete MoveInPass with checklist and gate QR data', async () => {
+      const populatedBookingDoc = {
+        ...mockBookingDoc,
+        status: BookingStatus.CONFIRMED,
+        studentId: {
+          _id: new Types.ObjectId(mockStudentId),
+          name: 'Rohan Verma',
+          phone: '9876543210',
+        },
+        propertyId: {
+          _id: mockPropertyId,
+          name: 'Sunrise Boys Hostel',
+          address: {
+            street: '12 College Road',
+            city: 'Kota',
+            state: 'Rajasthan',
+            pincode: '324005',
+          },
+        },
+        roomId: {
+          _id: mockRoomId,
+          roomNumber: '102',
+        },
+        bedId: {
+          _id: mockBedId,
+          bedLabel: 'Bed 102-A',
+        },
+      };
+
+      mockBookingModel.findById.mockReturnValue({
+        populate: jest.fn().mockReturnValue({
+          populate: jest.fn().mockReturnValue({
+            populate: jest.fn().mockReturnValue({
+              populate: jest.fn().mockReturnValue({
+                populate: jest.fn().mockReturnValue({
+                  exec: jest.fn().mockResolvedValue(populatedBookingDoc),
+                }),
+              }),
+            }),
+          }),
+        }),
+      });
+
+      const pass = await service.getMoveInPass(mockBookingId.toString(), mockStudentId, UserRole.STUDENT);
+
+      expect(pass).toBeDefined();
+      expect(pass.passNumber).toBe('PASS-AG-20261018-ABCD');
+      expect(pass.studentName).toBe('Rohan Verma');
+      expect(pass.roomNumber).toBe('102');
+      expect(pass.bedLabel).toBe('Bed 102-A');
+      expect(pass.checklist).toHaveLength(6);
+      expect(pass.gatePassQrData).toContain('AG-GATEPASS');
+      expect(pass.status).toBe('PENDING_CHECKIN');
+    });
+  });
 });

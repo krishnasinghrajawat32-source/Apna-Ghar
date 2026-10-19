@@ -425,6 +425,70 @@ export interface PaymentReceipt {
   moveInDate: string;
 }
 
+export type TicketCategory = 'PLUMBING' | 'ELECTRICAL' | 'FURNITURE' | 'CLEANING' | 'WIFI' | 'OTHER';
+export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'EMERGENCY';
+export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+export interface MaintenanceTicket {
+  id: string;
+  studentId: string;
+  propertyId: string;
+  bookingId?: string;
+  category: TicketCategory;
+  title: string;
+  description: string;
+  priority: TicketPriority;
+  status: TicketStatus;
+  resolutionNotes?: string;
+  resolvedAt?: string;
+  property?: Property;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateTicketDto {
+  propertyId: string;
+  bookingId?: string;
+  category: TicketCategory;
+  title: string;
+  description: string;
+  priority?: TicketPriority;
+}
+
+export interface RoommatePreferences {
+  id?: string;
+  studentId: string;
+  sleepSchedule: 'EARLY_BIRD' | 'NIGHT_OWL' | 'FLEXIBLE';
+  foodPreference: 'VEG' | 'NON_VEG' | 'VEGAN' | 'EGGETARIAN' | 'ANY';
+  cleanlinessLevel: 'STRICT' | 'MODERATE' | 'CASUAL';
+  studyHabits: 'SILENT' | 'GROUP' | 'MUSIC_OK';
+  smoking: boolean;
+  hobbies: string[];
+  updatedAt?: string;
+}
+
+export interface MoveInChecklistItem {
+  id: string;
+  label: string;
+  verified: boolean;
+  notes?: string;
+}
+
+export interface MoveInPass {
+  passNumber: string;
+  bookingReference: string;
+  studentName: string;
+  studentPhone: string;
+  propertyName: string;
+  propertyAddress: string;
+  roomNumber: string;
+  bedLabel: string;
+  moveInDate: string;
+  gatePassQrData: string;
+  checklist: MoveInChecklistItem[];
+  status: 'PENDING_CHECKIN' | 'CHECKED_IN';
+}
+
 export interface HealthCheckResponse {
   status: 'ok' | 'degraded' | 'error';
   timestamp: string;

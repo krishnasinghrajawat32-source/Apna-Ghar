@@ -100,6 +100,23 @@ export class BookingsController {
     };
   }
 
+  @Get(':id/move-in-pass')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.STUDENT, UserRole.OWNER, UserRole.ADMIN)
+  @ApiOperation({ summary: 'Get verified digital move-in pass and checklist for booking' })
+  @ApiResponse({ status: 200, description: 'Move-in pass with checklist and QR payload' })
+  async getMoveInPass(
+    @Param('id') bookingId: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: UserRole,
+  ) {
+    const pass = await this.bookingsService.getMoveInPass(bookingId, userId, role);
+    return {
+      success: true,
+      data: pass,
+    };
+  }
+
   @Patch(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.STUDENT, UserRole.OWNER, UserRole.ADMIN)

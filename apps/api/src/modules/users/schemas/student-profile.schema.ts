@@ -18,6 +18,29 @@ export class EmergencyContact {
 
 const EmergencyContactSchema = SchemaFactory.createForClass(EmergencyContact);
 
+@Schema({ _id: false })
+export class RoommatePreferences {
+  @Prop({ type: String, enum: ['EARLY_BIRD', 'NIGHT_OWL', 'FLEXIBLE'], default: 'FLEXIBLE' })
+  sleepSchedule!: 'EARLY_BIRD' | 'NIGHT_OWL' | 'FLEXIBLE';
+
+  @Prop({ type: String, enum: ['VEG', 'NON_VEG', 'VEGAN', 'EGGETARIAN', 'ANY'], default: 'ANY' })
+  foodPreference!: 'VEG' | 'NON_VEG' | 'VEGAN' | 'EGGETARIAN' | 'ANY';
+
+  @Prop({ type: String, enum: ['STRICT', 'MODERATE', 'CASUAL'], default: 'MODERATE' })
+  cleanlinessLevel!: 'STRICT' | 'MODERATE' | 'CASUAL';
+
+  @Prop({ type: String, enum: ['SILENT', 'GROUP', 'MUSIC_OK'], default: 'SILENT' })
+  studyHabits!: 'SILENT' | 'GROUP' | 'MUSIC_OK';
+
+  @Prop({ type: Boolean, default: false })
+  smoking!: boolean;
+
+  @Prop({ type: [String], default: [] })
+  hobbies!: string[];
+}
+
+const RoommatePreferencesSchema = SchemaFactory.createForClass(RoommatePreferences);
+
 @Schema({
   timestamps: true,
   collection: 'studentProfiles',
@@ -58,6 +81,9 @@ export class StudentProfile {
 
   @Prop({ type: EmergencyContactSchema, default: () => ({}) })
   emergencyContact?: EmergencyContact;
+
+  @Prop({ type: RoommatePreferencesSchema, default: () => ({}) })
+  roommatePreferences?: RoommatePreferences;
 }
 
 export const StudentProfileSchema = SchemaFactory.createForClass(StudentProfile);

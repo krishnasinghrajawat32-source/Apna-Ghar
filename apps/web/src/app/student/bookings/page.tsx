@@ -16,6 +16,7 @@ import {
   AlertCircle,
   BedDouble,
   ShieldCheck,
+  QrCode,
 } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/utils';
@@ -248,9 +249,19 @@ export default function StudentBookingsPage() {
                   )}
 
                   {isConfirmed && (
-                    <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-semibold bg-emerald-50 px-3 py-1 rounded-lg">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      <span>Bed Locked for Check-in</span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-semibold bg-emerald-50 px-3 py-1 rounded-lg">
+                        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                        <span>Bed Locked for Check-in</span>
+                      </div>
+
+                      <Link
+                        href={`/student/bookings/${booking.id}/pass`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] shadow-xs transition"
+                      >
+                        <QrCode className="w-3.5 h-3.5" />
+                        <span>View Move-In Pass</span>
+                      </Link>
                     </div>
                   )}
                 </div>

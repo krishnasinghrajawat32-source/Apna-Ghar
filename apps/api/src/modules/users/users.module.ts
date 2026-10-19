@@ -5,6 +5,7 @@ import { StudentProfile, StudentProfileSchema } from './schemas/student-profile.
 import { OwnerProfile, OwnerProfileSchema } from './schemas/owner-profile.schema';
 import { MessPartnerProfile, MessPartnerProfileSchema } from './schemas/mess-partner-profile.schema';
 import { UsersService } from './users.service';
+import { UsersController } from './users.controller';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersService } from './users.service';
       { name: MessPartnerProfile.name, schema: MessPartnerProfileSchema },
     ]),
   ],
+  controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService, MongooseModule],
 })
