@@ -22,6 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return {
           uri,
+          lazyConnection: true,
           autoIndex: process.env.NODE_ENV !== 'production',
           serverSelectionTimeoutMS: 5000,
           connectTimeoutMS: 10000,
