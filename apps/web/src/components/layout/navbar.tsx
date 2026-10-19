@@ -44,7 +44,7 @@ export function Navbar() {
       case UserRole.MESS_PARTNER:
         return '/mess/dashboard';
       case UserRole.ADMIN:
-        return '/admin/verifications';
+        return '/admin/dashboard';
       default:
         return '/';
     }
@@ -78,6 +78,10 @@ export function Navbar() {
             Find Stays
           </Link>
           <span className="text-[#DDD7C7]">•</span>
+          <Link href="/mess" className="hover:text-[#173327] transition-colors">
+            Mess Plans
+          </Link>
+          <span className="text-[#DDD7C7]">•</span>
           <Link href="/student/visits" className="hover:text-[#173327] transition-colors">
             My Visits
           </Link>
@@ -85,6 +89,14 @@ export function Navbar() {
           <Link href="/student/bookings" className="hover:text-[#173327] transition-colors">
             My Bookings
           </Link>
+          {user?.role === UserRole.ADMIN && (
+            <>
+              <span className="text-[#DDD7C7]">•</span>
+              <Link href="/admin/dashboard" className="text-[#E06D3B] font-bold hover:underline">
+                Admin Portal
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Auth Actions */}

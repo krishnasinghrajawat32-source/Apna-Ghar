@@ -23,6 +23,7 @@ import { TrustPassportCard } from '@/components/verification/trust-passport-card
 import { TotalLivingCostWidget } from '@/components/pricing/total-living-cost-widget';
 import { ScheduleVisitModal } from '@/components/visits/schedule-visit-modal';
 import { RoomBedSelector } from '@/components/inventory/room-bed-selector';
+import { PropertyReviewsSection } from '@/components/reviews/property-reviews-section';
 
 interface PropertyDetailResponse {
   property: Property;
@@ -265,6 +266,12 @@ export default function PropertyDetailPage() {
               </div>
             </section>
           )}
+
+          {/* Verified Resident Reviews & Ratings */}
+          <PropertyReviewsSection
+            propertyId={property.id}
+            propertyName={property.name}
+          />
         </div>
 
         {/* Sticky Action Sidebar */}

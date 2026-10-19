@@ -19,6 +19,8 @@ import { PaymentsModule } from './modules/payments/payments.module';
 import { TicketsModule } from './modules/tickets/tickets.module';
 import { OwnerModule } from './modules/owner/owner.module';
 import { MessModule } from './modules/mess/mess.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 
@@ -45,6 +47,8 @@ import { RolesGuard } from './common/guards/roles.guard';
     TicketsModule,
     OwnerModule,
     MessModule,
+    ReviewsModule,
+    AdminModule,
   ],
   providers: [
     {

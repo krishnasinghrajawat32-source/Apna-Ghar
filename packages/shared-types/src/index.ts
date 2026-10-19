@@ -187,6 +187,8 @@ export interface Property {
   rules: string[];
   images: string[];
   distanceMeters?: number; // Calculated dynamically by $geoNear
+  rating?: number;
+  reviewCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -617,4 +619,92 @@ export interface HealthCheckResponse {
       type: 'redis';
     };
   };
+}
+
+export enum ReviewStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+}
+
+export interface Review {
+  id: string;
+  propertyId: string;
+  studentId: string;
+  bookingId: string;
+  rating: number; // 1-5 overall
+  cleanlinessRating: number; // 1-5
+  foodRating: number; // 1-5
+  safetyRating: number; // 1-5
+  comment: string;
+  verifiedStay: boolean;
+  status: ReviewStatus;
+  studentName?: string;
+  propertyName?: string;
+  propertySlug?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateReviewDto {
+  propertyId: string;
+  bookingId: string;
+  rating: number;
+  cleanlinessRating: number;
+  foodRating: number;
+  safetyRating: number;
+  comment: string;
+}
+
+export interface ModerateReviewDto {
+  status: ReviewStatus;
+  moderationNote?: string;
+}
+
+export interface ReviewRatingsBreakdown {
+  averageOverall: number;
+  averageCleanliness: number;
+  averageFood: number;
+  averageSafety: number;
+  totalReviews: number;
+  distribution: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+}
+
+export interface PropertyReviewsResponse {
+  breakdown: ReviewRatingsBreakdown;
+  reviews: Review[];
+}
+
+export interface AdminOverviewStats {
+  totalUsers: number;
+  totalStudents: number;
+  totalOwners: number;
+  totalProperties: number;
+  activeBookings: number;
+  grossTransactionVolume: number;
+  pendingTrustAudits: number;
+  pendingReviews: number;
+}
+
+export interface AdminTrustAuditItem {
+  id: string;
+  propertyId: string;
+  propertyName: string;
+  slug: string;
+  city: string;
+  ownerName: string;
+  ownerEmail: string;
+  ownerPhone: string;
+  isFullyVerified: boolean;
+  score: number;
+  totalCheckpoints: number;
+  verifiedCheckpoints: number;
+  lastVerifiedAt?: string;
+  checkpoints: TrustCheckpoint[];
 }

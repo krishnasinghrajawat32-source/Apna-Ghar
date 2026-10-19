@@ -115,6 +115,12 @@ export class Property {
   @Prop({ default: false, index: true })
   isFullyVerified!: boolean;
 
+  @Prop({ type: Number, default: 0, min: 0, max: 5 })
+  rating!: number;
+
+  @Prop({ type: Number, default: 0, min: 0 })
+  reviewCount!: number;
+
   @Prop({ type: Date, default: () => new Date() })
   lastAvailabilityUpdatedAt!: Date;
 }
