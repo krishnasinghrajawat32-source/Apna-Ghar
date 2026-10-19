@@ -11,9 +11,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         const uri = configService.get<string>('mongodbUri') || 'mongodb://127.0.0.1:27017/apna_ghar';
 
         if (uri.includes('127.0.0.1') || uri.includes('localhost')) {
-          logger.warn(
-            '⚠️  Notice: Connecting to localhost MongoDB. On cloud platforms (Render), MONGODB_URI environment variable must be set to your MongoDB Atlas cluster.',
-          );
+          if (process.env.NODE_ENV === 'production') {
+            logger.error(
+              '🚨 CRITICAL: MONGODB_URI environment variable is not configured in Render! Set MONGODB_URI in Render Dashboard to your MongoDB Atlas cluster.',
+            );
+          } else {
+            logger.warn(
+              '⚠️  Notice: Connecting to localhost MongoDB. On cloud platforms (Render), MONGODB_URI environment variable must be set to your MongoDB Atlas cluster.',
+            );
+          }
         } else {
           const parts = uri.split('@');
           const host = parts.length > 1 && parts[1] ? parts[1].split('/')[0] : 'remote';

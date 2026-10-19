@@ -29,9 +29,19 @@ async function bootstrap() {
   const securityMiddleware = new SecurityHeadersMiddleware();
   app.use((req: any, res: any, next: any) => securityMiddleware.use(req, res, next));
 
-  // Global URL prefix: Route all controllers under /api/v1 while allowing root '/' and '/health' for load balancers
+  // Global URL prefix: Route all controllers under /api/v1 while allowing root '/'
   app.setGlobalPrefix(apiPrefix, {
-    exclude: ['/', 'health'],
+    exclude: ['/'],
+  });
+
+  // Root /health endpoint for cloud port-scanners and load balancers
+  const expressInstance = app.getHttpAdapter().getInstance();
+  expressInstance.get('/health', (_req: any, res: any) => {
+    res.status(200).json({
+      status: 'ok',
+      message: 'Apna Ghar Backend API is operational. For full database & cache health, visit /api/v1/health',
+      timestamp: new Date().toISOString(),
+    });
   });
 
   // Security & Cookies

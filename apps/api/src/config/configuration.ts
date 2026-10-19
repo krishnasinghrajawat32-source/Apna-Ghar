@@ -20,7 +20,11 @@ export default (): AppConfig => ({
   nodeEnv: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '4000', 10),
   apiPrefix: process.env.API_PREFIX || 'api/v1',
-  mongodbUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/apna_ghar',
+  mongodbUri:
+    process.env.MONGODB_URI ||
+    process.env.MONGO_URI ||
+    process.env.DATABASE_URL ||
+    'mongodb://127.0.0.1:27017/apna_ghar',
   redisUrl: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET || 'dev_jwt_access_secret_min_32_characters_seed',
   jwtAccessExpiry: process.env.JWT_ACCESS_EXPIRY || '15m',
