@@ -37,7 +37,16 @@ export class TrustService implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    await this.seedInitialPassports();
+    const isConnected = !this.trustPassportModel.db || this.trustPassportModel.db.readyState === 1;
+    if (isConnected) {
+      await this.seedInitialPassports();
+    } else {
+      this.trustPassportModel.db.once('connected', () => {
+        this.seedInitialPassports().catch((err) => {
+          this.logger.warn(`Trust passport seeding skipped or deferred: ${err.message}`);
+        });
+      });
+    }
   }
 
   /**
@@ -189,7 +198,8 @@ export class TrustService implements OnModuleInit {
    * Seeds initial verified passports for seeded properties
    */
   private async seedInitialPassports(): Promise<void> {
-    const properties = await this.propertyModel.find().exec();
+    try {
+      const properties = await this.propertyModel.find().exec();
     for (const prop of properties) {
       const existing = await this.trustPassportModel.findOne({ propertyId: prop._id }).exec();
       if (!existing) {
@@ -253,6 +263,9 @@ export class TrustService implements OnModuleInit {
 
         this.logger.log(`Created 7-point verified Trust Passport for ${prop.name}`);
       }
+    }
+    } catch (err: any) {
+      this.logger.warn(`Initial trust passport seeding skipped or deferred: ${err.message}`);
     }
   }
 }

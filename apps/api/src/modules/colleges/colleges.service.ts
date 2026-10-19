@@ -12,7 +12,16 @@ export class CollegesService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.seedInitialColleges();
+    const isConnected = !this.collegeModel.db || this.collegeModel.db.readyState === 1;
+    if (isConnected) {
+      await this.seedInitialColleges();
+    } else {
+      this.collegeModel.db.once('connected', () => {
+        this.seedInitialColleges().catch((err) => {
+          this.logger.warn(`College seeding skipped or deferred: ${err.message}`);
+        });
+      });
+    }
   }
 
   async search(query: string, limit = 10): Promise<CollegeDocument[]> {
@@ -57,10 +66,11 @@ export class CollegesService implements OnModuleInit {
   }
 
   private async seedInitialColleges() {
-    const count = await this.collegeModel.countDocuments();
-    if (count > 0) return;
+    try {
+      const count = await this.collegeModel.countDocuments();
+      if (count > 0) return;
 
-    this.logger.log('Seeding initial verified university coordinates for geo-search...');
+      this.logger.log('Seeding initial verified university coordinates for geo-search...');
     const initialColleges = [
       {
         name: 'Amity University Noida',
@@ -111,5 +121,8 @@ export class CollegesService implements OnModuleInit {
 
     await this.collegeModel.insertMany(initialColleges);
     this.logger.log(`Successfully seeded ${initialColleges.length} university anchors.`);
+    } catch (err: any) {
+      this.logger.warn(`Initial college seeding skipped or deferred: ${err.message}`);
+    }
   }
 }

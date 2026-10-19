@@ -30,7 +30,16 @@ export class PropertiesService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.seedInitialProperties();
+    const isConnected = !this.propertyModel.db || this.propertyModel.db.readyState === 1;
+    if (isConnected) {
+      await this.seedInitialProperties();
+    } else {
+      this.propertyModel.db.once('connected', () => {
+        this.seedInitialProperties().catch((err) => {
+          this.logger.warn(`Properties seeding skipped or deferred: ${err.message}`);
+        });
+      });
+    }
   }
 
   async findBySlug(slug: string) {
@@ -75,10 +84,11 @@ export class PropertiesService implements OnModuleInit {
   }
 
   private async seedInitialProperties() {
-    const count = await this.propertyModel.countDocuments();
-    if (count > 0) return;
+    try {
+      const count = await this.propertyModel.countDocuments();
+      if (count > 0) return;
 
-    this.logger.log('Seeding initial verified student accommodation records near universities...');
+      this.logger.log('Seeding initial verified student accommodation records near universities...');
 
     // Find or create an owner user
     let owner = await this.userModel.findOne({ email: 'owner.verified@apnaghar.com' });
@@ -265,5 +275,8 @@ export class PropertiesService implements OnModuleInit {
     ]);
 
     this.logger.log('Successfully seeded 2 verified student accommodation records with rooms and beds.');
+    } catch (err: any) {
+      this.logger.warn(`Initial properties seeding skipped or deferred: ${err.message}`);
+    }
   }
 }

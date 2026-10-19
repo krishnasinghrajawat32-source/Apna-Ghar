@@ -27,7 +27,16 @@ export class MessService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.seedInitialMesses();
+    const isConnected = !this.messModel.db || this.messModel.db.readyState === 1;
+    if (isConnected) {
+      await this.seedInitialMesses();
+    } else {
+      this.messModel.db.once('connected', () => {
+        this.seedInitialMesses().catch((err) => {
+          this.logger.warn(`Mess seeding skipped or deferred: ${err.message}`);
+        });
+      });
+    }
   }
 
   private generateSubscriptionNumber(): string {
@@ -38,10 +47,11 @@ export class MessService implements OnModuleInit {
   }
 
   private async seedInitialMesses() {
-    const count = await this.messModel.countDocuments();
-    if (count > 0) return;
+    try {
+      const count = await this.messModel.countDocuments();
+      if (count > 0) return;
 
-    this.logger.log('Seeding initial verified student mess partners and outlets...');
+      this.logger.log('Seeding initial verified student mess partners and outlets...');
 
     // Find or create default mess partner user
     let partner = await this.userModel.findOne({ email: 'mess@apnaghar.in' });
@@ -207,6 +217,9 @@ export class MessService implements OnModuleInit {
 
     await this.messModel.create(initialMesses);
     this.logger.log('Initial verified mess outlets successfully seeded.');
+    } catch (err: any) {
+      this.logger.warn(`Initial mess seeding skipped or deferred: ${err.message}`);
+    }
   }
 
   async findAll(query?: { city?: string; dietaryType?: string }): Promise<MessDocument[]> {

@@ -31,7 +31,16 @@ export class PricingService implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    await this.seedInitialCosts();
+    const isConnected = !this.propertyCostModel.db || this.propertyCostModel.db.readyState === 1;
+    if (isConnected) {
+      await this.seedInitialCosts();
+    } else {
+      this.propertyCostModel.db.once('connected', () => {
+        this.seedInitialCosts().catch((err) => {
+          this.logger.warn(`Pricing seeding skipped or deferred: ${err.message}`);
+        });
+      });
+    }
   }
 
   /**
@@ -160,7 +169,8 @@ export class PricingService implements OnModuleInit {
    * Seeds initial transparent cost structures for seeded properties
    */
   private async seedInitialCosts(): Promise<void> {
-    const properties = await this.propertyModel.find().exec();
+    try {
+      const properties = await this.propertyModel.find().exec();
 
     for (const prop of properties) {
       const roomTypes = await this.roomTypeModel.find({ propertyId: prop._id }).exec();
@@ -240,6 +250,9 @@ export class PricingService implements OnModuleInit {
           );
         }
       }
+    }
+    } catch (err: any) {
+      this.logger.warn(`Initial pricing seeding skipped or deferred: ${err.message}`);
     }
   }
 }
