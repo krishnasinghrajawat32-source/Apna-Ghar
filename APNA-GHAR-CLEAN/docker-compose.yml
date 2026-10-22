@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # Primary Database
+  mongodb:
+    image: mongo:7.0
+    container_name: apna-ghar-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: apna_ghar
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - apna-ghar-network
+
+  # Distributed Cache & Bed Lock Engine
+  redis:
+    image: redis:7.2-alpine
+    container_name: apna-ghar-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "512mb", "--maxmemory-policy", "volatile-lru"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - apna-ghar-network
+
+  # Core Backend API (NestJS)
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    container_name: apna-ghar-api
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      API_PREFIX: api/v1
+      MONGODB_URI: mongodb://mongodb:27017/apna_ghar
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-apna_ghar_access_secret_super_secure_32_chars_long}
+      JWT_ACCESS_EXPIRY: 15m
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-apna_ghar_refresh_secret_super_secure_32_chars_long}
+      JWT_REFRESH_EXPIRY: 7d
+      COOKIE_SECRET: ${COOKIE_SECRET:-apna_ghar_cookie_signing_secret_random_seed}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4000/api/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - apna-ghar-network
+
+  # Frontend Web Client (Next.js 15)
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: apna-ghar-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+    depends_on:
+      - api
+    networks:
+      - apna-ghar-network
+
+volumes:
+  mongo_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  apna-ghar-network:
+    driver: bridge

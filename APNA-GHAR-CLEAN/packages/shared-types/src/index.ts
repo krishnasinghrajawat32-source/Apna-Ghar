@@ -1,0 +1,710 @@
+/**
+ * Apna Ghar — Central Shared Domain Models & Contracts
+ */
+
+export enum UserRole {
+  STUDENT = 'STUDENT',
+  OWNER = 'OWNER',
+  MESS_PARTNER = 'MESS_PARTNER',
+  ADMIN = 'ADMIN',
+}
+
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  PENDING_VERIFICATION = 'PENDING_VERIFICATION',
+  SUSPENDED = 'SUSPENDED',
+}
+
+export enum GenderPreference {
+  BOYS = 'BOYS',
+  GIRLS = 'GIRLS',
+  CO_ED = 'CO_ED',
+}
+
+export enum FurnishingType {
+  FULLY_FURNISHED = 'FULLY_FURNISHED',
+  SEMI_FURNISHED = 'SEMI_FURNISHED',
+  UNFURNISHED = 'UNFURNISHED',
+}
+
+export enum PropertyType {
+  HOSTEL = 'HOSTEL',
+  PG = 'PG',
+  STUDENT_FLAT = 'STUDENT_FLAT',
+}
+
+export enum PropertyStatus {
+  DRAFT = 'DRAFT',
+  PENDING_VERIFICATION = 'PENDING_VERIFICATION',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum SharingType {
+  SINGLE = 'SINGLE',
+  DOUBLE = 'DOUBLE',
+  TRIPLE = 'TRIPLE',
+  FOUR_PLUS = 'FOUR_PLUS',
+}
+
+export enum BedStatus {
+  AVAILABLE = 'AVAILABLE',
+  BOOKED = 'BOOKED',
+  OCCUPIED = 'OCCUPIED',
+  MAINTENANCE = 'MAINTENANCE',
+  UNAVAILABLE = 'UNAVAILABLE',
+}
+
+export enum VerificationType {
+  OWNER_IDENTITY = 'OWNER_IDENTITY',
+  LOCATION = 'LOCATION',
+  PHOTOS = 'PHOTOS',
+  PRICING = 'PRICING',
+  AMENITIES = 'AMENITIES',
+  INVENTORY = 'INVENTORY',
+  DOCUMENTS = 'DOCUMENTS',
+}
+
+export enum VerificationStatus {
+  PENDING = 'PENDING',
+  VERIFIED = 'VERIFIED',
+  REJECTED = 'REJECTED',
+  EXPIRED = 'EXPIRED',
+}
+
+export enum AvailabilityFreshness {
+  FRESH = 'FRESH', // < 24 hrs
+  NEEDS_CONFIRMATION = 'NEEDS_CONFIRMATION', // 24-72 hrs
+  STALE = 'STALE', // > 72 hrs
+}
+
+export enum CostCategory {
+  FIXED = 'FIXED',
+  VARIABLE = 'VARIABLE',
+  ESTIMATED = 'ESTIMATED',
+}
+
+export enum VisitStatus {
+  REQUESTED = 'REQUESTED',
+  CONFIRMED = 'CONFIRMED',
+  REJECTED = 'REJECTED',
+  RESCHEDULED = 'RESCHEDULED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+  NO_SHOW = 'NO_SHOW',
+}
+
+export enum BookingStatus {
+  PENDING_PAYMENT = 'PENDING_PAYMENT',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum PaymentStatus {
+  NOT_STARTED = 'NOT_STARTED',
+  INITIATED = 'INITIATED',
+  PROCESSING = 'PROCESSING',
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  REFUNDED = 'REFUNDED',
+}
+
+// GeoJSON Point format: [longitude, latitude]
+export interface GeoPoint {
+  type: 'Point';
+  coordinates: [number, number]; // [lng, lat]
+}
+
+export interface Address {
+  street: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pincode: string;
+}
+
+// API Responses
+export interface ApiResponse<T> {
+  success: true;
+  data: T;
+  meta?: {
+    page?: number;
+    limit?: number;
+    total?: number;
+    hasNext?: boolean;
+  };
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  error: {
+    code: string;
+    message: string;
+    details?: Record<string, unknown>;
+  };
+}
+
+// Core Entity Interfaces
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  status: UserStatus;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface College {
+  id: string;
+  name: string;
+  slug: string;
+  city: string;
+  state: string;
+  location: GeoPoint;
+  status: 'ACTIVE' | 'INACTIVE';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Property {
+  id: string;
+  ownerId: string;
+  name: string;
+  slug: string;
+  propertyType: PropertyType;
+  description: string;
+  address: Address;
+  location: GeoPoint;
+  genderPreference: GenderPreference;
+  furnishing: FurnishingType;
+  status: PropertyStatus;
+  amenities: string[];
+  rules: string[];
+  images: string[];
+  distanceMeters?: number; // Calculated dynamically by $geoNear
+  rating?: number;
+  reviewCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RoomType {
+  id: string;
+  propertyId: string;
+  name: string;
+  sharingType: SharingType;
+  baseRent: number;
+  deposit: number;
+  attachedBathroom: boolean;
+  ac: boolean;
+  furnishingDetails: string[];
+}
+
+export interface Room {
+  id: string;
+  propertyId: string;
+  roomTypeId: string;
+  floorNumber: number;
+  roomNumber: string;
+  status: 'ACTIVE' | 'MAINTENANCE';
+}
+
+export type BedPosition = 'WINDOW' | 'CORNER' | 'DOOR' | 'STANDARD';
+export type DynamicBedStatus = 'AVAILABLE' | 'HELD_BY_YOU' | 'HELD_BY_OTHER' | 'OCCUPIED' | 'MAINTENANCE';
+
+export interface Bed {
+  id: string;
+  propertyId: string;
+  roomId: string;
+  roomTypeId: string;
+  bedLabel: string;
+  position?: BedPosition;
+  permanentStatus: BedStatus;
+  dynamicStatus?: DynamicBedStatus;
+  expectedVacancyDate?: string;
+}
+
+export interface TrustCheckpoint {
+  type: VerificationType;
+  status: VerificationStatus;
+  verifiedAt?: string;
+  expiresAt?: string;
+  notes?: string;
+}
+
+export interface TrustPassport {
+  id?: string;
+  propertyId: string;
+  isFullyVerified: boolean;
+  score?: number;
+  lastVerifiedAt?: string;
+  checkpoints: TrustCheckpoint[];
+}
+
+export interface AvailabilityFreshnessInfo {
+  availableBedCount: number;
+  lastAvailabilityUpdatedAt: string;
+  freshness: AvailabilityFreshness;
+}
+
+export interface CostItem {
+  name: string;
+  amount: number;
+  category: CostCategory;
+  frequency: 'MONTHLY' | 'ONE_TIME' | 'ANNUAL';
+  description?: string;
+}
+
+export interface TotalLivingCost {
+  rent: number;
+  foodEstimate: number;
+  electricityEstimate: number;
+  maintenance: number;
+  laundry: number;
+  internet: number;
+  commuteEstimate: number;
+  otherRecurring: number;
+  estimatedMonthlyTotal: number;
+  lineItems: CostItem[];
+}
+
+export interface BookingHoldPayload {
+  holdId: string;
+  bedId: string;
+  userId: string;
+  sessionId?: string;
+  createdAt: number;
+  expiresAt: number;
+}
+
+export interface HoldResponse {
+  holdId: string;
+  bedId: string;
+  expiresAt: string; // ISO 8601 string
+  ttlSecondsRemaining: number;
+}
+
+export interface BedHoldStatus {
+  isHeld: boolean;
+  heldByCurrentStudent: boolean;
+  ttlRemaining: number;
+  expiresAt?: string;
+  bedId: string;
+}
+
+export interface RoomWithBeds {
+  room: Room;
+  beds: Bed[];
+}
+
+export interface RoomTypeInventory {
+  roomType: RoomType;
+  availableBedsCount: number;
+  totalBedsCount: number;
+  rooms: RoomWithBeds[];
+}
+
+export interface PropertyInventoryResponse {
+  propertyId: string;
+  totalBeds: number;
+  availableBeds: number;
+  inventory: RoomTypeInventory[];
+}
+
+export interface Visit {
+  id: string;
+  studentId: string;
+  propertyId: string;
+  ownerId: string;
+  scheduledAt: string;
+  slot?: string;
+  contactPhone?: string;
+  status: VisitStatus;
+  notes?: string;
+  property?: Property;
+  student?: { name: string; email: string; phone?: string };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmergencyContact {
+  name: string;
+  relationship: string;
+  phone: string;
+}
+
+export interface BookingChargeBreakdown {
+  rentAmount: number;
+  depositAmount: number;
+  maintenanceFee: number;
+  moveInCharges: number;
+  totalInitialPayment: number;
+}
+
+export interface Booking {
+  id: string;
+  bookingReference: string;
+  studentId: string;
+  propertyId: string;
+  roomId: string;
+  bedId: string;
+  roomTypeId: string;
+  moveInDate: string;
+  rentAmount: number;
+  depositAmount: number;
+  maintenanceFee: number;
+  moveInCharges: number;
+  totalInitialPayment: number;
+  status: BookingStatus;
+  emergencyContact: EmergencyContact;
+  studentIdCardRef?: string;
+  property?: Property;
+  room?: Room;
+  bed?: Bed;
+  roomType?: RoomType;
+  student?: { name: string; email: string; phone?: string };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type PaymentMethod = 'UPI' | 'NETBANKING' | 'CARD' | 'WALLET' | 'SIMULATOR';
+
+export interface Payment {
+  id: string;
+  bookingId: string;
+  studentId: string;
+  propertyId: string;
+  orderId: string;
+  paymentId?: string;
+  signature?: string;
+  amount: number;
+  currency: string;
+  status: PaymentStatus;
+  method?: PaymentMethod;
+  failureReason?: string;
+  receiptNumber: string;
+  paidAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaymentOrderResponse {
+  orderId: string;
+  amount: number;
+  currency: string;
+  bookingId: string;
+  bookingReference: string;
+  receiptNumber: string;
+  keyId?: string;
+  testMode?: boolean;
+}
+
+export interface VerifyPaymentDto {
+  bookingId: string;
+  orderId: string;
+  paymentId: string;
+  signature: string;
+}
+
+export interface PaymentReceipt {
+  paymentId: string;
+  orderId: string;
+  bookingReference: string;
+  amount: number;
+  currency: string;
+  paidAt: string;
+  paymentMethod: string;
+  status: PaymentStatus;
+  studentName: string;
+  propertyName: string;
+  roomNumber: string;
+  bedLabel: string;
+  moveInDate: string;
+}
+
+export type TicketCategory = 'PLUMBING' | 'ELECTRICAL' | 'FURNITURE' | 'CLEANING' | 'WIFI' | 'OTHER';
+export type TicketPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'EMERGENCY';
+export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+export interface MaintenanceTicket {
+  id: string;
+  studentId: string;
+  propertyId: string;
+  bookingId?: string;
+  category: TicketCategory;
+  title: string;
+  description: string;
+  priority: TicketPriority;
+  status: TicketStatus;
+  resolutionNotes?: string;
+  resolvedAt?: string;
+  property?: Property;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateTicketDto {
+  propertyId: string;
+  bookingId?: string;
+  category: TicketCategory;
+  title: string;
+  description: string;
+  priority?: TicketPriority;
+}
+
+export interface RoommatePreferences {
+  id?: string;
+  studentId: string;
+  sleepSchedule: 'EARLY_BIRD' | 'NIGHT_OWL' | 'FLEXIBLE';
+  foodPreference: 'VEG' | 'NON_VEG' | 'VEGAN' | 'EGGETARIAN' | 'ANY';
+  cleanlinessLevel: 'STRICT' | 'MODERATE' | 'CASUAL';
+  studyHabits: 'SILENT' | 'GROUP' | 'MUSIC_OK';
+  smoking: boolean;
+  hobbies: string[];
+  updatedAt?: string;
+}
+
+export interface MoveInChecklistItem {
+  id: string;
+  label: string;
+  verified: boolean;
+  notes?: string;
+}
+
+export interface MoveInPass {
+  passNumber: string;
+  bookingReference: string;
+  studentName: string;
+  studentPhone: string;
+  propertyName: string;
+  propertyAddress: string;
+  roomNumber: string;
+  bedLabel: string;
+  moveInDate: string;
+  gatePassQrData: string;
+  checklist: MoveInChecklistItem[];
+  status: 'PENDING_CHECKIN' | 'CHECKED_IN';
+}
+
+export interface OwnerOverviewMetrics {
+  totalProperties: number;
+  totalRooms: number;
+  totalBeds: number;
+  occupiedBeds: number;
+  availableBeds: number;
+  maintenanceBeds: number;
+  occupancyRate: number;
+  totalBookings: number;
+  confirmedBookings: number;
+  pendingVisits: number;
+  openTickets: number;
+}
+
+export interface OwnerPropertySummary {
+  id: string;
+  name: string;
+  slug: string;
+  propertyType: PropertyType;
+  city: string;
+  totalRooms: number;
+  totalBeds: number;
+  availableBeds: number;
+  occupiedBeds: number;
+  maintenanceBeds: number;
+  status: PropertyStatus;
+}
+
+export interface UpdateBedStatusDto {
+  permanentStatus: 'AVAILABLE' | 'MAINTENANCE';
+}
+
+export type DietaryType = 'PURE_VEG' | 'VEG_AND_NON_VEG' | 'JAIN_AVAILABLE';
+export type MealType = 'BREAKFAST' | 'LUNCH' | 'SNACKS' | 'DINNER';
+export type DayOfWeek = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
+
+export interface DailyMenu {
+  day: DayOfWeek;
+  breakfast: string;
+  lunch: string;
+  snacks?: string;
+  dinner: string;
+  specialDietNote?: string;
+}
+
+export interface MealPlan {
+  id: string;
+  name: string;
+  mealTypes: MealType[];
+  daysPerWeek: number;
+  monthlyPrice: number;
+  description?: string;
+}
+
+export interface Mess {
+  id: string;
+  partnerId: string;
+  name: string;
+  slug: string;
+  description: string;
+  dietaryType: DietaryType;
+  fssaiNumber: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    pincode: string;
+    landmark?: string;
+  };
+  rating: number;
+  hygieneCertified: boolean;
+  operatingHours: {
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+  };
+  plans: MealPlan[];
+  weeklyMenu: DailyMenu[];
+  status: 'ACTIVE' | 'INACTIVE';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MessSubscription {
+  id: string;
+  subscriptionNumber: string;
+  studentId: string;
+  messId: string;
+  planId: string;
+  planName: string;
+  startDate: string;
+  endDate: string;
+  monthlyPrice: number;
+  dietaryPreference: 'VEG' | 'NON_VEG' | 'JAIN';
+  status: 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
+  qrPassCode: string;
+  mess?: Mess;
+  student?: { name: string; phone?: string; email?: string };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateMessSubscriptionDto {
+  messId: string;
+  planId: string;
+  startDate: string;
+  dietaryPreference?: 'VEG' | 'NON_VEG' | 'JAIN';
+}
+
+export interface UpdateWeeklyMenuDto {
+  weeklyMenu: DailyMenu[];
+}
+
+export interface HealthCheckResponse {
+  status: 'ok' | 'degraded' | 'error';
+  timestamp: string;
+  version: string;
+  uptime: number;
+  services: {
+    database: {
+      status: 'connected' | 'disconnected' | 'error';
+      type: 'mongodb';
+    };
+    cache: {
+      status: 'connected' | 'mock_fallback' | 'error';
+      type: 'redis';
+    };
+  };
+}
+
+export enum ReviewStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+}
+
+export interface Review {
+  id: string;
+  propertyId: string;
+  studentId: string;
+  bookingId: string;
+  rating: number; // 1-5 overall
+  cleanlinessRating: number; // 1-5
+  foodRating: number; // 1-5
+  safetyRating: number; // 1-5
+  comment: string;
+  verifiedStay: boolean;
+  status: ReviewStatus;
+  studentName?: string;
+  propertyName?: string;
+  propertySlug?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateReviewDto {
+  propertyId: string;
+  bookingId: string;
+  rating: number;
+  cleanlinessRating: number;
+  foodRating: number;
+  safetyRating: number;
+  comment: string;
+}
+
+export interface ModerateReviewDto {
+  status: ReviewStatus;
+  moderationNote?: string;
+}
+
+export interface ReviewRatingsBreakdown {
+  averageOverall: number;
+  averageCleanliness: number;
+  averageFood: number;
+  averageSafety: number;
+  totalReviews: number;
+  distribution: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+}
+
+export interface PropertyReviewsResponse {
+  breakdown: ReviewRatingsBreakdown;
+  reviews: Review[];
+}
+
+export interface AdminOverviewStats {
+  totalUsers: number;
+  totalStudents: number;
+  totalOwners: number;
+  totalProperties: number;
+  activeBookings: number;
+  grossTransactionVolume: number;
+  pendingTrustAudits: number;
+  pendingReviews: number;
+}
+
+export interface AdminTrustAuditItem {
+  id: string;
+  propertyId: string;
+  propertyName: string;
+  slug: string;
+  city: string;
+  ownerName: string;
+  ownerEmail: string;
+  ownerPhone: string;
+  isFullyVerified: boolean;
+  score: number;
+  totalCheckpoints: number;
+  verifiedCheckpoints: number;
+  lastVerifiedAt?: string;
+  checkpoints: TrustCheckpoint[];
+}

@@ -1,0 +1,31 @@
+{
+  "name": "apna-ghar-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Apna Ghar — Har Sahar Apna Ghar: Trust-First Student Accommodation Platform",
+  "scripts": {
+    "dev": "pnpm --parallel --filter ./apps/* dev",
+    "dev:web": "pnpm --filter @apna-ghar/web dev",
+    "dev:api": "pnpm --filter @apna-ghar/api dev",
+    "build": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/api build && pnpm --filter @apna-ghar/web build",
+    "build:web": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/web build",
+    "build:api": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/api build",
+    "start": "node server.js",
+    "start:web": "pnpm --filter @apna-ghar/web start",
+    "start:api": "pnpm --filter @apna-ghar/api start",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@10.5.2"
+}

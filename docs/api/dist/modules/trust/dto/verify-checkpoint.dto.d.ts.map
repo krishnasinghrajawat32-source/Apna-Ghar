@@ -1,0 +1,1 @@
+{"version":3,"file":"verify-checkpoint.dto.d.ts","sourceRoot":"","sources":["../../../../src/modules/trust/dto/verify-checkpoint.dto.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,gBAAgB,EAAE,kBAAkB,EAAE,MAAM,yBAAyB,CAAC;AAE/E,qBAAa,mBAAmB;IAI9B,IAAI,EAAG,gBAAgB,CAAC;IAKxB,MAAM,EAAG,kBAAkB,CAAC;IAK5B,KAAK,CAAC,EAAE,MAAM,CAAC;CAChB"}

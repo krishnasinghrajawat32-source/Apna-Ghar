@@ -1,0 +1,1 @@
+{"version":3,"file":"colleges.controller.d.ts","sourceRoot":"","sources":["../../../src/modules/colleges/colleges.controller.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,eAAe,EAAE,MAAM,oBAAoB,CAAC;AAGrD,qBAGa,kBAAkB;IACjB,OAAO,CAAC,QAAQ,CAAC,eAAe;gBAAf,eAAe,EAAE,eAAe;IAKvD,MAAM,CAAa,KAAK,CAAC,EAAE,MAAM,EAAkB,KAAK,CAAC,EAAE,MAAM;;;;;IAQjE,UAAU,CAAgB,IAAI,EAAE,MAAM;;;;;CAI7C"}

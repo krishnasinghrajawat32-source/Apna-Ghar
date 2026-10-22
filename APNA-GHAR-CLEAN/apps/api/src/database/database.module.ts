@@ -1,0 +1,56 @@
+import { Logger, Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+@Module({
+  imports: [
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const logger = new Logger('DatabaseModule');
+        const uri = configService.get<string>('mongodbUri') || 'mongodb://127.0.0.1:27017/apna_ghar';
+
+        if (uri.includes('127.0.0.1') || uri.includes('localhost')) {
+          if (process.env.NODE_ENV === 'production') {
+            logger.error(
+              '🚨 CRITICAL: MONGODB_URI environment variable is not configured in Render! Set MONGODB_URI in Render Dashboard to your MongoDB Atlas cluster.',
+            );
+          } else {
+            logger.warn(
+              '⚠️  Notice: Connecting to localhost MongoDB. On cloud platforms (Render), MONGODB_URI environment variable must be set to your MongoDB Atlas cluster.',
+            );
+          }
+        } else {
+          const parts = uri.split('@');
+          const host = parts.length > 1 && parts[1] ? parts[1].split('/')[0] : 'remote';
+          logger.log(`Connecting to MongoDB cluster: ${host}`);
+        }
+
+        return {
+          uri,
+          lazyConnection: true,
+          autoIndex: process.env.NODE_ENV !== 'production',
+          serverSelectionTimeoutMS: 5000,
+          connectTimeoutMS: 10000,
+          retryAttempts: 2,
+          retryDelay: 1000,
+          connectionFactory: (connection: any) => {
+            connection.on('connected', () => {
+              logger.log('✅ MongoDB connected successfully!');
+            });
+            connection.on('error', (err: any) => {
+              logger.warn(`⚠️  MongoDB connection notice: ${err.message}`);
+            });
+            connection.on('disconnected', () => {
+              logger.warn('⚠️  MongoDB disconnected. Continuing background reconnection...');
+            });
+            return connection;
+          },
+        };
+      },
+      inject: [ConfigService],
+    }),
+  ],
+  exports: [MongooseModule],
+})
+export class DatabaseModule {}
