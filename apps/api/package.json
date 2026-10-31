@@ -6,6 +6,7 @@
     "build": "nest build",
     "dev": "nest start --watch",
     "start": "node dist/main",
+    "seed": "ts-node src/database/seed.ts",
     "lint": "echo 'api lint passed'",
     "typecheck": "tsc --noEmit",
     "test": "jest --forceExit",
