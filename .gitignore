@@ -46,3 +46,6 @@ Thumbs.db
 tmp/
 .turbo/
 *.tsbuildinfo
+
+# Temporary backups
+APNA-GHAR-CLEAN/

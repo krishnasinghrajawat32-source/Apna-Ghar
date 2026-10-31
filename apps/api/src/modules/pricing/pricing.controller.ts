@@ -13,23 +13,6 @@ export class PricingController {
   ) {}
 
   @Public()
-
-  @Get(':id/cost-breakdown')
-  @ApiOperation({ summary: 'Get transparent Total Living Cost breakdown by property ID' })
-  @ApiQuery({ name: 'roomTypeId', required: false, description: 'Specific room type ID' })
-  @ApiResponse({ status: 200, description: 'Total Living Cost line items and upfront totals' })
-  async getCostBreakdown(
-    @Param('id') propertyId: string,
-    @Query('roomTypeId') roomTypeId?: string,
-  ) {
-    const cost = await this.pricingService.getCostBreakdown(propertyId, roomTypeId);
-    return {
-      success: true,
-      data: cost,
-    };
-  }
-
-  @Public()
   @Get('slug/:slug/cost-breakdown')
   @ApiOperation({ summary: 'Get transparent Total Living Cost breakdown by property slug' })
   @ApiQuery({ name: 'roomTypeId', required: false, description: 'Specific room type ID' })
@@ -42,6 +25,22 @@ export class PricingController {
     const prop = property as unknown as { id?: string; _id?: { toString(): string } };
     const propId = prop.id || prop._id?.toString() || '';
     const cost = await this.pricingService.getCostBreakdown(propId, roomTypeId);
+    return {
+      success: true,
+      data: cost,
+    };
+  }
+
+  @Public()
+  @Get(':id/cost-breakdown')
+  @ApiOperation({ summary: 'Get transparent Total Living Cost breakdown by property ID' })
+  @ApiQuery({ name: 'roomTypeId', required: false, description: 'Specific room type ID' })
+  @ApiResponse({ status: 200, description: 'Total Living Cost line items and upfront totals' })
+  async getCostBreakdown(
+    @Param('id') propertyId: string,
+    @Query('roomTypeId') roomTypeId?: string,
+  ) {
+    const cost = await this.pricingService.getCostBreakdown(propertyId, roomTypeId);
     return {
       success: true,
       data: cost,

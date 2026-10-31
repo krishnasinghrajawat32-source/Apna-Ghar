@@ -24,11 +24,11 @@ export class TrustController {
   constructor(private readonly trustService: TrustService) {}
 
   @Public()
-  @Get(':id/trust-passport')
-  @ApiOperation({ summary: 'Get 7-point audit Trust Passport for a property' })
+  @Get('slug/:slug/trust-passport')
+  @ApiOperation({ summary: 'Get Trust Passport by property slug' })
   @ApiResponse({ status: 200, description: 'Trust Passport details' })
-  async getPassport(@Param('id') propertyId: string) {
-    const passport = await this.trustService.getPassportByPropertyId(propertyId);
+  async getPassportBySlug(@Param('slug') slug: string) {
+    const passport = await this.trustService.getPassportByPropertySlug(slug);
     return {
       success: true,
       data: passport,
@@ -36,11 +36,11 @@ export class TrustController {
   }
 
   @Public()
-  @Get('slug/:slug/trust-passport')
-  @ApiOperation({ summary: 'Get Trust Passport by property slug' })
+  @Get(':id/trust-passport')
+  @ApiOperation({ summary: 'Get 7-point audit Trust Passport for a property' })
   @ApiResponse({ status: 200, description: 'Trust Passport details' })
-  async getPassportBySlug(@Param('slug') slug: string) {
-    const passport = await this.trustService.getPassportByPropertySlug(slug);
+  async getPassport(@Param('id') propertyId: string) {
+    const passport = await this.trustService.getPassportByPropertyId(propertyId);
     return {
       success: true,
       data: passport,

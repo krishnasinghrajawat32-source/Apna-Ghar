@@ -56,21 +56,22 @@ export function ScheduleVisitModal({
   const [success, setSuccess] = useState<boolean>(false);
 
   // Live query for available slots on chosen date
-  const { data: slotsData, isLoading: slotsLoading } = useQuery<{ success: boolean; data: SlotsResponse }>({
+  const { data: slotsData, isLoading: slotsLoading } = useQuery<SlotsResponse>({
     queryKey: ['visit-slots', propertyId, selectedDate],
     queryFn: () =>
-      apiClient<{ success: boolean; data: SlotsResponse }>(
+      apiClient<SlotsResponse>(
         `/visits/slots?propertyId=${propertyId}&date=${selectedDate}`,
       ),
     enabled: isOpen && !!propertyId && !!selectedDate,
   });
 
-  const slots = slotsData?.data?.slots || [
-    { slot: '10:00-12:00', available: true },
-    { slot: '12:00-14:00', available: true },
-    { slot: '14:00-16:00', available: true },
-    { slot: '16:00-18:00', available: true },
-  ];
+  const slots: { slot: string; available: boolean }[] =
+    (slotsData as any)?.slots || (slotsData as any)?.data?.slots || [
+      { slot: '10:00-12:00', available: true },
+      { slot: '12:00-14:00', available: true },
+      { slot: '14:00-16:00', available: true },
+      { slot: '16:00-18:00', available: true },
+    ];
 
   // Schedule visit mutation
   const visitMutation = useMutation({

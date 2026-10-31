@@ -4,6 +4,8 @@ import { create } from 'zustand';
 import { User } from '@apna-ghar/shared-types';
 import { apiClient } from '@/lib/api-client';
 
+const TOKEN_KEY = 'apna_ghar_access_token';
+
 interface AuthState {
   user: User | null;
   accessToken: string | null;
@@ -17,11 +19,14 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  accessToken: null,
+  accessToken: typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEY) : null,
   isLoading: true,
   isAuthenticated: false,
 
   setAuth: (user: User, accessToken: string) => {
+    if (typeof window !== 'undefined' && accessToken) {
+      localStorage.setItem(TOKEN_KEY, accessToken);
+    }
     set({
       user,
       accessToken,
@@ -31,6 +36,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   clearAuth: () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(TOKEN_KEY);
+    }
     set({
       user: null,
       accessToken: null,
@@ -42,14 +50,21 @@ export const useAuthStore = create<AuthState>((set) => ({
   fetchMe: async () => {
     try {
       set({ isLoading: true });
+      const localToken = typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEY) : null;
       const res = await apiClient<{ user: User; profile: unknown }>('/auth/me');
+      const resolvedUser = (res as any)?.user || (res as any)?.data?.user || res;
+
       set({
-        user: res.user,
-        isAuthenticated: true,
+        user: resolvedUser,
+        accessToken: localToken,
+        isAuthenticated: !!resolvedUser,
         isLoading: false,
       });
-      return res.user;
+      return resolvedUser;
     } catch {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(TOKEN_KEY);
+      }
       set({
         user: null,
         accessToken: null,
@@ -66,6 +81,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch {
       // Ignore network failures on logout
     } finally {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(TOKEN_KEY);
+      }
       set({
         user: null,
         accessToken: null,
