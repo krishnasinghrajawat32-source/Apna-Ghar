@@ -31,12 +31,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return {
           uri,
-          lazyConnection: false,
+          lazyConnection: true,
           autoIndex: process.env.NODE_ENV !== 'production',
           serverSelectionTimeoutMS: 5000,
           connectTimeoutMS: 10000,
-          retryAttempts: 3,
-          retryDelay: 1000,
+          retryAttempts: 10,
+          retryDelay: 3000,
           connectionFactory: (connection: any) => {
             connection.on('connected', () => {
               logger.log('✅ MongoDB connected successfully!');
