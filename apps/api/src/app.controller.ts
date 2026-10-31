@@ -20,15 +20,4 @@ export class AppController {
       timestamp: new Date().toISOString(),
     };
   }
-
-  @Get('health')
-  @ApiOperation({ summary: 'Liveness check for root port-scanners and load balancers' })
-  @ApiResponse({ status: 200, description: 'Quick liveness response' })
-  getHealth() {
-    return {
-      status: 'ok',
-      message: 'Apna Ghar Backend API is operational. For full database & cache health, visit /api/v1/health',
-      timestamp: new Date().toISOString(),
-    };
-  }
 }
