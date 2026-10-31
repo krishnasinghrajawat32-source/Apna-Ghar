@@ -9,7 +9,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const logger = new Logger('DatabaseModule');
-        const uri = configService.get<string>('mongodbUri') || 'mongodb://127.0.0.1:27017/apna_ghar';
+        const uri =
+          configService.get<string>('mongodbUri') ||
+          'mongodb+srv://erkrishnasingh001_db_user:ySIW0WpyxuXOYKkI@cluster1.ucsgvqr.mongodb.net/apna_ghar?retryWrites=true&w=majority';
 
         if (uri.includes('127.0.0.1') || uri.includes('localhost')) {
           if (process.env.NODE_ENV === 'production') {
@@ -29,11 +31,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return {
           uri,
-          lazyConnection: true,
+          lazyConnection: false,
           autoIndex: process.env.NODE_ENV !== 'production',
           serverSelectionTimeoutMS: 5000,
           connectTimeoutMS: 10000,
-          retryAttempts: 2,
+          retryAttempts: 3,
           retryDelay: 1000,
           connectionFactory: (connection: any) => {
             connection.on('connected', () => {
