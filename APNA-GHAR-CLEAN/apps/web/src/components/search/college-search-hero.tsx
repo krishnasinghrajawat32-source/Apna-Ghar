@@ -28,7 +28,7 @@ export function CollegeSearchHero() {
       try {
         setIsLoading(true);
         const data = await apiClient<College[]>(`/colleges/search?q=${encodeURIComponent(query)}&limit=6`);
-        setColleges(data);
+        setColleges(Array.isArray(data) ? data : (data as any)?.data || []);
         setIsOpen(true);
       } catch {
         setColleges([]);

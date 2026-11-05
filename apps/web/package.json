@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
+    "dev:debug": "node --inspect=9230 ./node_modules/next/dist/bin/next dev --port 3000",
     "prebuild": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build",
     "build": "next build",
     "start": "next start -H 0.0.0.0",

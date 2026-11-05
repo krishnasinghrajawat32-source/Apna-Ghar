@@ -7,6 +7,8 @@
     "dev": "pnpm --parallel --filter ./apps/* dev",
     "dev:web": "pnpm --filter @apna-ghar/web dev",
     "dev:api": "pnpm --filter @apna-ghar/api dev",
+    "dev:debug:api": "pnpm --filter @apna-ghar/api dev:debug",
+    "dev:debug:web": "pnpm --filter @apna-ghar/web dev:debug",
     "build": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/api build && pnpm --filter @apna-ghar/web build",
     "build:web": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/web build",
     "build:api": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/api build",

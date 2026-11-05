@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe, RequestMethod } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
@@ -31,7 +31,10 @@ async function bootstrap() {
 
   // Global URL prefix: Route all controllers under /api/v1 while allowing root '/'
   app.setGlobalPrefix(apiPrefix, {
-    exclude: ['/'],
+    exclude: [
+      { path: '/', method: RequestMethod.GET },
+      { path: '', method: RequestMethod.GET },
+    ],
   });
 
   // Root /health endpoint for cloud port-scanners and load balancers

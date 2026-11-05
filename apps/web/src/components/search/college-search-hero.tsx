@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, Calendar, IndianRupee, Home, Loader2 } from 'lucide-react';
+import { Search, MapPin, Calendar, IndianRupee, Home, Loader2, Sparkles } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { College } from '@apna-ghar/shared-types';
 
@@ -76,13 +76,17 @@ export function CollegeSearchHero() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl border border-[#ECE8DD] shadow-lg p-5 sm:p-7 space-y-5">
-      <div className="text-center sm:text-left space-y-1">
-        <label className="text-sm sm:text-base font-extrabold text-[#173327] tracking-tight">
+    <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl border border-[#E8E5DE] shadow-brand-lg p-5 sm:p-8 space-y-6">
+      <div className="text-center sm:text-left space-y-1.5">
+        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F5A623] uppercase tracking-wider">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Campus-Anchored Accommodation Finder</span>
+        </div>
+        <h2 className="text-lg sm:text-xl font-black text-[#102B50] tracking-tight">
           Which college or university are you studying at?
-        </label>
-        <p className="text-xs text-[#3D3A33]">
-          Find verified hostels, PGs, and student flats within walking or short commute distance.
+        </h2>
+        <p className="text-xs text-[#687586]">
+          Search verified hostels, PGs, and student flats within walking or short commute distance.
         </p>
       </div>
 
@@ -90,7 +94,7 @@ export function CollegeSearchHero() {
         {/* College Search Autocomplete Input */}
         <div className="relative" ref={dropdownRef}>
           <div className="relative flex items-center">
-            <Search className="w-5 h-5 text-[#173327] absolute left-3.5 pointer-events-none" />
+            <Search className="w-5 h-5 text-[#102B50] absolute left-4 pointer-events-none" />
             <input
               type="text"
               value={query}
@@ -101,39 +105,39 @@ export function CollegeSearchHero() {
               onFocus={() => {
                 if (colleges.length > 0) setIsOpen(true);
               }}
-              placeholder="e.g. Amity University Noida, IIT Delhi, DU North Campus..."
-              className="w-full pl-11 pr-10 py-3.5 text-xs sm:text-sm rounded-xl border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all shadow-inner text-[#173327] placeholder:text-gray-400 font-medium"
+              placeholder="Type university name (e.g. Amity University Noida, IIT Delhi, DU North Campus...)"
+              className="w-full pl-12 pr-10 py-4 text-xs sm:text-sm rounded-2xl border border-[#E8E5DE] focus:outline-none focus:ring-2 focus:ring-[#F5A623] focus:border-[#F5A623] transition-all bg-[#FAF8F3]/60 text-[#263445] placeholder:text-[#687586] font-medium shadow-inner"
             />
             {isLoading && (
-              <Loader2 className="w-4 h-4 text-[#E06D3B] animate-spin absolute right-3.5" />
+              <Loader2 className="w-4 h-4 text-[#F5A623] animate-spin absolute right-4" />
             )}
           </div>
 
           {/* Autocomplete Results Dropdown */}
           {isOpen && colleges.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#ECE8DD] rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-[#ECE8DD] max-h-64 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#E8E5DE] rounded-2xl shadow-2xl z-50 overflow-hidden divide-y divide-[#E8E5DE] max-h-64 overflow-y-auto">
               {colleges.map((college) => (
                 <button
                   key={college.id}
                   type="button"
                   onClick={() => handleSelectCollege(college)}
-                  className="w-full text-left px-4 py-3 hover:bg-[#F7F5EE] transition-colors flex items-center justify-between text-xs group"
+                  className="w-full text-left px-4 py-3.5 hover:bg-[#FAF8F3] transition-colors flex items-center justify-between text-xs group"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-md bg-[#DCE8E2] text-[#173327] flex items-center justify-center shrink-0">
-                      <MapPin className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-[#102B50]/10 text-[#102B50] flex items-center justify-center shrink-0 group-hover:bg-[#102B50] group-hover:text-white transition-colors">
+                      <MapPin className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-[#173327] group-hover:text-[#E06D3B] transition-colors">
+                      <p className="font-bold text-[#102B50] group-hover:text-[#F5A623] transition-colors">
                         {college.name}
                       </p>
-                      <p className="text-[11px] text-[#3D3A33]">
+                      <p className="text-[11px] text-[#687586]">
                         {college.city}, {college.state}
                       </p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-semibold text-[#173327] bg-[#ECE8DD] px-2 py-0.5 rounded-full">
-                    Verified Anchor
+                  <span className="text-[10px] font-bold text-[#21865B] bg-[#21865B]/10 border border-[#21865B]/20 px-2.5 py-0.5 rounded-full">
+                    Verified Campus
                   </span>
                 </button>
               ))}
@@ -142,15 +146,15 @@ export function CollegeSearchHero() {
         </div>
 
         {/* Secondary Filter Row: Move-in, Budget, Accommodation Type */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Move-in Date */}
-          <div className="flex items-center gap-2.5 px-3 py-2.5 border border-[#ECE8DD] rounded-xl bg-[#FCFBF7]">
-            <Calendar className="w-4 h-4 text-[#173327] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3.5 py-3 border border-[#E8E5DE] rounded-2xl bg-[#FAF8F3]">
+            <Calendar className="w-4 h-4 text-[#102B50] shrink-0" />
             <div className="flex flex-col text-left w-full">
-              <span className="text-[10px] font-bold text-[#3D3A33] uppercase tracking-wider">
+              <span className="text-[10px] font-bold text-[#687586] uppercase tracking-wider">
                 Move-In
               </span>
-              <select className="bg-transparent text-xs font-semibold text-[#173327] focus:outline-none cursor-pointer">
+              <select className="bg-transparent text-xs font-bold text-[#263445] focus:outline-none cursor-pointer">
                 <option value="immediate">Immediately</option>
                 <option value="next_month">Next Month</option>
                 <option value="next_semester">Next Semester</option>
@@ -159,16 +163,16 @@ export function CollegeSearchHero() {
           </div>
 
           {/* Budget Selector */}
-          <div className="flex items-center gap-2.5 px-3 py-2.5 border border-[#ECE8DD] rounded-xl bg-[#FCFBF7]">
-            <IndianRupee className="w-4 h-4 text-[#173327] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3.5 py-3 border border-[#E8E5DE] rounded-2xl bg-[#FAF8F3]">
+            <IndianRupee className="w-4 h-4 text-[#102B50] shrink-0" />
             <div className="flex flex-col text-left w-full">
-              <span className="text-[10px] font-bold text-[#3D3A33] uppercase tracking-wider">
+              <span className="text-[10px] font-bold text-[#687586] uppercase tracking-wider">
                 Max Budget
               </span>
               <select
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
-                className="bg-transparent text-xs font-semibold text-[#173327] focus:outline-none cursor-pointer"
+                className="bg-transparent text-xs font-bold text-[#263445] focus:outline-none cursor-pointer"
               >
                 <option value="">Any Budget</option>
                 <option value="8000">Up to ₹8,000 / mo</option>
@@ -180,16 +184,16 @@ export function CollegeSearchHero() {
           </div>
 
           {/* Accommodation Type */}
-          <div className="flex items-center gap-2.5 px-3 py-2.5 border border-[#ECE8DD] rounded-xl bg-[#FCFBF7]">
-            <Home className="w-4 h-4 text-[#173327] shrink-0" />
+          <div className="flex items-center gap-2.5 px-3.5 py-3 border border-[#E8E5DE] rounded-2xl bg-[#FAF8F3]">
+            <Home className="w-4 h-4 text-[#102B50] shrink-0" />
             <div className="flex flex-col text-left w-full">
-              <span className="text-[10px] font-bold text-[#3D3A33] uppercase tracking-wider">
+              <span className="text-[10px] font-bold text-[#687586] uppercase tracking-wider">
                 Type
               </span>
               <select
                 value={accommodationType}
                 onChange={(e) => setAccommodationType(e.target.value)}
-                className="bg-transparent text-xs font-semibold text-[#173327] focus:outline-none cursor-pointer"
+                className="bg-transparent text-xs font-bold text-[#263445] focus:outline-none cursor-pointer"
               >
                 <option value="all">All Types</option>
                 <option value="PG">PG (Paying Guest)</option>
@@ -203,10 +207,10 @@ export function CollegeSearchHero() {
         {/* Search Submit CTA */}
         <button
           type="submit"
-          className="w-full py-3.5 px-6 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-md flex items-center justify-center gap-2 mt-2"
+          className="w-full py-4 px-6 rounded-2xl text-xs sm:text-sm font-extrabold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 active:scale-[0.99]"
         >
           <Search className="w-4 h-4" />
-          Find Verified Accommodations
+          <span>Find Verified Accommodations</span>
         </button>
       </form>
     </div>

@@ -42,6 +42,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
     } else if (exception instanceof Error) {
       this.logger.error(`Unhandled Exception on ${request.method} ${request.url}: ${exception.message}`, exception.stack);
+      message = exception.message;
+      details = {
+        errorName: exception.name,
+        errorMessage: exception.message,
+      };
     }
 
     const errorPayload: ApiErrorResponse = {

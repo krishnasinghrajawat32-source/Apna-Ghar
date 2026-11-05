@@ -91,38 +91,38 @@ export function RoomBedSelector({
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl border border-[#ECE8DD] p-6 shadow-xs flex items-center justify-center gap-3">
-        <Loader2 className="w-5 h-5 text-emerald-700 animate-spin" />
-        <span className="text-xs text-[#3D3A33] font-medium">Loading real-time room & bed availability...</span>
+      <div className="bg-white rounded-3xl border border-[#E8E5DE] p-8 shadow-brand-sm flex items-center justify-center gap-3">
+        <Loader2 className="w-5 h-5 text-[#102B50] animate-spin" />
+        <span className="text-xs text-[#263445] font-semibold">Loading real-time room & bed availability...</span>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-[#ECE8DD] p-5 sm:p-6 shadow-xs space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#ECE8DD]">
+    <div className="bg-white rounded-3xl border border-[#E8E5DE] p-6 sm:p-8 shadow-brand-sm space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#E8E5DE]">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#173327]">Choose Your Exact Bed</h2>
-            <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <h2 className="text-lg font-black text-[#102B50]">Choose Your Exact Bed</h2>
+            <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-[#21865B]/10 text-[#21865B] border border-[#21865B]/20">
               Zero Double-Booking
             </span>
           </div>
-          <p className="text-xs text-[#3D3A33]">
+          <p className="text-xs text-[#687586]">
             Select your preferred bed to lock in an 8-minute reservation hold while completing checkout.
           </p>
         </div>
       </div>
 
       {errorMessage && (
-        <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
+        <div className="p-3.5 rounded-2xl bg-[#D64545]/10 border border-[#D64545]/30 text-xs text-[#D64545] font-semibold flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {rooms.length === 0 ? (
-        <div className="text-center py-8 text-xs text-gray-500">
+        <div className="text-center py-10 text-xs text-[#687586] font-medium">
           No physical rooms or beds currently configured for this property.
         </div>
       ) : (
@@ -130,26 +130,26 @@ export function RoomBedSelector({
           {rooms.map((room) => (
             <div
               key={room.id}
-              className="border border-[#ECE8DD] rounded-xl p-4 bg-[#FCFBF7] space-y-3"
+              className="border border-[#E8E5DE] rounded-2xl p-5 bg-[#FAF8F3] space-y-3.5"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-[#173327]">
+                  <span className="text-xs font-black text-[#102B50]">
                     Room {room.roomNumber}
                   </span>
                   {room.roomTypeName && (
-                    <span className="text-[11px] text-gray-500">({room.roomTypeName})</span>
+                    <span className="text-[11px] text-[#687586] font-medium">({room.roomTypeName})</span>
                   )}
-                  <span className="text-[10px] bg-white border border-[#ECE8DD] px-1.5 py-0.5 rounded text-gray-600">
+                  <span className="text-[10px] font-bold bg-white border border-[#E8E5DE] px-2 py-0.5 rounded text-[#263445]">
                     Floor {room.floor}
                   </span>
                 </div>
-                <span className="text-xs font-bold text-[#173327]">
-                  {formatCurrency(room.baseRent)} <span className="text-[10px] text-gray-500 font-normal">/ mo</span>
+                <span className="text-xs font-black text-[#102B50]">
+                  {formatCurrency(room.baseRent)} <span className="text-[10px] text-[#687586] font-medium">/ mo</span>
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {room.beds.map((bed) => {
                   const isHeld = bed.status === 'HELD';
                   const isOccupied = bed.status === 'OCCUPIED';
@@ -162,29 +162,29 @@ export function RoomBedSelector({
                       type="button"
                       disabled={!isAvailable || isHolding}
                       onClick={() => handleSelectBed(bed, room)}
-                      className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
+                      className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
                         isMyHold
-                          ? 'border-emerald-600 bg-emerald-50 text-emerald-900 ring-2 ring-emerald-500'
+                          ? 'border-[#F5A623] bg-[#F5A623]/15 text-[#102B50] ring-2 ring-[#F5A623] shadow-sm'
                           : isAvailable
-                          ? 'border-[#ECE8DD] bg-white text-[#173327] hover:border-emerald-600 hover:shadow-xs cursor-pointer'
-                          : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
+                          ? 'border-[#E8E5DE] bg-white text-[#102B50] hover:border-[#102B50] hover:shadow-brand-sm cursor-pointer'
+                          : 'border-[#E8E5DE]/60 bg-[#E8E5DE]/30 text-[#687586]/60 cursor-not-allowed'
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <BedDouble className="w-4 h-4 text-emerald-700" />
-                        {isOccupied && <Lock className="w-3 h-3 text-gray-400" />}
+                      <div className="flex items-center justify-between mb-2">
+                        <BedDouble className={`w-4 h-4 ${isMyHold ? 'text-[#102B50]' : isAvailable ? 'text-[#102B50]' : 'text-[#687586]'}`} />
+                        {isOccupied && <Lock className="w-3.5 h-3.5 text-[#687586]" />}
                         {isHeld && !isMyHold && (
-                          <span className="text-[9px] font-bold uppercase text-amber-700 bg-amber-50 px-1 rounded">
+                          <span className="text-[9px] font-black uppercase text-[#F5A623] bg-[#F5A623]/15 px-1.5 py-0.5 rounded">
                             Held
                           </span>
                         )}
                         {isMyHold && (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <CheckCircle2 className="w-4 h-4 text-[#21865B]" />
                         )}
                       </div>
-                      <span className="text-xs font-bold">Bed {bed.bedNumber}</span>
-                      <span className="text-[10px] text-gray-500">
-                        {isMyHold ? 'Held by you' : isOccupied ? 'Occupied' : isHeld ? 'Temporarily held' : 'Available'}
+                      <span className="text-xs font-black">Bed {bed.bedNumber}</span>
+                      <span className="text-[10px] text-[#687586] font-semibold mt-0.5">
+                        {isMyHold ? 'Locked by you' : isOccupied ? 'Occupied' : isHeld ? 'Temporarily held' : 'Available'}
                       </span>
                     </button>
                   );

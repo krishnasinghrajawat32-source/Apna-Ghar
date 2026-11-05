@@ -2,15 +2,165 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =================================
+   APNA GHAR — OFFICIAL BRAND SYSTEM
+   Har Sahar Apna Ghar
+================================= */
+
 :root {
-  --background: #FCFBF7;
-  --foreground: #1E252B;
+  --primary: #19355b;        /* Deep Navy Blue */
+  --primary-hover: #183D68;  /* Navy Hover */
+
+  --accent: #F5A623;         /* Golden Amber */
+  --accent-hover: #E99A12;   /* Amber Hover */
+
+  --background: #FAF8F3;     /* Warm Off-White */
+  --surface: #FFFFFF;        /* Pure White */
+
+  --foreground: #263445;     /* Slate */
+  --muted: #687586;          /* Muted Grey */
+
+  --border: #E8E5DE;         /* Border */
+  --success: #21865B;        /* Success */
+  --danger: #D64545;         /* Danger */
+}
+
+/* =================================
+   GLOBAL BASE STYLES
+================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   color: var(--foreground);
   background-color: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* =================================
+   SELECTION
+================================= */
+
+::selection {
+  background-color: var(--accent);
+  color: var(--primary);
+}
+
+/* =================================
+   REUSABLE BRAND UTILITIES
+================================= */
+
+@layer components {
+  /* Primary Navy Button */
+  .ag-btn-primary {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-5 py-3 transition-all duration-200 shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+    background-color: var(--primary);
+    color: #FFFFFF;
+  }
+
+  .ag-btn-primary:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 4px 14px rgba(16, 43, 80, 0.25);
+  }
+
+  /* Golden Accent Button */
+  .ag-btn-accent {
+    @apply inline-flex items-center justify-center font-bold rounded-xl px-5 py-3 transition-all duration-200 shadow-sm active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+    background-color: var(--accent);
+    color: var(--primary);
+  }
+
+  .ag-btn-accent:hover {
+    background-color: var(--accent-hover);
+    box-shadow: 0 4px 14px rgba(245, 166, 35, 0.35);
+  }
+
+  /* Secondary Outline Button */
+  .ag-btn-outline {
+    @apply inline-flex items-center justify-center font-semibold rounded-xl px-5 py-3 transition-all duration-200 border bg-white active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+    border-color: var(--border);
+    color: var(--primary);
+  }
+
+  .ag-btn-outline:hover {
+    background-color: #F8FAFC;
+    border-color: var(--primary);
+  }
+
+  /* Standard Card */
+  .ag-card {
+    @apply rounded-2xl transition-all duration-200;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(16, 43, 80, 0.04);
+  }
+
+  .ag-card-hover {
+    @apply ag-card hover:shadow-brand-card-hover hover:border-[#D5D1C7];
+  }
+
+  /* Inputs */
+  .ag-input {
+    @apply w-full px-4 py-3 rounded-xl border transition-all duration-200 bg-white text-[#263445] placeholder-[#687586] focus:outline-none focus:ring-2 focus:ring-[#F5A623] focus:border-[#F5A623];
+    border-color: var(--border);
+  }
+
+  /* Badges */
+  .ag-badge-navy {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#102B50]/10 text-[#102B50] border border-[#102B50]/20;
+  }
+
+  .ag-badge-amber {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#F5A623]/15 text-[#102B50] border border-[#F5A623]/30;
+  }
+
+  .ag-badge-success {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#21865B]/10 text-[#21865B] border border-[#21865B]/20;
+  }
+
+  .ag-badge-danger {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#D64545]/10 text-[#D64545] border border-[#D64545]/20;
+  }
+}
+
+/* =================================
+   FORM FOCUS STYLES
+================================= */
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline-color: var(--accent);
+}
+
+/* =================================
+   BRAND SCROLLBAR
+================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C5C9CE;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
 }

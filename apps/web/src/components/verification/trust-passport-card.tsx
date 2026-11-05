@@ -22,44 +22,44 @@ export function TrustPassportCard({ passport, propertyName }: TrustPassportCardP
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-[#ECE8DD] p-5 shadow-xs space-y-4">
+      <div className="bg-white rounded-3xl border border-[#E8E5DE] p-6 shadow-brand-sm space-y-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#DCE8E2] text-[#173327] flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6 text-[#E06D3B]" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-[#102B50] text-[#F5A623] flex items-center justify-center shadow-sm">
+              <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-[#173327]">
+                <h3 className="text-base font-extrabold text-[#102B50]">
                   Apna Ghar Trust Passport
                 </h3>
                 {isFullyVerified ? (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#173327] text-white">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#21865B] text-white">
                     7/7 VERIFIED
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#F5A623]/20 text-[#102B50] border border-[#F5A623]/40">
                     {score}/7 VERIFIED
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-[#3D3A33]">
-                7-point physical on-site audit verified by Apna Ghar
+              <p className="text-xs text-[#687586]">
+                7-point physical on-site audit verified by Apna Ghar team
               </p>
             </div>
           </div>
 
           <button
             onClick={() => setModalOpen(true)}
-            className="text-xs font-bold text-[#E06D3B] hover:text-[#C55728] flex items-center gap-1 transition-colors"
+            className="text-xs font-bold text-[#F5A623] hover:text-[#E99A12] flex items-center gap-1 transition-colors"
           >
-            Audit Details
+            <span>View Full Audit</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* 7 Checkpoint Badges Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
           {[
             'Owner KYC',
             'GPS Location',
@@ -71,9 +71,9 @@ export function TrustPassportCard({ passport, propertyName }: TrustPassportCardP
           ].map((item) => (
             <div
               key={item}
-              className="px-2.5 py-1.5 rounded-lg bg-[#FCFBF7] border border-[#ECE8DD] flex items-center gap-1.5 text-[10px] font-semibold text-[#173327]"
+              className="px-3 py-2 rounded-xl bg-[#FAF8F3] border border-[#E8E5DE] flex items-center gap-2 text-[11px] font-bold text-[#102B50]"
             >
-              <CheckCircle2 className="w-3 h-3 text-[#173327] shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#21865B] shrink-0" />
               <span className="truncate">{item}</span>
             </div>
           ))}

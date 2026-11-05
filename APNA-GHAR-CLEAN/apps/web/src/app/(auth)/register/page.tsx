@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import { UserCheck, AlertCircle, GraduationCap, Building2, UtensilsCrossed } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
 import { useAuthStore } from '@/features/auth/auth-store';

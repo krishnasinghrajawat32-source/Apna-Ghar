@@ -24,7 +24,7 @@ export default (): AppConfig => ({
     process.env.MONGODB_URI ||
     process.env.MONGO_URI ||
     process.env.DATABASE_URL ||
-    'mongodb://127.0.0.1:27017/apna_ghar',
+    'mongodb+srv://erkrishnasingh001_db_user:ySIW0WpyxuXOYKkI@cluster1.ucsgvqr.mongodb.net/apna_ghar?retryWrites=true&w=majority',
   redisUrl: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET || 'dev_jwt_access_secret_min_32_characters_seed',
   jwtAccessExpiry: process.env.JWT_ACCESS_EXPIRY || '15m',

@@ -43,18 +43,6 @@ export class MessController {
     };
   }
 
-  @Public()
-  @Get(':slug')
-  @ApiOperation({ summary: 'Get mess outlet profile, subscription plans, and rotating weekly menu' })
-  @ApiResponse({ status: 200, description: 'Mess profile detail' })
-  async findBySlug(@Param('slug') slug: string) {
-    const mess = await this.messService.findBySlug(slug);
-    return {
-      success: true,
-      data: mess,
-    };
-  }
-
   @Post('subscriptions')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.STUDENT, UserRole.ADMIN)
@@ -125,6 +113,18 @@ export class MessController {
     return {
       success: true,
       data: subscribers,
+    };
+  }
+
+  @Public()
+  @Get(':slug')
+  @ApiOperation({ summary: 'Get mess outlet profile, subscription plans, and rotating weekly menu' })
+  @ApiResponse({ status: 200, description: 'Mess profile detail' })
+  async findBySlug(@Param('slug') slug: string) {
+    const mess = await this.messService.findBySlug(slug);
+    return {
+      success: true,
+      data: mess,
     };
   }
 }

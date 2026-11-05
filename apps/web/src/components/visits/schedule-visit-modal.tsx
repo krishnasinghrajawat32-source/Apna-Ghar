@@ -116,16 +116,16 @@ export function ScheduleVisitModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl border border-[#ECE8DD] overflow-hidden">
+      <div className="bg-white rounded-3xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl border border-[#E8E5DE] overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-5 bg-[#173327] text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#234E3C] text-[#E06D3B] flex items-center justify-center">
+        <div className="px-6 py-5 bg-[#102B50] text-white flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-white/10 text-[#F5A623] flex items-center justify-center">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold tracking-tight">Schedule a Free Property Visit</h3>
-              <p className="text-xs text-emerald-100/80 truncate max-w-xs">{propertyName}</p>
+              <h3 className="text-base font-black tracking-tight">Schedule a Free Property Visit</h3>
+              <p className="text-xs text-white/70 truncate max-w-xs">{propertyName}</p>
             </div>
           </div>
           <button
@@ -138,30 +138,30 @@ export function ScheduleVisitModal({
 
         {/* Content */}
         {success ? (
-          <div className="p-8 text-center space-y-4 my-auto">
-            <div className="w-16 h-16 rounded-full bg-[#DCE8E2] text-[#173327] flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-8 h-8 text-[#173327]" />
+          <div className="p-8 text-center space-y-5 my-auto">
+            <div className="w-16 h-16 rounded-full bg-[#21865B]/15 text-[#21865B] flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-8 h-8 text-[#21865B]" />
             </div>
-            <div className="space-y-1">
-              <h4 className="text-lg font-bold text-[#173327]">Visit Request Confirmed!</h4>
-              <p className="text-xs text-[#3D3A33] max-w-sm mx-auto leading-relaxed">
-                Your visit to <span className="font-semibold">{propertyName}</span> has been requested for{' '}
-                <span className="font-semibold">{selectedDate}</span> during the{' '}
-                <span className="font-semibold">{selectedSlot}</span> slot.
+            <div className="space-y-1.5">
+              <h4 className="text-xl font-black text-[#102B50]">Visit Request Confirmed!</h4>
+              <p className="text-xs text-[#687586] max-w-sm mx-auto leading-relaxed">
+                Your visit to <span className="font-bold text-[#102B50]">{propertyName}</span> has been requested for{' '}
+                <span className="font-bold text-[#102B50]">{selectedDate}</span> during the{' '}
+                <span className="font-bold text-[#102B50]">{selectedSlot}</span> slot.
               </p>
             </div>
-            <div className="p-4 bg-[#FCFBF7] rounded-xl border border-[#ECE8DD] text-xs text-[#3D3A33] text-left space-y-1">
-              <div className="flex items-center gap-1.5 font-bold text-[#173327]">
-                <ShieldCheck className="w-4 h-4 text-[#E06D3B]" />
+            <div className="p-4 bg-[#FAF8F3] rounded-2xl border border-[#E8E5DE] text-xs text-[#263445] text-left space-y-1">
+              <div className="flex items-center gap-1.5 font-bold text-[#102B50]">
+                <ShieldCheck className="w-4 h-4 text-[#F5A623]" />
                 Zero Obligation Guarantee
               </div>
-              <p className="text-[11px]">
+              <p className="text-[11px] text-[#687586]">
                 Visiting is completely free. The property warden will meet you at the gate and guide you through the verified room options.
               </p>
             </div>
             <button
               onClick={handleModalClose}
-              className="w-full py-3 rounded-xl text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors"
+              className="w-full py-3.5 rounded-xl text-xs font-bold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-colors shadow-sm"
             >
               Done
             </button>
@@ -169,16 +169,16 @@ export function ScheduleVisitModal({
         ) : (
           <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-5">
             {errorMsg && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+              <div className="p-3.5 bg-[#D64545]/10 border border-[#D64545]/30 rounded-2xl text-xs text-[#D64545] font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 text-[#D64545]" />
                 <span>{errorMsg}</span>
               </div>
             )}
 
             {/* Date Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-bold text-[#173327] flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-[#E06D3B]" />
+              <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-[#F5A623]" />
                 Select Preferred Visit Date:
               </label>
               <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5">
@@ -189,11 +189,11 @@ export function ScheduleVisitModal({
                     onClick={() => setSelectedDate(d.isoString)}
                     className={`py-2 px-1 rounded-xl text-center border transition-all ${
                       selectedDate === d.isoString
-                        ? 'border-[#173327] bg-[#173327] text-white shadow-xs'
-                        : 'border-[#ECE8DD] bg-[#FCFBF7] text-[#3D3A33] hover:border-gray-300'
+                        ? 'border-[#102B50] bg-[#102B50] text-white shadow-sm'
+                        : 'border-[#E8E5DE] bg-[#FAF8F3] text-[#263445] hover:border-[#F5A623]'
                     }`}
                   >
-                    <p className="text-[10px] font-medium opacity-80">{d.dayName}</p>
+                    <p className="text-[10px] font-semibold opacity-80">{d.dayName}</p>
                     <p className="text-xs font-bold">{d.formattedDate.split(' ')[0]}</p>
                   </button>
                 ))}
@@ -202,12 +202,12 @@ export function ScheduleVisitModal({
 
             {/* Time Slot Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-bold text-[#173327] flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-[#E06D3B]" />
+              <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-[#F5A623]" />
                 Select 2-Hour Time Window:
               </label>
               {slotsLoading ? (
-                <div className="py-4 text-center text-xs text-gray-500 animate-pulse">
+                <div className="py-4 text-center text-xs text-[#687586] animate-pulse">
                   Checking real-time slot availability...
                 </div>
               ) : (
@@ -218,21 +218,21 @@ export function ScheduleVisitModal({
                       type="button"
                       disabled={!s.available}
                       onClick={() => setSelectedSlot(s.slot)}
-                      className={`p-2.5 rounded-xl text-xs font-semibold border flex items-center justify-between transition-all ${
+                      className={`p-3 rounded-xl text-xs font-semibold border flex items-center justify-between transition-all ${
                         !s.available
-                          ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed line-through'
+                          ? 'border-[#E8E5DE]/60 bg-[#E8E5DE]/30 text-[#687586]/60 cursor-not-allowed line-through'
                           : selectedSlot === s.slot
-                          ? 'border-[#173327] bg-[#173327] text-white shadow-xs'
-                          : 'border-[#ECE8DD] bg-[#FCFBF7] text-[#3D3A33] hover:border-gray-300'
+                          ? 'border-[#102B50] bg-[#102B50] text-white shadow-sm'
+                          : 'border-[#E8E5DE] bg-[#FAF8F3] text-[#263445] hover:border-[#F5A623]'
                       }`}
                     >
                       <span>{s.slot}</span>
                       {s.available ? (
-                        <span className={`text-[10px] font-bold ${selectedSlot === s.slot ? 'text-emerald-100' : 'text-emerald-700'}`}>
+                        <span className={`text-[10px] font-bold ${selectedSlot === s.slot ? 'text-[#F5A623]' : 'text-[#21865B]'}`}>
                           Open
                         </span>
                       ) : (
-                        <span className="text-[10px] text-gray-400">Full</span>
+                        <span className="text-[10px] text-[#687586]">Full</span>
                       )}
                     </button>
                   ))}
@@ -242,8 +242,8 @@ export function ScheduleVisitModal({
 
             {/* Student Contact Phone */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#173327] flex items-center gap-1.5">
-                <Phone className="w-4 h-4 text-[#E06D3B]" />
+              <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
+                <Phone className="w-4 h-4 text-[#F5A623]" />
                 Your Mobile Number for Gate Entry:
               </label>
               <input
@@ -252,17 +252,17 @@ export function ScheduleVisitModal({
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 98765 43210"
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl border border-[#DDD7C7] text-xs sm:text-sm text-[#173327] focus:outline-none focus:ring-2 focus:ring-[#173327]"
+                className="w-full px-4 py-3 rounded-xl border border-[#E8E5DE] text-xs sm:text-sm text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3]/50"
               />
-              <p className="text-[10px] text-gray-500">
+              <p className="text-[10px] text-[#687586]">
                 Shared only with the verified caretaker for gate pass and arrival coordination.
               </p>
             </div>
 
             {/* Special Instructions / Notes */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-[#173327] flex items-center gap-1.5">
-                <MessageSquare className="w-4 h-4 text-[#E06D3B]" />
+              <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
+                <MessageSquare className="w-4 h-4 text-[#F5A623]" />
                 Special Requests or Questions (Optional):
               </label>
               <textarea
@@ -270,7 +270,7 @@ export function ScheduleVisitModal({
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
                 placeholder="e.g. Coming with parents, want to check AC twin sharing room..."
-                className="w-full px-3.5 py-2 rounded-xl border border-[#DDD7C7] text-xs text-[#173327] focus:outline-none focus:ring-2 focus:ring-[#173327] resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#E8E5DE] text-xs text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3]/50 resize-none"
               />
             </div>
 
@@ -278,17 +278,17 @@ export function ScheduleVisitModal({
             <button
               type="submit"
               disabled={visitMutation.isPending}
-              className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors flex items-center justify-center gap-2 shadow-md disabled:opacity-50"
+              className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-colors flex items-center justify-center gap-2 shadow-md disabled:opacity-50 active:scale-98"
             >
               {visitMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Scheduling Visit...
+                  <span>Scheduling Visit...</span>
                 </>
               ) : (
                 <>
                   <Calendar className="w-4 h-4" />
-                  Confirm Free Property Visit
+                  <span>Confirm Free Property Visit</span>
                 </>
               )}
             </button>

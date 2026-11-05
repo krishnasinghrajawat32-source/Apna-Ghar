@@ -37,17 +37,17 @@ export function PropertyReviewsSection({
   ];
 
   return (
-    <section className="bg-white rounded-2xl border border-[#ECE8DD] p-5 sm:p-6 shadow-xs space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#ECE8DD]">
+    <section className="bg-white rounded-3xl border border-[#E8E5DE] p-6 sm:p-8 shadow-brand-sm space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#E8E5DE]">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-[#173327]">Student Reviews & Ratings</h2>
-            <div className="flex items-center gap-1 text-xs font-extrabold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
-              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+            <h2 className="text-base font-extrabold text-[#102B50]">Student Reviews & Ratings</h2>
+            <div className="flex items-center gap-1 text-xs font-black text-[#102B50] bg-[#F5A623]/20 px-2.5 py-0.5 rounded-full border border-[#F5A623]/30">
+              <Star className="w-3.5 h-3.5 fill-[#F5A623] text-[#F5A623]" />
               <span>4.9 / 5.0</span>
             </div>
           </div>
-          <p className="text-xs text-[#3D3A33]">
+          <p className="text-xs text-[#687586]">
             Verified experiences from students living at {propertyName}.
           </p>
         </div>
@@ -57,36 +57,36 @@ export function PropertyReviewsSection({
         {reviews.map((rev) => (
           <div
             key={rev.id}
-            className="border border-[#ECE8DD] rounded-xl p-4 bg-[#FCFBF7] space-y-2.5"
+            className="border border-[#E8E5DE] rounded-2xl p-5 bg-[#FAF8F3] space-y-3"
           >
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-[#173327]">
+                  <span className="text-xs font-extrabold text-[#102B50]">
                     {rev.studentName}
                   </span>
                   {rev.verifiedStay && (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#21865B] bg-[#21865B]/10 px-2.5 py-0.5 rounded-full border border-[#21865B]/20">
+                      <ShieldCheck className="w-3 h-3 text-[#21865B]" />
                       Verified Resident
                     </span>
                   )}
                 </div>
-                <span className="text-[11px] text-gray-500">{rev.university}</span>
+                <span className="text-[11px] text-[#687586] font-medium">{rev.university}</span>
               </div>
 
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: rev.rating }).map((_, i) => (
                   <Star
                     key={i}
-                    className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                    className="w-3.5 h-3.5 fill-[#F5A623] text-[#F5A623]"
                   />
                 ))}
               </div>
             </div>
 
-            <p className="text-xs text-[#3D3A33] leading-relaxed">{rev.comment}</p>
-            <span className="text-[10px] text-gray-400 block">{rev.date}</span>
+            <p className="text-xs text-[#263445] leading-relaxed">{rev.comment}</p>
+            <span className="text-[10px] text-[#687586] block">{rev.date}</span>
           </div>
         ))}
       </div>

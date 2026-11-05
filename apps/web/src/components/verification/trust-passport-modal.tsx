@@ -80,86 +80,87 @@ export function TrustPassportModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-[#ECE8DD] overflow-hidden">
+      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-[#E8E5DE] overflow-hidden">
         {/* Modal Header */}
-        <div className="px-6 py-5 bg-[#173327] text-white flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#234E3C] flex items-center justify-center text-[#E06D3B]">
+        <div className="px-6 py-5 bg-[#102B50] text-white flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center text-[#F5A623]">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold tracking-tight">Apna Ghar Trust Passport</h3>
-                <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-[#E06D3B] text-white">
+                <h3 className="text-lg font-black tracking-tight">Apna Ghar Trust Passport</h3>
+                <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-[#F5A623] text-[#102B50]">
                   {score}/7 Verified
                 </span>
               </div>
-              <p className="text-xs text-emerald-100/80 truncate max-w-md">
+              <p className="text-xs text-white/70 truncate max-w-md">
                 7-Point Physical Verification Audit for {propertyName}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            className="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Body: 7 Checkpoints List */}
-        <div className="p-6 overflow-y-auto space-y-4 divide-y divide-[#ECE8DD]">
-          <div className="pb-2">
-            <p className="text-xs text-[#3D3A33] leading-relaxed">
-              The Apna Ghar Trust Passport is our non-negotiable quality standard. An authorized field engineer
-              physically visits and audits the property across 7 essential security, pricing, and infrastructure checkpoints.
-            </p>
-          </div>
-
-          {Object.entries(CHECKPOINT_META).map(([typeKey, meta]) => {
-            const checkpoint = Array.isArray(checkpoints)
-              ? checkpoints.find((c: TrustCheckpoint) => c.type === typeKey)
-              : null;
+        {/* Modal Body - 7 Checkpoints List */}
+        <div className="p-6 overflow-y-auto space-y-4 divide-y divide-[#E8E5DE]">
+          {Object.entries(CHECKPOINT_META).map(([type, meta], idx) => {
+            const checkpoint = checkpoints.find((c: TrustCheckpoint) => c.type === type);
             const isVerified = checkpoint?.status === VerificationStatus.VERIFIED;
+            const isPending = checkpoint?.status === VerificationStatus.PENDING;
             const Icon = meta.icon;
 
             return (
-              <div key={typeKey} className="pt-4 flex items-start gap-3.5">
+              <div
+                key={type}
+                className={`pt-4 first:pt-0 flex items-start gap-3.5 ${
+                  idx !== 0 ? 'mt-4' : ''
+                }`}
+              >
                 <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
                     isVerified
-                      ? 'bg-[#DCE8E2] text-[#173327]'
-                      : 'bg-amber-50 text-amber-600'
+                      ? 'bg-[#21865B]/10 text-[#21865B]'
+                      : isPending
+                      ? 'bg-[#F5A623]/10 text-[#F5A623]'
+                      : 'bg-[#687586]/10 text-[#687586]'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
 
                 <div className="flex-1 space-y-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <h4 className="text-xs sm:text-sm font-bold text-[#173327]">
-                      {meta.title}
-                    </h4>
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-bold text-[#102B50]">{meta.title}</h4>
                     {isVerified ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#173327] bg-[#DCE8E2] px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3 h-3 text-[#173327]" />
-                        Verified
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#21865B] bg-[#21865B]/10 px-2 py-0.5 rounded-full">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Audited
+                      </span>
+                    ) : isPending ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#F5A623] bg-[#F5A623]/10 px-2 py-0.5 rounded-full">
+                        <Clock className="w-3 h-3" />
+                        In Review
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
-                        <Clock className="w-3 h-3" />
-                        Pending Audit
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#687586] bg-[#687586]/10 px-2 py-0.5 rounded-full">
+                        <AlertCircle className="w-3 h-3" />
+                        Pending
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-[#3D3A33] leading-normal">
+                  <p className="text-[11px] text-[#687586] leading-relaxed">
                     {meta.subtitle}
                   </p>
                   {checkpoint?.notes && (
-                    <div className="bg-[#FCFBF7] p-2 rounded-lg border border-[#ECE8DD] text-[10px] text-[#173327] font-medium flex items-center gap-1.5 mt-1">
-                      <AlertCircle className="w-3 h-3 text-[#E06D3B] shrink-0" />
-                      <span>{checkpoint.notes}</span>
-                    </div>
+                    <p className="text-[10px] text-[#102B50] bg-[#FAF8F3] p-2 rounded-lg border border-[#E8E5DE] mt-1 italic">
+                      Auditor Note: {checkpoint.notes}
+                    </p>
                   )}
                 </div>
               </div>
@@ -168,21 +169,16 @@ export function TrustPassportModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-[#FCFBF7] border-t border-[#ECE8DD] flex items-center justify-between shrink-0 text-xs">
-          <span className="text-[#3D3A33]">
-            {passport?.lastVerifiedAt
-              ? `Last verified on ${new Date(passport.lastVerifiedAt).toLocaleDateString('en-IN', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                })}`
-              : 'Audit status live in database'}
-          </span>
+        <div className="px-6 py-4 bg-[#FAF8F3] border-t border-[#E8E5DE] flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2 text-xs text-[#687586]">
+            <ShieldCheck className="w-4 h-4 text-[#21865B]" />
+            <span>Audited on location by certified field officers</span>
+          </div>
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors"
+            className="px-5 py-2 rounded-xl text-xs font-bold text-[#102B50] bg-white border border-[#E8E5DE] hover:bg-[#FAF8F3] transition-colors"
           >
-            Close Report
+            Close
           </button>
         </div>
       </div>

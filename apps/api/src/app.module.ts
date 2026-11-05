@@ -32,6 +32,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+      envFilePath: ['.env', '../../.env', '../.env'],
     }),
     ThrottlerModule.forRoot([
       {
@@ -74,4 +75,4 @@ import { RolesGuard } from './common/guards/roles.guard';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

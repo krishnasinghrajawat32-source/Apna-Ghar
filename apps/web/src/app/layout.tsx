@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { QueryProvider } from '@/providers/query-provider';
 import { Navbar } from '@/components/layout/navbar';
+import { Footer } from '@/components/layout/footer';
 import { ActiveHoldBanner } from '@/components/inventory/active-hold-banner';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://apnaghar.in';
@@ -95,10 +96,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-[#FCFBF7] text-[#1E252B] antialiased flex flex-col">
+      <body className="min-h-screen antialiased flex flex-col bg-[#FAF8F3] text-[#263445]">
         <QueryProvider>
           <Navbar />
           <div className="flex-1">{children}</div>
+          <Footer />
           <ActiveHoldBanner />
         </QueryProvider>
       </body>

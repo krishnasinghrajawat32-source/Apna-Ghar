@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",
+    "dev:debug": "nest start --debug 0.0.0.0:9229 --watch",
     "start": "node dist/main",
     "seed": "ts-node src/database/seed.ts",
     "lint": "echo 'api lint passed'",

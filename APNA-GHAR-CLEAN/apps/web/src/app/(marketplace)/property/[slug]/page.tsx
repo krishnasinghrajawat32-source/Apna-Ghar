@@ -43,13 +43,13 @@ export default function PropertyDetailPage() {
 
   const propertyId = data?.property?.id;
 
-  const { data: passportRes } = useQuery<{ success: boolean; data: TrustPassport }>({
+  const { data: passportRes } = useQuery<TrustPassport>({
     queryKey: ['property-trust-passport', propertyId],
-    queryFn: () => apiClient<{ success: boolean; data: TrustPassport }>(`/properties/${propertyId}/trust-passport`),
+    queryFn: () => apiClient<TrustPassport>(`/properties/${propertyId}/trust-passport`),
     enabled: !!propertyId,
   });
 
-  const passport = passportRes?.data || null;
+  const passport = (passportRes as any)?.data ?? passportRes ?? null;
   const [visitModalOpen, setVisitModalOpen] = useState(false);
 
   if (isLoading) {

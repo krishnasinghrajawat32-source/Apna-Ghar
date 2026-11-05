@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import { Lock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
 

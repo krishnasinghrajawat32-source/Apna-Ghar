@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Clock, Calculator, MapPin, Sparkles } from 'lucide-react';
+import { ShieldCheck, Clock, Calculator, MapPin, Sparkles, Building2, Users, Utensils, CheckCircle2, ArrowRight } from 'lucide-react';
 import { CollegeSearchHero } from '@/components/search/college-search-hero';
 
 export default function HomePage() {
@@ -10,106 +10,225 @@ export default function HomePage() {
     { name: 'Amity University, Noida', slug: 'amity-university-noida' },
     { name: 'IIT Delhi', slug: 'iit-delhi' },
     { name: 'DU North Campus', slug: 'delhi-university-north-campus' },
+    { name: 'BITS Pilani', slug: 'bits-pilani' },
+  ];
+
+  const stayCategories = [
+    {
+      title: 'Verified Student PGs',
+      desc: 'Double & triple sharing with meal options and high-speed Wi-Fi',
+      href: '/search?propertyType=PG',
+      icon: Building2,
+      badge: 'Popular',
+    },
+    {
+      title: 'Hostels & Residencies',
+      desc: 'Wardens, biometric security, and dedicated study rooms',
+      href: '/search?propertyType=HOSTEL',
+      icon: Users,
+      badge: 'Secure',
+    },
+    {
+      title: 'Student Flats & 1BHKs',
+      desc: 'Independent living with full kitchen, zero broker intervention',
+      href: '/search?propertyType=STUDENT_FLAT',
+      icon: Building2,
+      badge: 'Zero Brokerage',
+    },
+    {
+      title: 'Hygienic Mess Plans',
+      desc: 'FSSAI inspected student tiffins & rotating weekly regional menus',
+      href: '/mess',
+      icon: Utensils,
+      badge: 'Fresh Daily',
+    },
   ];
 
   return (
-    <main className="min-h-screen flex flex-col justify-between p-6 sm:p-10 md:p-16 max-w-6xl mx-auto space-y-12">
-      {/* Hero Header Section */}
-      <section className="text-center space-y-6 pt-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#DCE8E2] text-[#173327]">
-          <Sparkles className="w-3.5 h-3.5 text-[#E06D3B]" />
-          <span>Apna Ghar • Har Sahar Apna Ghar</span>
-        </div>
+    <div className="min-h-screen flex flex-col justify-between">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div className="text-center space-y-6">
+          {/* Brand Tagline Pill */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-[#102B50]/10 text-[#102B50] border border-[#102B50]/15 shadow-xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#F5A623]" />
+            <span>HAR SAHAR APNA GHAR • INDIA'S VERIFIED STUDENT ECOSYSTEM</span>
+          </div>
 
-        <div className="space-y-3 max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#173327] tracking-tight leading-tight">
-            Find Trust-Verified Student Housing Near Your Campus
-          </h1>
-          <p className="text-sm sm:text-base text-[#3D3A33] max-w-2xl mx-auto leading-relaxed">
-            Every property is physically geo-audited, inventory freshness is tracked in real-time,
-            and total living cost is transparent before you pay a single rupee.
-          </p>
-        </div>
+          {/* Main Hero Headline */}
+          <div className="space-y-4 max-w-4xl mx-auto">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#102B50] tracking-tight leading-[1.15]">
+              Find Trust-Verified Student Stays Near Your University
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-[#687586] max-w-2xl mx-auto leading-relaxed">
+              Every property is physically geo-audited, bed availability is locked in real-time, and total living cost is transparent before you pay a single rupee.
+            </p>
+          </div>
 
-        {/* Live College Search Box */}
-        <div className="pt-2">
-          <CollegeSearchHero />
-        </div>
+          {/* College Search Box */}
+          <div className="pt-2">
+            <CollegeSearchHero />
+          </div>
 
-        {/* Quick Access Anchor Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-          <span className="text-xs font-semibold text-[#3D3A33]">Popular campuses:</span>
-          {verifiedColleges.map((college) => (
-            <Link
-              key={college.slug}
-              href={`/search?college=${college.slug}&radius=3000`}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white border border-[#ECE8DD] text-[#173327] hover:border-[#173327] hover:text-[#E06D3B] transition-colors shadow-xs"
-            >
-              <MapPin className="w-3 h-3 text-[#173327]" />
-              {college.name}
-            </Link>
-          ))}
+          {/* Quick Access Campus Anchor Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-3">
+            <span className="text-xs font-bold text-[#687586]">Popular campus hubs:</span>
+            {verifiedColleges.map((college) => (
+              <Link
+                key={college.slug}
+                href={`/search?college=${college.slug}&radius=3000`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#E8E5DE] text-[#102B50] hover:border-[#102B50] hover:bg-[#F0F4F8] transition-all shadow-xs"
+              >
+                <MapPin className="w-3 h-3 text-[#F5A623]" />
+                <span>{college.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Discovery */}
+      <section className="py-12 bg-white border-y border-[#E8E5DE]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-2 mb-10">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#F5A623]">
+              Tailored For University Life
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#102B50] tracking-tight">
+              Explore Accommodations by Living Style
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {stayCategories.map((cat) => {
+              const Icon = cat.icon;
+              return (
+                <Link
+                  key={cat.title}
+                  href={cat.href}
+                  className="ag-card-hover p-6 rounded-2xl border border-[#E8E5DE] bg-white flex flex-col justify-between group"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="w-12 h-12 rounded-2xl bg-[#102B50]/10 text-[#102B50] flex items-center justify-center group-hover:bg-[#102B50] group-hover:text-[#F5A623] transition-colors">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-[11px] font-bold text-[#21865B] bg-[#21865B]/10 px-2.5 py-1 rounded-full">
+                        {cat.badge}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-[#102B50] group-hover:text-[#F5A623] transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-xs text-[#687586] mt-1.5 leading-relaxed">
+                        {cat.desc}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-6 flex items-center gap-1.5 text-xs font-bold text-[#102B50] group-hover:text-[#F5A623] transition-colors">
+                    <span>Explore options</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* Trust & Transparency Pillars */}
-      <section className="py-6 space-y-6">
-        <div className="text-center space-y-1">
-          <h2 className="text-xl sm:text-2xl font-black text-[#173327] tracking-tight">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-12">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#F5A623]">
+            Peace of Mind for Parents & Students
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-black text-[#102B50] tracking-tight">
             The Apna Ghar Trust Standard
           </h2>
-          <p className="text-xs sm:text-sm text-[#3D3A33]">
-            Built specifically to solve student rental scams and hidden charges
+          <p className="text-xs sm:text-sm text-[#687586] leading-relaxed">
+            Built specifically to solve student rental scams, fake photos, unexpected brokerage, and phantom room vacancies.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-          <div className="p-6 rounded-2xl border border-[#ECE8DD] bg-white shadow-xs space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#DCE8E2] text-[#173327] flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Pillar 1 */}
+          <div className="p-8 rounded-3xl border border-[#E8E5DE] bg-white shadow-brand-sm space-y-4 hover:shadow-brand-md transition-shadow">
+            <div className="w-12 h-12 rounded-2xl bg-[#102B50] text-[#F5A623] flex items-center justify-center shadow-sm">
+              <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-bold text-[#173327]">Trust Passport</h3>
-            <p className="text-xs text-[#3D3A33] leading-relaxed">
-              7-point verified audit: Owner KYC, physical geo-location, real photos, verified pricing, actual inventory, and house agreements.
+            <h3 className="text-lg font-black text-[#102B50]">7-Point Trust Passport</h3>
+            <p className="text-xs text-[#687586] leading-relaxed">
+              Every stay undergoes physical in-person verification: Owner KYC, geo-coordinates, real photographic evidence, verified electricity rates, and rental agreements.
             </p>
+            <div className="pt-2 flex items-center gap-2 text-xs font-bold text-[#21865B]">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>100% Physically Inspected</span>
+            </div>
           </div>
 
-          <div className="p-6 rounded-2xl border border-[#ECE8DD] bg-white shadow-xs space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#FAEBDE] text-[#E06D3B] flex items-center justify-center">
-              <Clock className="w-5 h-5" />
+          {/* Pillar 2 */}
+          <div className="p-8 rounded-3xl border border-[#E8E5DE] bg-white shadow-brand-sm space-y-4 hover:shadow-brand-md transition-shadow">
+            <div className="w-12 h-12 rounded-2xl bg-[#F5A623] text-[#102B50] flex items-center justify-center shadow-sm">
+              <Clock className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-bold text-[#173327]">Availability Freshness</h3>
-            <p className="text-xs text-[#3D3A33] leading-relaxed">
-              Real-time bed availability verified through atomic distributed locks and periodic owner audits. No phantom vacancies.
+            <h3 className="text-lg font-black text-[#102B50]">Live Atomic Bed Locks</h3>
+            <p className="text-xs text-[#687586] leading-relaxed">
+              When you select a bed, our Redis distributed locking system holds that exact bed for 10 minutes so no one else can book it while you finalize your move.
             </p>
+            <div className="pt-2 flex items-center gap-2 text-xs font-bold text-[#21865B]">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Zero Phantom Vacancies</span>
+            </div>
           </div>
 
-          <div className="p-6 rounded-2xl border border-[#ECE8DD] bg-white shadow-xs space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-[#ECE8DD] text-[#3D3A33] flex items-center justify-center">
-              <Calculator className="w-5 h-5" />
+          {/* Pillar 3 */}
+          <div className="p-8 rounded-3xl border border-[#E8E5DE] bg-white shadow-brand-sm space-y-4 hover:shadow-brand-md transition-shadow">
+            <div className="w-12 h-12 rounded-2xl bg-[#102B50] text-[#F5A623] flex items-center justify-center shadow-sm">
+              <Calculator className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-bold text-[#173327]">Total Living Cost</h3>
-            <p className="text-xs text-[#3D3A33] leading-relaxed">
-              No surprise bills at month-end. Complete upfront transparency on rent, security deposit, electricity meter rates, food, and maintenance.
+            <h3 className="text-lg font-black text-[#102B50]">Total Living Cost</h3>
+            <p className="text-xs text-[#687586] leading-relaxed">
+              No surprise bills at month-end. Complete upfront transparency on base rent, refundable security deposits, electricity sub-meter units, maintenance, and food.
             </p>
+            <div className="pt-2 flex items-center gap-2 text-xs font-bold text-[#21865B]">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Zero Hidden Brokerage</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-[#ECE8DD] pt-6 pb-2 flex flex-col md:flex-row items-center justify-between text-xs text-[#3D3A33] gap-4">
-        <p>© 2026 Apna Ghar Technologies. Har Sahar Apna Ghar.</p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <span>College-Anchored Search</span>
-          <span>•</span>
-          <span>MongoDB $geoNear 2dsphere</span>
-          <span>•</span>
-          <span>Redis Temporary Holds</span>
-          <span>•</span>
-          <span>Argon2id Auth</span>
+      {/* CTA Banner */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div className="bg-[#102B50] rounded-3xl p-8 sm:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-brand-lg">
+          <div className="space-y-3 text-center md:text-left">
+            <span className="text-xs font-bold text-[#F5A623] uppercase tracking-wider">
+              Are you a PG or Hostel Owner?
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              List Your Property on India's Verified Network
+            </h3>
+            <p className="text-xs sm:text-sm text-white/70 max-w-xl">
+              Get verified student tenants directly from premier universities. Instant payouts, transparent agreements, zero broker commissions.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+            <Link
+              href="/register?role=OWNER"
+              className="ag-btn-accent text-center px-6 py-3.5 text-xs sm:text-sm font-bold shadow-md"
+            >
+              List Property Free
+            </Link>
+            <Link
+              href="/search"
+              className="inline-flex items-center justify-center px-6 py-3.5 text-xs sm:text-sm font-semibold rounded-xl border border-white/20 hover:bg-white/10 transition-colors text-white"
+            >
+              Browse Stays
+            </Link>
+          </div>
         </div>
-      </footer>
-    </main>
+      </section>
+    </div>
   );
 }
-
