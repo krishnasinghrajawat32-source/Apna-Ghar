@@ -42,7 +42,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
     } else if (exception instanceof Error) {
       this.logger.error(`Unhandled Exception on ${request.method} ${request.url}: ${exception.message}`, exception.stack);
-      message = exception.message;
+      if (exception.message.includes('buffering timed out')) {
+        message = 'Database connection timed out. Please ensure MongoDB Atlas Network Access allows connections from anywhere (0.0.0.0/0).';
+        status = HttpStatus.SERVICE_UNAVAILABLE;
+        errorCode = 'DATABASE_UNAVAILABLE';
+      } else {
+        message = exception.message;
+      }
       details = {
         errorName: exception.name,
         errorMessage: exception.message,
