@@ -15,7 +15,7 @@ services:
       - key: MONGODB_URI
         value: mongodb+srv://erkrishnasingh001_db_user:ySIW0WpyxuXOYKkI@cluster1.ucsgvqr.mongodb.net/apna_ghar?retryWrites=true&w=majority
       - key: CORS_ORIGIN
-        value: https://apna-ghar-xgqu.vercel.app
+        value: https://apna-ghar-mauve.vercel.app
       - key: SERVICE_TYPE
         value: api
 

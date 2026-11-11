@@ -6,57 +6,39 @@ const PROD_API_FALLBACK = 'https://apna-ghar-2-4766.onrender.com/api/v1';
 export function getBaseUrl(): string {
   if (typeof window !== 'undefined') {
     const currentHost = window.location.hostname;
-    const isLanOrLocal =
-      !currentHost ||
-      currentHost === 'localhost' ||
-      currentHost === '127.0.0.1' ||
+    const isLocalhost = currentHost === 'localhost' || currentHost === '127.0.0.1';
+    const isLan =
       /^10\.\d+\.\d+\.\d+$/.test(currentHost) ||
       /^192\.168\.\d+\.\d+$/.test(currentHost) ||
       /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(currentHost) ||
       currentHost.endsWith('.local');
 
+    // On local machine dev
+    if (isLocalhost) {
+      return 'http://localhost:4000/api/v1';
+    }
+
+    // On mobile / LAN network dev
+    if (isLan) {
+      return `${window.location.protocol}//${currentHost}:4000/api/v1`;
+    }
+
+    // When running on public cloud (e.g. Vercel: apna-ghar-mauve.vercel.app):
+    // If NEXT_PUBLIC_API_URL is explicitly set to an external URL (not localhost), use it
     const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl) {
+    if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
       const clean = envUrl.replace(/\/+$/, '');
-      const withPrefix = clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
-
-      if (isLanOrLocal) {
-        if (currentHost && currentHost !== 'localhost' && currentHost !== '127.0.0.1') {
-          try {
-            const parsed = new URL(withPrefix);
-            if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
-              parsed.hostname = currentHost;
-              return parsed.toString().replace(/\/+$/, '');
-            }
-          } catch {
-            return withPrefix.replace(/localhost|127\.0\.0\.1/, currentHost);
-          }
-        }
-        return withPrefix;
-      }
-
-      // If running on a public domain (like Vercel), ensure we don't try calling localhost
-      try {
-        const parsed = new URL(withPrefix);
-        if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
-          return PROD_API_FALLBACK;
-        }
-      } catch {
-        // use withPrefix
-      }
-      return withPrefix;
+      return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
     }
 
-    if (!isLanOrLocal) {
-      return PROD_API_FALLBACK;
-    }
-
-    const port = '4000';
-    return `${window.location.protocol}//${window.location.hostname}:${port}/api/v1`;
+    // Otherwise, use same-origin relative '/api/v1', which Next.js rewrites/proxies
+    // to the backend server. This completely bypasses browser CORS errors and preflight checks!
+    return '/api/v1';
   }
 
-  const envUrl = process.env.NEXT_PUBLIC_API_URL;
-  if (!envUrl) {
+  // Server-side execution
+  const envUrl = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_API_URL;
+  if (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1')) {
     return process.env.NODE_ENV === 'production'
       ? PROD_API_FALLBACK
       : 'http://localhost:4000/api/v1';
@@ -118,10 +100,15 @@ export async function apiClient<T>(
       errMsg.includes('ECONNREFUSED');
 
     if (isConnRefused) {
-      throw new ApiError(
-        'NETWORK_ERROR',
-        `Unable to reach the backend server at ${baseUrl}. Please ensure the Apna Ghar API server is running on port 4000.`,
-      );
+      const isLocalhost =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+      const message = isLocalhost
+        ? `Unable to connect to the Apna Ghar API server at ${url}. Please verify that the backend API server is running on port 4000.`
+        : `Unable to reach the backend server. If the server was sleeping, please wait a few seconds and try again.`;
+
+      throw new ApiError('NETWORK_ERROR', message);
     }
     throw err;
   }

@@ -67,6 +67,7 @@ async function bootstrap() {
 
       const allowedOrigins = [
         corsOrigin,
+        'https://apna-ghar-mauve.vercel.app',
         'https://apna-ghar-xgqu.vercel.app',
         'http://localhost:3000',
       ];
