@@ -13,24 +13,46 @@ Apna Ghar is a production-grade, trust-first student accommodation platform engi
 
 ---
 
-## 2. Monorepo Architecture
+## 2. Monorepo Architecture (Three-Tier Separation)
 
-```
-apna-ghar/
+```text
+APNA-GHAR/
+│
 ├── apps/
-│   ├── web/                     # Next.js 15 (App Router, Tailwind CSS, TanStack Query, Zustand)
-│   └── api/                     # NestJS 10 (Modular Monolith, Mongoose, ioredis, Argon2id)
+│   ├── web/                     # Next.js Frontend (Pages, Components, Tailwind, TanStack Query)
+│   │   ├── src/
+│   │   ├── public/
+│   │   ├── package.json
+│   │   └── .env.example
+│   │
+│   └── api/                     # NestJS Backend (REST APIs, Auth, Business Logic, Redis)
+│       ├── src/
+│       │   ├── modules/
+│       │   ├── common/
+│       │   ├── config/
+│       │   ├── database/
+│       │   ├── redis/
+│       │   └── main.ts
+│       ├── package.json
+│       └── .env.example
+│
 ├── packages/
-│   ├── shared-types/            # Central domain entities, enums, DTO contracts
-│   ├── shared-constants/        # Bed hold durations, search radii, standard error codes
+│   ├── database/                # MongoDB Database Layer (Mongoose schemas, models, indexes, seeders)
+│   │   ├── schemas/
+│   │   ├── models/
+│   │   ├── indexes/
+│   │   ├── seeders/
+│   │   └── package.json
+│   │
+│   ├── shared-types/            # Central domain contracts, enums & interfaces
+│   ├── shared-constants/        # Bed hold timeouts, error codes, search defaults
 │   ├── eslint-config/           # Monorepo linting standards
 │   └── tsconfig/                # Strict TypeScript configurations
-├── docs/
-│   ├── architecture/            # Architecture specifications & diagrams
-│   ├── api/                     # OpenAPI contracts & guides
-│   └── decisions/               # Architecture Decision Records (ADRs)
-├── .env.example                 # Centralized environment variable template
-├── pnpm-workspace.yaml          # pnpm workspace configuration
+│
+├── docs/                        # Architecture & ADR documentation
+├── package.json                 # Monorepo root scripts & pipeline
+├── pnpm-workspace.yaml          # Monorepo workspace configuration
+├── .gitignore
 └── README.md
 ```
 

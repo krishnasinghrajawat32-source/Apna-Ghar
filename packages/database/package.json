@@ -1,0 +1,25 @@
+{
+  "name": "@apna-ghar/database",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "seed": "ts-node seeders/seed.ts",
+    "lint": "echo 'database lint passing'"
+  },
+  "dependencies": {
+    "@apna-ghar/shared-constants": "workspace:*",
+    "@apna-ghar/shared-types": "workspace:*",
+    "@nestjs/mongoose": "^10.1.0",
+    "mongoose": "^8.9.0"
+  },
+  "devDependencies": {
+    "@apna-ghar/tsconfig": "workspace:*",
+    "@types/node": "^22.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "extends": "@apna-ghar/tsconfig/nestjs.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./",
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": [
+    "schemas/**/*",
+    "models/**/*",
+    "indexes/**/*",
+    "seeders/**/*",
+    "index.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

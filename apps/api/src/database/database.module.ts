@@ -2,6 +2,7 @@ import { Global, Logger, Module, OnModuleInit } from '@nestjs/common';
 import { MongooseModule, InjectConnection } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Connection } from 'mongoose';
+import { ensureDatabaseIndexes } from '@apna-ghar/database';
 
 @Global()
 @Module({
@@ -65,12 +66,19 @@ export class DatabaseModule implements OnModuleInit {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async onModuleInit() {
-    if (this.connection.readyState !== 1) {
+    if (this.connection.readyState === 1) {
+      ensureDatabaseIndexes(this.connection).catch((err: any) => {
+        this.logger.debug(`Index initialization notice: ${err.message}`);
+      });
+    } else {
       this.logger.log('Initiating background MongoDB connection to Atlas...');
       this.connection
         .asPromise()
         .then(() => {
           this.logger.log('✅ Background MongoDB connection established successfully!');
+          ensureDatabaseIndexes(this.connection).catch((err: any) => {
+            this.logger.debug(`Index initialization notice: ${err.message}`);
+          });
         })
         .catch((err: any) => {
           this.logger.warn(`⚠️ Background MongoDB connection delayed: ${err.message}`);

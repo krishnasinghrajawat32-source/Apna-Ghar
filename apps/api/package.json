@@ -16,6 +16,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@apna-ghar/database": "workspace:*",
     "@apna-ghar/shared-constants": "workspace:*",
     "@apna-ghar/shared-types": "workspace:*",
     "@nestjs/common": "^10.4.15",
