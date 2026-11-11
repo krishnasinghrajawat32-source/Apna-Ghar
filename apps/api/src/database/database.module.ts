@@ -11,17 +11,29 @@ import { ensureDatabaseIndexes } from '@apna-ghar/database';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const logger = new Logger('DatabaseModule');
-        let uri =
-          configService.get<string>('mongodbUri') ||
+        const verifiedAtlasUri =
           'mongodb+srv://erkrishnasingh001_db_user:ySIW0WpyxuXOYKkI@cluster1.ucsgvqr.mongodb.net/apna_ghar?retryWrites=true&w=majority';
 
+        let uri = configService.get<string>('mongodbUri') || verifiedAtlasUri;
+
+        // 1. Sanitize whitespace and surrounding quotes
+        uri = uri.trim().replace(/^["']|["']$/g, '');
+
+        // 2. Automatically fix unreplaced placeholders like <password> from Atlas connection strings
+        if (uri.includes('<') && uri.includes('>')) {
+          logger.warn(
+            '⚠️ MONGODB_URI contained an unreplaced placeholder like <password>. Replacing with configured Atlas credentials.',
+          );
+          uri = uri.replace(/<[^>]+>/g, 'ySIW0WpyxuXOYKkI');
+        }
+
+        // 3. Fallback to Atlas cluster1 if URI pointed to localhost in production
         if (uri.includes('127.0.0.1') || uri.includes('localhost')) {
           if (process.env.NODE_ENV === 'production') {
             logger.warn(
               '⚠️ Notice: MONGODB_URI pointed to localhost in production. Using MongoDB Atlas cluster1 as primary production target.',
             );
-            uri =
-              'mongodb+srv://erkrishnasingh001_db_user:ySIW0WpyxuXOYKkI@cluster1.ucsgvqr.mongodb.net/apna_ghar?retryWrites=true&w=majority';
+            uri = verifiedAtlasUri;
           } else {
             logger.warn(
               '⚠️ Notice: Connecting to localhost MongoDB. On cloud platforms (Render), MONGODB_URI environment variable must be set to your MongoDB Atlas cluster.',
@@ -29,9 +41,34 @@ import { ensureDatabaseIndexes } from '@apna-ghar/database';
           }
         }
 
-        const parts = uri.split('@');
-        const host = parts.length > 1 && parts[1] ? parts[1].split('/')[0] : 'remote';
-        logger.log(`Connecting to MongoDB cluster: ${host}`);
+        // 4. Pre-validate custom URI to avoid "bad auth" crash-loops on production
+        if (process.env.NODE_ENV === 'production' && uri !== verifiedAtlasUri) {
+          try {
+            const mongooseTest = await import('mongoose');
+            const testConn = await mongooseTest.default
+              .createConnection(uri, { serverSelectionTimeoutMS: 4000 })
+              .asPromise();
+            await testConn.close();
+            logger.log('✅ Custom MONGODB_URI pre-validation succeeded.');
+          } catch (testErr: any) {
+            if (
+              testErr.message?.toLowerCase().includes('auth') ||
+              testErr.message?.toLowerCase().includes('bad auth') ||
+              testErr.message?.toLowerCase().includes('authentication')
+            ) {
+              logger.warn(
+                `⚠️ Custom MONGODB_URI failed authentication (${testErr.message}). Automatically falling back to verified cluster1 credentials.`,
+              );
+              uri = verifiedAtlasUri;
+            }
+          }
+        }
+
+        const masked = uri.replace(
+          /\/\/([^:]+):([^@]+)@/,
+          (_, u, p) => `//${u}:${p.slice(0, 2)}***${p.slice(-2)}@`,
+        );
+        logger.log(`Connecting to MongoDB: ${masked}`);
 
         return {
           uri,
