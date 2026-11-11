@@ -27,6 +27,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@apna-ghar/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@apna-ghar/shared-constants':
         specifier: workspace:*
         version: link:../../packages/shared-constants
