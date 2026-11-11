@@ -50,13 +50,33 @@ async function bootstrap() {
   // Security & Cookies
   app.use(cookieParser(cookieSecret));
 
-  // CORS: Allow Vercel production frontend, local frontend, and configured origin
+  // CORS: Allow Vercel production frontend, local frontend, LAN IPs, and configured origin
   app.enableCors({
-    origin: [
-      corsOrigin,
-      'https://apna-ghar-xgqu.vercel.app',
-      'http://localhost:3000',
-    ],
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      if (!origin) return callback(null, true);
+
+      if (process.env.NODE_ENV !== 'production') {
+        const isLocalOrLan =
+          /^https?:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/.test(
+            origin,
+          );
+        if (isLocalOrLan) {
+          return callback(null, true);
+        }
+      }
+
+      const allowedOrigins = [
+        corsOrigin,
+        'https://apna-ghar-xgqu.vercel.app',
+        'http://localhost:3000',
+      ];
+
+      if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],

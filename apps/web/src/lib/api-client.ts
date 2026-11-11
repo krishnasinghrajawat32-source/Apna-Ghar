@@ -1,16 +1,69 @@
 import { ApiErrorResponse } from '@apna-ghar/shared-types';
 
-// Ensure URL does not have trailing slashes and ends with /api/v1
-function getBaseUrl(): string {
+const PROD_API_FALLBACK = 'https://apna-ghar-2-4766.onrender.com/api/v1';
+
+// Dynamically resolve API URL for localhost, LAN network IP, and production cloud
+export function getBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    const currentHost = window.location.hostname;
+    const isLanOrLocal =
+      !currentHost ||
+      currentHost === 'localhost' ||
+      currentHost === '127.0.0.1' ||
+      /^10\.\d+\.\d+\.\d+$/.test(currentHost) ||
+      /^192\.168\.\d+\.\d+$/.test(currentHost) ||
+      /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(currentHost) ||
+      currentHost.endsWith('.local');
+
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (envUrl) {
+      const clean = envUrl.replace(/\/+$/, '');
+      const withPrefix = clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
+
+      if (isLanOrLocal) {
+        if (currentHost && currentHost !== 'localhost' && currentHost !== '127.0.0.1') {
+          try {
+            const parsed = new URL(withPrefix);
+            if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+              parsed.hostname = currentHost;
+              return parsed.toString().replace(/\/+$/, '');
+            }
+          } catch {
+            return withPrefix.replace(/localhost|127\.0\.0\.1/, currentHost);
+          }
+        }
+        return withPrefix;
+      }
+
+      // If running on a public domain (like Vercel), ensure we don't try calling localhost
+      try {
+        const parsed = new URL(withPrefix);
+        if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+          return PROD_API_FALLBACK;
+        }
+      } catch {
+        // use withPrefix
+      }
+      return withPrefix;
+    }
+
+    if (!isLanOrLocal) {
+      return PROD_API_FALLBACK;
+    }
+
+    const port = '4000';
+    return `${window.location.protocol}//${window.location.hostname}:${port}/api/v1`;
+  }
+
   const envUrl = process.env.NEXT_PUBLIC_API_URL;
   if (!envUrl) {
-    return 'http://localhost:4000/api/v1';
+    return process.env.NODE_ENV === 'production'
+      ? PROD_API_FALLBACK
+      : 'http://localhost:4000/api/v1';
   }
   const clean = envUrl.replace(/\/+$/, '');
   return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
 }
-
-const API_BASE_URL = getBaseUrl();
 
 export class ApiError extends Error {
   code: string;
@@ -30,8 +83,9 @@ export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
+  const baseUrl = getBaseUrl();
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  const url = `${API_BASE_URL}${cleanEndpoint}`;
+  const url = `${baseUrl}${cleanEndpoint}`;
 
   const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -45,14 +99,32 @@ export async function apiClient<T>(
     }
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...options.headers,
-    },
-    credentials: 'include', // Include HTTP-Only auth cookies for same-site or cross-site environments
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      headers: {
+        ...defaultHeaders,
+        ...options.headers,
+      },
+      credentials: 'include', // Include HTTP-Only auth cookies for same-site or cross-site environments
+    });
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    const isConnRefused =
+      errMsg.includes('fetch') ||
+      errMsg.includes('Failed to fetch') ||
+      errMsg.includes('NetworkError') ||
+      errMsg.includes('ECONNREFUSED');
+
+    if (isConnRefused) {
+      throw new ApiError(
+        'NETWORK_ERROR',
+        `Unable to reach the backend server at ${baseUrl}. Please ensure the Apna Ghar API server is running on port 4000.`,
+      );
+    }
+    throw err;
+  }
 
   // Handle empty 204 responses
   if (response.status === 204) {

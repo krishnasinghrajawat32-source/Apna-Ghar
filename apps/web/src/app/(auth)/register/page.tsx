@@ -68,6 +68,8 @@ export default function RegisterPage() {
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setServerError(err.message);
+      } else if (err instanceof Error) {
+        setServerError(err.message);
       } else {
         setServerError('An unexpected error occurred during registration. Please try again.');
       }
