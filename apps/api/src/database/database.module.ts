@@ -72,7 +72,6 @@ import { ensureDatabaseIndexes } from '@apna-ghar/database';
 
         return {
           uri,
-          lazyConnection: true,
           autoIndex: process.env.NODE_ENV !== 'production',
           serverSelectionTimeoutMS: 5000,
           connectTimeoutMS: 10000,
@@ -100,7 +99,7 @@ import { ensureDatabaseIndexes } from '@apna-ghar/database';
 export class DatabaseModule implements OnModuleInit {
   private readonly logger = new Logger(DatabaseModule.name);
 
-  constructor(@InjectConnection() private readonly connection: Connection) {}
+  constructor(@InjectConnection() private readonly connection: Connection) { }
 
   async onModuleInit() {
     if (this.connection.readyState === 1) {
