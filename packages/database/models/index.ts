@@ -36,6 +36,8 @@ import {
   MessSchema,
   MessSubscription,
   MessSubscriptionSchema,
+  Media,
+  MediaSchema,
 } from '../schemas';
 
 export const ModelNames = {
@@ -57,6 +59,7 @@ export const ModelNames = {
   REVIEW: Review.name,
   MESS: Mess.name,
   MESS_SUBSCRIPTION: MessSubscription.name,
+  MEDIA: Media.name,
 } as const;
 
 export const databaseModelDefinitions: ModelDefinition[] = [
@@ -78,4 +81,5 @@ export const databaseModelDefinitions: ModelDefinition[] = [
   { name: Review.name, schema: ReviewSchema },
   { name: Mess.name, schema: MessSchema },
   { name: MessSubscription.name, schema: MessSubscriptionSchema },
+  { name: Media.name, schema: MediaSchema },
 ];

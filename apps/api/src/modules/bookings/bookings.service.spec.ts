@@ -220,7 +220,7 @@ describe('BookingsService', () => {
       expect(mockBookingModel.create).toHaveBeenCalledWith(
         expect.objectContaining({
           studentId: new Types.ObjectId(mockStudentId),
-          status: BookingStatus.PENDING_PAYMENT,
+          status: BookingStatus.REQUESTED,
           rentAmount: 8500,
           depositAmount: 8500,
           totalInitialPayment: 17000,

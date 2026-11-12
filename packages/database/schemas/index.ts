@@ -16,3 +16,4 @@ export * from './ticket.schema';
 export * from './review.schema';
 export * from './mess.schema';
 export * from './mess-subscription.schema';
+export * from './media.schema';

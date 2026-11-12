@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { SubscriptionStatus } from '@apna-ghar/shared-types';
 
 export type MessSubscriptionDocument = MessSubscription & Document<Types.ObjectId>;
 
@@ -49,11 +50,20 @@ export class MessSubscription {
 
   @Prop({
     type: String,
-    enum: ['ACTIVE', 'EXPIRED', 'CANCELLED'],
-    default: 'ACTIVE',
+    enum: Object.values(SubscriptionStatus),
+    default: SubscriptionStatus.REQUESTED,
     index: true,
   })
-  status!: 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
+  status!: string;
+
+  @Prop({ default: '', trim: true })
+  deliveryAddress?: string;
+
+  @Prop({ default: '', trim: true })
+  decisionNotes?: string;
+
+  @Prop({ type: Date, default: null })
+  decidedAt?: Date;
 
   @Prop({ required: true, trim: true })
   qrPassCode!: string;

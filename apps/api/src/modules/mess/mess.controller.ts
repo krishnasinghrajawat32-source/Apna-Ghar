@@ -14,6 +14,11 @@ import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { MessService } from './mess.service';
 import { CreateMessSubscriptionDto } from './dto/create-mess-subscription.dto';
 import { UpdateWeeklyMenuDto } from './dto/update-weekly-menu.dto';
+import { CreateMessDto } from './dto/create-mess.dto';
+import { UpdateMessDto } from './dto/update-mess.dto';
+import { UpdateMealPlansDto } from './dto/update-meal-plans.dto';
+import { SubscriptionDecisionDto } from './dto/subscription-decision.dto';
+import { UpdateVendorProfileDto } from './dto/update-vendor-profile.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -25,6 +30,112 @@ import { UserRole } from '@apna-ghar/shared-types';
 @Controller('mess')
 export class MessController {
   constructor(private readonly messService: MessService) {}
+
+  @Get('partner/profile')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MESS_PARTNER, UserRole.ADMIN)
+  @ApiOperation({ summary: 'Get food vendor partner profile details' })
+  @ApiResponse({ status: 200, description: 'Vendor partner profile' })
+  async getPartnerProfile(@CurrentUser('id') partnerId: string) {
+    const profile = await this.messService.getPartnerProfile(partnerId);
+    return {
+      success: true,
+      data: profile,
+    };
+  }
+
+  @Patch('partner/profile')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MESS_PARTNER, UserRole.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update food vendor partner profile details' })
+  @ApiResponse({ status: 200, description: 'Updated vendor profile' })
+  async updatePartnerProfile(
+    @CurrentUser('id') partnerId: string,
+    @Body() dto: UpdateVendorProfileDto,
+  ) {
+    const profile = await this.messService.updatePartnerProfile(partnerId, dto);
+    return {
+      success: true,
+      data: profile,
+    };
+  }
+
+  @Post('partner/outlet')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MESS_PARTNER, UserRole.ADMIN)
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create a new mess/tiffin service outlet' })
+  @ApiResponse({ status: 201, description: 'Mess outlet created (pending verification)' })
+  async createPartnerMess(
+    @CurrentUser('id') partnerId: string,
+    @Body() dto: CreateMessDto,
+  ) {
+    const mess = await this.messService.createPartnerMess(partnerId, dto);
+    return {
+      success: true,
+      data: mess,
+    };
+  }
+
+  @Patch('partner/outlet')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MESS_PARTNER, UserRole.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update mess outlet service details and delivery configuration' })
+  @ApiResponse({ status: 200, description: 'Updated mess outlet' })
+  async updatePartnerMess(
+    @CurrentUser('id') partnerId: string,
+    @CurrentUser('role') role: UserRole,
+    @Query('messId') messId: string,
+    @Body() dto: UpdateMessDto,
+  ) {
+    const targetMessId = messId || (await this.messService.getPartnerMess(partnerId))?._id.toString();
+    const mess = await this.messService.updatePartnerMess(partnerId, targetMessId!, role, dto);
+    return {
+      success: true,
+      data: mess,
+    };
+  }
+
+  @Patch('partner/plans')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MESS_PARTNER, UserRole.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update monthly meal plans (pricing for listing display only)' })
+  @ApiResponse({ status: 200, description: 'Updated meal plans' })
+  async updateMealPlans(
+    @CurrentUser('id') partnerId: string,
+    @CurrentUser('role') role: UserRole,
+    @Query('messId') messId: string,
+    @Body() dto: UpdateMealPlansDto,
+  ) {
+    const targetMessId = messId || (await this.messService.getPartnerMess(partnerId))?._id.toString();
+    const mess = await this.messService.updateMealPlans(partnerId, targetMessId!, role, dto);
+    return {
+      success: true,
+      data: mess,
+    };
+  }
+
+  @Patch('partner/subscriptions/:id/decision')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MESS_PARTNER, UserRole.ADMIN)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Vendor accepts or rejects student subscription/order request' })
+  @ApiResponse({ status: 200, description: 'Decision recorded (not a paid transaction)' })
+  async decideSubscription(
+    @Param('id') subscriptionId: string,
+    @CurrentUser('id') partnerId: string,
+    @CurrentUser('role') role: UserRole,
+    @Body() dto: SubscriptionDecisionDto,
+  ) {
+    const sub = await this.messService.decideSubscription(partnerId, subscriptionId, role, dto);
+    return {
+      success: true,
+      data: sub,
+    };
+  }
 
   @Public()
   @Get()

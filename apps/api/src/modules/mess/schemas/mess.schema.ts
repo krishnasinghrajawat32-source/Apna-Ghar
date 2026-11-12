@@ -1,8 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { DietaryType, MealType, DayOfWeek } from '@apna-ghar/shared-types';
+import { DietaryType, MealType, DayOfWeek, ApprovalStatus } from '@apna-ghar/shared-types';
 
 export type MessDocument = Mess & Document<Types.ObjectId>;
+
+@Schema({ _id: false })
+export class MessGeoLocation {
+  @Prop({ type: String, enum: ['Point'], default: 'Point', required: true })
+  type!: string;
+
+  // Canonical MongoDB coordinate format: [longitude, latitude]
+  @Prop({ type: [Number], required: true, default: [77.209, 28.6139] })
+  coordinates!: [number, number];
+}
+
+const MessGeoLocationSchema = SchemaFactory.createForClass(MessGeoLocation);
 
 @Schema({ _id: false })
 export class MessAddress {
@@ -127,6 +139,41 @@ export class Mess {
   @Prop({ type: MessAddressSchema, required: true })
   address!: MessAddress;
 
+  @Prop({ type: MessGeoLocationSchema, required: false })
+  location?: MessGeoLocation;
+
+  @Prop({ type: String, trim: true, default: null })
+  googlePlaceId?: string;
+
+  @Prop({ type: Number, default: 5, min: 0.5, max: 50 })
+  deliveryRadiusKm!: number;
+
+  @Prop({ type: String, default: 'Breakfast: 8-10 AM, Lunch: 12-2 PM, Dinner: 7-9 PM' })
+  deliveryTimings!: string;
+
+  @Prop({ type: [String], default: [] })
+  images!: string[];
+
+  @Prop({
+    type: String,
+    enum: Object.values(ApprovalStatus),
+    default: ApprovalStatus.PENDING,
+    index: true,
+  })
+  approvalStatus!: ApprovalStatus;
+
+  @Prop({ default: false, index: true })
+  isPhysicallyVerified!: boolean;
+
+  @Prop({ type: Types.ObjectId, ref: 'User', default: null })
+  approvedBy?: Types.ObjectId;
+
+  @Prop({ type: Date, default: null })
+  approvedAt?: Date;
+
+  @Prop({ type: String, default: '' })
+  approvalNotes?: string;
+
   @Prop({ type: Number, default: 4.5, min: 1, max: 5 })
   rating!: number;
 
@@ -147,5 +194,7 @@ export class Mess {
 }
 
 export const MessSchema = SchemaFactory.createForClass(Mess);
+MessSchema.index({ location: '2dsphere' });
 MessSchema.index({ 'address.city': 1, status: 1 });
 MessSchema.index({ partnerId: 1, status: 1 });
+MessSchema.index({ approvalStatus: 1, status: 1 });

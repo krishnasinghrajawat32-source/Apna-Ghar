@@ -3,6 +3,8 @@ import { Logger, ValidationPipe, RequestMethod } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import express from 'express';
+import * as path from 'path';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
@@ -49,6 +51,7 @@ async function bootstrap() {
 
   // Security & Cookies
   app.use(cookieParser(cookieSecret));
+  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
   // CORS: Allow Vercel production frontend, local frontend, LAN IPs, and configured origin
   app.enableCors({

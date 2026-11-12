@@ -69,4 +69,27 @@ export async function ensureDatabaseIndexes(connection: Connection): Promise<voi
   } catch (err: any) {
     // Index may already exist
   }
+
+  // 7. Messes 2dsphere & partner indexes
+  try {
+    const messesCol = db.collection('messes');
+    await messesCol.createIndex({ location: '2dsphere' });
+    await messesCol.createIndex({ slug: 1 }, { unique: true });
+    await messesCol.createIndex({ partnerId: 1, status: 1 });
+    await messesCol.createIndex({ 'address.city': 1, status: 1 });
+    await messesCol.createIndex({ approvalStatus: 1, status: 1 });
+  } catch (err: any) {
+    // Index may already exist
+  }
+
+  // 8. Media metadata records
+  try {
+    const mediaCol = db.collection('media_records');
+    await mediaCol.createIndex({ storageKey: 1 }, { unique: true });
+    await mediaCol.createIndex({ uploaderId: 1, createdAt: -1 });
+    await mediaCol.createIndex({ relatedEntityType: 1, relatedEntityId: 1 });
+    await mediaCol.createIndex({ reviewStatus: 1, isPhysicallyVerified: 1 });
+  } catch (err: any) {
+    // Index may already exist
+  }
 }

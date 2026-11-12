@@ -8,6 +8,8 @@ import { Booking } from '../bookings/schemas/booking.schema';
 import { Payment } from '../payments/schemas/payment.schema';
 import { TrustPassport } from '../trust/schemas/trust-passport.schema';
 import { Review } from '../reviews/schemas/review.schema';
+import { Mess } from '../mess/schemas/mess.schema';
+import { Media } from '@apna-ghar/database';
 import { TrustService } from '../trust/trust.service';
 import { ReviewsService } from '../reviews/reviews.service';
 import {
@@ -43,6 +45,18 @@ describe('AdminService', () => {
 
   const mockReviewModel = {
     countDocuments: jest.fn(),
+  };
+
+  const mockMessModel = {
+    countDocuments: jest.fn(),
+    find: jest.fn(),
+    findById: jest.fn(),
+  };
+
+  const mockMediaModel = {
+    countDocuments: jest.fn(),
+    find: jest.fn(),
+    findById: jest.fn(),
   };
 
   const mockTrustService = {
@@ -84,6 +98,14 @@ describe('AdminService', () => {
         {
           provide: getModelToken(Review.name),
           useValue: mockReviewModel,
+        },
+        {
+          provide: getModelToken(Mess.name),
+          useValue: mockMessModel,
+        },
+        {
+          provide: getModelToken(Media.name),
+          useValue: mockMediaModel,
         },
         {
           provide: TrustService,

@@ -10,6 +10,8 @@ import { RoomType } from '../inventory/schemas/room-type.schema';
 import { Booking } from '../bookings/schemas/booking.schema';
 import { Visit } from '../visits/schemas/visit.schema';
 import { Ticket } from '../tickets/schemas/ticket.schema';
+import { OwnerProfile } from '../users/schemas/owner-profile.schema';
+import { RedisService } from '../../redis/redis.service';
 import { BedStatus, UserRole, PropertyType, PropertyStatus } from '@apna-ghar/shared-types';
 
 describe('OwnerService', () => {
@@ -78,6 +80,18 @@ describe('OwnerService', () => {
     countDocuments: jest.fn(),
   };
 
+  const mockOwnerProfileModel = {
+    findOne: jest.fn(),
+    create: jest.fn(),
+    findOneAndUpdate: jest.fn(),
+  };
+
+  const mockRedisService = {
+    get: jest.fn(),
+    set: jest.fn(),
+    del: jest.fn(),
+  };
+
   beforeEach(async () => {
     jest.clearAllMocks();
 
@@ -91,6 +105,8 @@ describe('OwnerService', () => {
         { provide: getModelToken(Booking.name), useValue: mockBookingModel },
         { provide: getModelToken(Visit.name), useValue: mockVisitModel },
         { provide: getModelToken(Ticket.name), useValue: mockTicketModel },
+        { provide: getModelToken(OwnerProfile.name), useValue: mockOwnerProfileModel },
+        { provide: RedisService, useValue: mockRedisService },
       ],
     }).compile();
 
@@ -232,4 +248,36 @@ describe('OwnerService', () => {
       expect(testBed.save).toHaveBeenCalled();
     });
   });
+
+  describe('createProperty', () => {
+    it('should reject invalid coordinates outside range', async () => {
+      await expect(
+        service.createProperty(mockOwnerId, {
+          name: 'Invalid Geo Property',
+          propertyType: PropertyType.HOSTEL,
+          address: { street: 'Main Rd', city: 'Kota', state: 'Rajasthan', pincode: '324005' },
+          location: { type: 'Point', coordinates: [200, 100] }, // Invalid coordinates
+          genderPreference: anyValue('BOYS'),
+          furnishing: anyValue('FULLY_FURNISHED'),
+          roomTypes: [],
+        } as any),
+      ).rejects.toThrow(BadRequestException);
+    });
+  });
+
+  describe('updateProperty', () => {
+    it('should throw ForbiddenException if user is not property owner', async () => {
+      mockPropertyModel.findById.mockResolvedValue(mockPropertyDoc);
+
+      await expect(
+        service.updateProperty(mockOtherOwnerId, mockPropertyId.toString(), UserRole.OWNER, {
+          name: 'Hacked Name',
+        }),
+      ).rejects.toThrow(ForbiddenException);
+    });
+  });
 });
+
+function anyValue(val: any): any {
+  return val;
+}

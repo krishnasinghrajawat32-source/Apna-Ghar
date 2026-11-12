@@ -95,10 +95,77 @@ export enum VisitStatus {
 }
 
 export enum BookingStatus {
+  REQUESTED = 'REQUESTED',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
   PENDING_PAYMENT = 'PENDING_PAYMENT',
   CONFIRMED = 'CONFIRMED',
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',
+}
+
+export enum SubscriptionStatus {
+  REQUESTED = 'REQUESTED',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+  ACTIVE = 'ACTIVE',
+  EXPIRED = 'EXPIRED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum ApprovalStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  SUSPENDED = 'SUSPENDED',
+}
+
+export enum MediaType {
+  IMAGE = 'IMAGE',
+  VIDEO = 'VIDEO',
+  DOCUMENT = 'DOCUMENT',
+}
+
+export enum MediaArea {
+  PROPERTY = 'PROPERTY',
+  ROOM = 'ROOM',
+  BATHROOM = 'BATHROOM',
+  KITCHEN = 'KITCHEN',
+  COMMON_AREA = 'COMMON_AREA',
+  MESS = 'MESS',
+  FOOD = 'FOOD',
+  DOCUMENT = 'DOCUMENT',
+}
+
+export enum MediaReviewStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+}
+
+export interface MediaItem {
+  id: string;
+  url: string;
+  storageKey: string;
+  mimeType: string;
+  sizeBytes: number;
+  mediaType: MediaType;
+  area?: MediaArea;
+  category?: string;
+  originalFilename?: string;
+  uploaderId: string;
+  relatedEntityType: 'PROPERTY' | 'ROOM' | 'MESS' | 'USER_KYC' | 'OTHER';
+  relatedEntityId?: string;
+  reviewStatus: MediaReviewStatus;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  reviewReason?: string;
+  isPhysicallyVerified: boolean;
+  physicalVerifiedBy?: string;
+  physicalVerifiedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export enum PaymentStatus {
@@ -180,9 +247,15 @@ export interface Property {
   description: string;
   address: Address;
   location: GeoPoint;
+  googlePlaceId?: string;
   genderPreference: GenderPreference;
   furnishing: FurnishingType;
   status: PropertyStatus;
+  approvalStatus?: ApprovalStatus;
+  isPhysicallyVerified?: boolean;
+  approvalNotes?: string;
+  approvedBy?: string;
+  approvedAt?: string;
   amenities: string[];
   rules: string[];
   images: string[];
@@ -560,6 +633,10 @@ export interface Mess {
     pincode: string;
     landmark?: string;
   };
+  location?: GeoPoint;
+  googlePlaceId?: string;
+  deliveryRadiusKm?: number;
+  deliveryTimings?: string;
   rating: number;
   hygieneCertified: boolean;
   operatingHours: {
@@ -569,7 +646,10 @@ export interface Mess {
   };
   plans: MealPlan[];
   weeklyMenu: DailyMenu[];
+  images?: string[];
   status: 'ACTIVE' | 'INACTIVE';
+  approvalStatus?: ApprovalStatus;
+  isPhysicallyVerified?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -585,8 +665,9 @@ export interface MessSubscription {
   endDate: string;
   monthlyPrice: number;
   dietaryPreference: 'VEG' | 'NON_VEG' | 'JAIN';
-  status: 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
+  status: SubscriptionStatus | 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
   qrPassCode: string;
+  decisionNotes?: string;
   mess?: Mess;
   student?: { name: string; phone?: string; email?: string };
   createdAt: string;
@@ -708,3 +789,128 @@ export interface AdminTrustAuditItem {
   lastVerifiedAt?: string;
   checkpoints: TrustCheckpoint[];
 }
+
+// Owner Property and Inventory DTOs
+export interface CreatePropertyDto {
+  name: string;
+  propertyType: PropertyType;
+  description: string;
+  address: Address;
+  location: GeoPoint;
+  googlePlaceId?: string;
+  genderPreference: GenderPreference;
+  furnishing?: FurnishingType;
+  amenities?: string[];
+  rules?: string[];
+  images?: string[];
+  roomTypes?: Array<{
+    name: string;
+    sharingType: SharingType;
+    baseRent: number;
+    deposit: number;
+    attachedBathroom?: boolean;
+    ac?: boolean;
+    furnishingDetails?: string[];
+  }>;
+}
+
+export interface UpdatePropertyDto {
+  name?: string;
+  propertyType?: PropertyType;
+  description?: string;
+  address?: Address;
+  location?: GeoPoint;
+  googlePlaceId?: string;
+  genderPreference?: GenderPreference;
+  furnishing?: FurnishingType;
+  amenities?: string[];
+  rules?: string[];
+  images?: string[];
+  status?: PropertyStatus;
+}
+
+export interface CreateRoomDto {
+  roomTypeId: string;
+  floorNumber: number;
+  roomNumber: string;
+  status?: 'ACTIVE' | 'MAINTENANCE';
+}
+
+export interface CreateBedDto {
+  roomId: string;
+  roomTypeId: string;
+  bedLabel: string;
+  position?: BedPosition;
+  permanentStatus?: BedStatus;
+}
+
+// Food Vendor (Mess Partner) DTOs
+export interface CreateMessDto {
+  name: string;
+  description: string;
+  dietaryType: DietaryType;
+  fssaiNumber: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    pincode: string;
+    landmark?: string;
+  };
+  location?: GeoPoint;
+  googlePlaceId?: string;
+  deliveryRadiusKm?: number;
+  deliveryTimings?: string;
+  operatingHours?: {
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+  };
+  plans?: MealPlan[];
+  weeklyMenu?: DailyMenu[];
+  images?: string[];
+}
+
+export interface UpdateMessDto {
+  name?: string;
+  description?: string;
+  dietaryType?: DietaryType;
+  fssaiNumber?: string;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    pincode: string;
+    landmark?: string;
+  };
+  location?: GeoPoint;
+  googlePlaceId?: string;
+  deliveryRadiusKm?: number;
+  deliveryTimings?: string;
+  operatingHours?: {
+    breakfast: string;
+    lunch: string;
+    dinner: string;
+  };
+  images?: string[];
+  status?: 'ACTIVE' | 'INACTIVE';
+}
+
+// Request and Decision DTOs (No payment processing)
+export interface BookingDecisionDto {
+  decision: 'ACCEPT' | 'REJECT';
+  reason?: string;
+}
+
+export interface SubscriptionDecisionDto {
+  decision: 'ACCEPT' | 'REJECT' | 'COMPLETE';
+  reason?: string;
+}
+
+// Admin Moderation DTOs
+export interface AdminEntityDecisionDto {
+  status: 'APPROVED' | 'REJECTED' | 'SUSPENDED';
+  reason?: string;
+  isPhysicallyVerified?: boolean;
+}
+

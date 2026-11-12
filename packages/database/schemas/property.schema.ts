@@ -5,6 +5,7 @@ import {
   GenderPreference,
   FurnishingType,
   PropertyStatus,
+  ApprovalStatus,
 } from '@apna-ghar/shared-types';
 
 export type PropertyDocument = Property & Document<Types.ObjectId>;
@@ -80,6 +81,9 @@ export class Property {
   @Prop({ type: PropertyGeoLocationSchema, required: true })
   location!: PropertyGeoLocation;
 
+  @Prop({ type: String, trim: true, default: null })
+  googlePlaceId?: string;
+
   @Prop({
     type: String,
     enum: Object.values(GenderPreference),
@@ -98,10 +102,27 @@ export class Property {
   @Prop({
     type: String,
     enum: Object.values(PropertyStatus),
-    default: PropertyStatus.ACTIVE,
+    default: PropertyStatus.PENDING_VERIFICATION,
     index: true,
   })
   status!: PropertyStatus;
+
+  @Prop({
+    type: String,
+    enum: Object.values(ApprovalStatus),
+    default: ApprovalStatus.PENDING,
+    index: true,
+  })
+  approvalStatus!: ApprovalStatus;
+
+  @Prop({ type: Types.ObjectId, ref: 'User', default: null })
+  approvedBy?: Types.ObjectId;
+
+  @Prop({ type: Date, default: null })
+  approvedAt?: Date;
+
+  @Prop({ type: String, default: '' })
+  approvalNotes?: string;
 
   @Prop({ type: [String], default: [] })
   amenities!: string[];

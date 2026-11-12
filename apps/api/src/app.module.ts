@@ -21,6 +21,7 @@ import { OwnerModule } from './modules/owner/owner.module';
 import { MessModule } from './modules/mess/mess.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { MediaModule } from './modules/media/media.module';
 import { AppController } from './app.controller';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
@@ -59,6 +60,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     MessModule,
     ReviewsModule,
     AdminModule,
+    MediaModule,
   ],
   providers: [
     {

@@ -165,7 +165,7 @@ export class BookingsService {
       maintenanceFee,
       moveInCharges,
       totalInitialPayment,
-      status: BookingStatus.PENDING_PAYMENT,
+      status: BookingStatus.REQUESTED,
       emergencyContact: dto.emergencyContact,
       studentIdCardRef: dto.studentIdCardRef || null,
     });
@@ -298,12 +298,18 @@ export class BookingsService {
       booking.cancelledReason = dto.reason;
     }
 
-    // If confirmed, update bed permanentStatus to BOOKED
-    if (dto.status === BookingStatus.CONFIRMED) {
+    // If accepted or confirmed, update bed permanentStatus to BOOKED
+    if (dto.status === BookingStatus.CONFIRMED || dto.status === BookingStatus.ACCEPTED) {
       await this.bedModel.findByIdAndUpdate(booking.bedId, {
         permanentStatus: BedStatus.BOOKED,
       });
-      // Clear Redis hold since bed is now permanently booked
+      // Clear Redis hold since bed is now booked
+      await this.redisService.del(`booking:hold:${booking.bedId.toString()}`);
+      await this.redisService.del(`booking:user_hold:${booking.studentId.toString()}`);
+    } else if (dto.status === BookingStatus.REJECTED) {
+      await this.bedModel.findByIdAndUpdate(booking.bedId, {
+        permanentStatus: BedStatus.AVAILABLE,
+      });
       await this.redisService.del(`booking:hold:${booking.bedId.toString()}`);
       await this.redisService.del(`booking:user_hold:${booking.studentId.toString()}`);
     }

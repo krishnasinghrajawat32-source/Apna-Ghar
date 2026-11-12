@@ -5,8 +5,9 @@ import { BadRequestException, ForbiddenException, NotFoundException } from '@nes
 import { MessService } from './mess.service';
 import { Mess } from './schemas/mess.schema';
 import { MessSubscription } from './schemas/mess-subscription.schema';
+import { MessPartnerProfile } from '../users/schemas/mess-partner-profile.schema';
 import { User } from '../users/schemas/user.schema';
-import { DailyMenu } from '@apna-ghar/shared-types';
+import { DailyMenu, SubscriptionStatus } from '@apna-ghar/shared-types';
 
 describe('MessService', () => {
   let service: MessService;
@@ -70,6 +71,12 @@ describe('MessService', () => {
     create: jest.fn(),
   };
 
+  const mockPartnerProfileModel = {
+    findOne: jest.fn(),
+    create: jest.fn(),
+    findOneAndUpdate: jest.fn(),
+  };
+
   beforeEach(async () => {
     jest.clearAllMocks();
 
@@ -79,6 +86,7 @@ describe('MessService', () => {
         { provide: getModelToken(Mess.name), useValue: mockMessModel },
         { provide: getModelToken(MessSubscription.name), useValue: mockSubscriptionModel },
         { provide: getModelToken(User.name), useValue: mockUserModel },
+        { provide: getModelToken(MessPartnerProfile.name), useValue: mockPartnerProfileModel },
       ],
     }).compile();
 
@@ -225,7 +233,7 @@ describe('MessService', () => {
         expect.objectContaining({
           planId: 'plan-full-3m',
           monthlyPrice: 3800,
-          status: 'ACTIVE',
+          status: SubscriptionStatus.REQUESTED,
         }),
       );
     });

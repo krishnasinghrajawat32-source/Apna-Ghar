@@ -12,8 +12,14 @@ import { randomBytes } from 'crypto';
 import { Mess, MessDocument } from './schemas/mess.schema';
 import { MessSubscription, MessSubscriptionDocument } from './schemas/mess-subscription.schema';
 import { User, UserDocument } from '../users/schemas/user.schema';
+import { MessPartnerProfile, MessPartnerProfileDocument } from '../users/schemas/mess-partner-profile.schema';
 import { CreateMessSubscriptionDto } from './dto/create-mess-subscription.dto';
-import { DailyMenu, UserRole } from '@apna-ghar/shared-types';
+import { CreateMessDto } from './dto/create-mess.dto';
+import { UpdateMessDto } from './dto/update-mess.dto';
+import { UpdateMealPlansDto } from './dto/update-meal-plans.dto';
+import { SubscriptionDecisionDto } from './dto/subscription-decision.dto';
+import { UpdateVendorProfileDto } from './dto/update-vendor-profile.dto';
+import { DailyMenu, UserRole, ApprovalStatus, SubscriptionStatus } from '@apna-ghar/shared-types';
 
 @Injectable()
 export class MessService implements OnModuleInit {
@@ -24,6 +30,8 @@ export class MessService implements OnModuleInit {
     @InjectModel(MessSubscription.name)
     private readonly subscriptionModel: Model<MessSubscriptionDocument>,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(MessPartnerProfile.name)
+    private readonly partnerProfileModel: Model<MessPartnerProfileDocument>,
   ) {}
 
   async onModuleInit() {
@@ -310,7 +318,7 @@ export class MessService implements OnModuleInit {
       endDate,
       monthlyPrice: plan.monthlyPrice,
       dietaryPreference: dto.dietaryPreference || 'VEG',
-      status: 'ACTIVE',
+      status: SubscriptionStatus.REQUESTED,
       qrPassCode,
     });
 
@@ -347,4 +355,230 @@ export class MessService implements OnModuleInit {
       .sort({ createdAt: -1 })
       .exec();
   }
+
+  /**
+   * Retrieves food vendor partner profile details.
+   */
+  async getPartnerProfile(partnerId: string): Promise<MessPartnerProfileDocument | null> {
+    return this.partnerProfileModel
+      .findOne({ userId: new Types.ObjectId(partnerId) })
+      .exec();
+  }
+
+  /**
+   * Updates food vendor business and FSSAI details.
+   */
+  async updatePartnerProfile(
+    partnerId: string,
+    dto: UpdateVendorProfileDto,
+  ): Promise<MessPartnerProfileDocument> {
+    let profile = await this.partnerProfileModel.findOne({
+      userId: new Types.ObjectId(partnerId),
+    });
+    if (!profile) {
+      profile = new this.partnerProfileModel({
+        userId: new Types.ObjectId(partnerId),
+      });
+    }
+
+    if (dto.businessName !== undefined) profile.businessName = dto.businessName;
+    if (dto.fssaiLicense !== undefined) profile.fssaiLicense = dto.fssaiLicense;
+    if (dto.serviceAreas !== undefined) profile.serviceAreas = dto.serviceAreas;
+
+    await profile.save();
+    return profile;
+  }
+
+  /**
+   * Creates a new mess/tiffin service outlet for vendor.
+   * Defaults to INACTIVE and PENDING approval.
+   */
+  async createPartnerMess(partnerId: string, dto: CreateMessDto): Promise<MessDocument> {
+    const baseSlug = dto.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    const randomSuffix = randomBytes(3).toString('hex');
+    const slug = `${baseSlug}-${randomSuffix}`;
+
+    if (dto.location) {
+      this.validateCoordinates(dto.location.coordinates);
+    }
+
+    const defaultLocation = {
+      type: 'Point',
+      coordinates: dto.location ? dto.location.coordinates : [77.209, 28.6139],
+    };
+
+    const mess = await this.messModel.create({
+      partnerId: new Types.ObjectId(partnerId),
+      name: dto.name,
+      slug,
+      description: dto.description,
+      dietaryType: dto.dietaryType,
+      fssaiNumber: dto.fssaiNumber,
+      address: dto.address,
+      location: defaultLocation,
+      googlePlaceId: dto.googlePlaceId,
+      deliveryRadiusKm: dto.deliveryRadiusKm || 5,
+      deliveryTimings:
+        dto.deliveryTimings || 'Breakfast: 8-10 AM, Lunch: 12-2 PM, Dinner: 7-9 PM',
+      operatingHours: dto.operatingHours || {
+        breakfast: '07:30 - 09:30',
+        lunch: '12:30 - 14:30',
+        dinner: '19:30 - 21:30',
+      },
+      images: dto.images || [],
+      plans: dto.plans || [],
+      weeklyMenu: [],
+      status: 'INACTIVE',
+      approvalStatus: ApprovalStatus.PENDING,
+      isPhysicallyVerified: false,
+    });
+
+    this.logger.log(`Mess outlet created: ${mess.name} (${mess._id}) by partner ${partnerId}`);
+    return mess;
+  }
+
+  /**
+   * Updates an existing mess outlet managed by vendor.
+   */
+  async updatePartnerMess(
+    partnerId: string,
+    messId: string,
+    role: UserRole,
+    dto: UpdateMessDto,
+  ): Promise<MessDocument> {
+    if (!Types.ObjectId.isValid(messId)) {
+      throw new BadRequestException('Invalid mess ID format.');
+    }
+
+    const mess = await this.messModel.findById(messId);
+    if (!mess) {
+      throw new NotFoundException('Mess outlet not found.');
+    }
+
+    if (role !== UserRole.ADMIN && mess.partnerId.toString() !== partnerId) {
+      throw new ForbiddenException('You do not have permission to update this mess outlet.');
+    }
+
+    if (dto.name !== undefined) mess.name = dto.name;
+    if (dto.description !== undefined) mess.description = dto.description;
+    if (dto.dietaryType !== undefined) mess.dietaryType = dto.dietaryType;
+    if (dto.fssaiNumber !== undefined) mess.fssaiNumber = dto.fssaiNumber;
+    if (dto.address !== undefined) mess.address = dto.address as any;
+    if (dto.googlePlaceId !== undefined) mess.googlePlaceId = dto.googlePlaceId;
+    if (dto.deliveryRadiusKm !== undefined) mess.deliveryRadiusKm = dto.deliveryRadiusKm;
+    if (dto.deliveryTimings !== undefined) mess.deliveryTimings = dto.deliveryTimings;
+    if (dto.operatingHours !== undefined) mess.operatingHours = dto.operatingHours as any;
+    if (dto.images !== undefined) mess.images = dto.images;
+    if (dto.plans !== undefined) mess.plans = dto.plans as any;
+
+    if (dto.location) {
+      this.validateCoordinates(dto.location.coordinates);
+      mess.location = {
+        type: 'Point',
+        coordinates: [dto.location.coordinates[0], dto.location.coordinates[1]],
+      };
+    }
+
+    if (dto.status !== undefined && role === UserRole.ADMIN) {
+      mess.status = dto.status;
+    }
+
+    await mess.save();
+    return mess;
+  }
+
+  /**
+   * Updates meal plans list for vendor's mess outlet.
+   */
+  async updateMealPlans(
+    partnerId: string,
+    messId: string,
+    role: UserRole,
+    dto: UpdateMealPlansDto,
+  ): Promise<MessDocument> {
+    if (!Types.ObjectId.isValid(messId)) {
+      throw new BadRequestException('Invalid mess ID format.');
+    }
+
+    const mess = await this.messModel.findById(messId);
+    if (!mess) {
+      throw new NotFoundException('Mess outlet not found.');
+    }
+
+    if (role !== UserRole.ADMIN && mess.partnerId.toString() !== partnerId) {
+      throw new ForbiddenException('You do not have permission to manage this mess.');
+    }
+
+    mess.plans = dto.plans as any;
+    await mess.save();
+    return mess;
+  }
+
+  /**
+   * Vendor accepts or rejects a student dining subscription/order request.
+   * Pure request-decision workflow. Does NOT collect payment or mark as paid.
+   */
+  async decideSubscription(
+    partnerId: string,
+    subscriptionId: string,
+    role: UserRole,
+    dto: SubscriptionDecisionDto,
+  ): Promise<MessSubscriptionDocument> {
+    if (!Types.ObjectId.isValid(subscriptionId)) {
+      throw new BadRequestException('Invalid subscription ID format.');
+    }
+
+    const subscription = await this.subscriptionModel.findById(subscriptionId);
+    if (!subscription) {
+      throw new NotFoundException('Subscription request not found.');
+    }
+
+    const mess = await this.messModel.findById(subscription.messId);
+    if (!mess) {
+      throw new NotFoundException('Mess outlet not found.');
+    }
+
+    if (role !== UserRole.ADMIN && mess.partnerId.toString() !== partnerId) {
+      throw new ForbiddenException('You do not have permission to decide this subscription.');
+    }
+
+    if (dto.decision === 'ACCEPT') {
+      subscription.status = SubscriptionStatus.ACCEPTED;
+    } else if (dto.decision === 'REJECT') {
+      subscription.status = SubscriptionStatus.REJECTED;
+    } else if (dto.decision === 'COMPLETE') {
+      subscription.status = SubscriptionStatus.COMPLETED;
+    }
+
+    if (dto.reason) {
+      subscription.decisionNotes = dto.reason;
+    }
+    subscription.decidedAt = new Date();
+
+    await subscription.save();
+    this.logger.log(
+      `Subscription ${subscription.subscriptionNumber} decision ${dto.decision} by partner ${partnerId}`,
+    );
+    return subscription;
+  }
+
+  private validateCoordinates(coords: [number, number]): void {
+    if (!Array.isArray(coords) || coords.length !== 2) {
+      throw new BadRequestException('Location coordinates must be an array of [longitude, latitude].');
+    }
+    const [lng, lat] = coords;
+    if (typeof lng !== 'number' || typeof lat !== 'number' || isNaN(lng) || isNaN(lat)) {
+      throw new BadRequestException('Coordinates must be valid numbers.');
+    }
+    if (lat < -90 || lat > 90) {
+      throw new BadRequestException(`Latitude (${lat}) must be between -90 and 90 degrees.`);
+    }
+    if (lng < -180 || lng > 180) {
+      throw new BadRequestException(`Longitude (${lng}) must be between -180 and 180 degrees.`);
+    }
+  }
 }
+

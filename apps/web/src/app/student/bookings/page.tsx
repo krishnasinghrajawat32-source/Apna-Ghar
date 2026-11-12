@@ -10,13 +10,11 @@ import {
   XCircle,
   Calendar,
   Building,
-  CreditCard,
   Phone,
   ArrowRight,
   AlertCircle,
   BedDouble,
   ShieldCheck,
-  QrCode,
 } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/utils';
@@ -132,9 +130,16 @@ export default function StudentBookingsPage() {
       ) : (
         <div className="space-y-4">
           {bookingList.map((booking) => {
-            const isPending = booking.status === BookingStatus.PENDING_PAYMENT;
-            const isConfirmed = booking.status === BookingStatus.CONFIRMED;
-            const isCancelled = booking.status === BookingStatus.CANCELLED;
+            const status = booking.status as string;
+            const isRequested =
+              status === 'REQUESTED' ||
+              status === 'PENDING_CONFIRMATION' ||
+              status === 'PENDING_PAYMENT';
+            const isAccepted = status === 'ACCEPTED';
+            const isConfirmed = status === 'CONFIRMED';
+            const isRejected = status === 'REJECTED';
+            const isCancelled = status === 'CANCELLED';
+            const isCompleted = status === 'COMPLETED';
 
             return (
               <div
@@ -148,7 +153,7 @@ export default function StudentBookingsPage() {
                       {booking.bookingReference}
                     </span>
                     <span className="text-xs text-[#687586] hidden sm:inline">
-                      Booked on{' '}
+                      Submitted on{' '}
                       {new Date(booking.createdAt).toLocaleDateString('en-IN', {
                         day: 'numeric',
                         month: 'short',
@@ -158,22 +163,40 @@ export default function StudentBookingsPage() {
                   </div>
 
                   {/* Status Badge */}
-                  {isPending && (
+                  {isRequested && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#F5A623]/15 text-[#102B50] border border-[#F5A623]/30">
                       <Clock className="w-3.5 h-3.5 text-[#F5A623] animate-pulse" />
-                      Pending Payment
+                      Request Pending Owner Decision
+                    </span>
+                  )}
+                  {isAccepted && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#21865B]/10 text-[#21865B] border border-[#21865B]/20">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      Request Accepted by Owner
                     </span>
                   )}
                   {isConfirmed && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#21865B]/10 text-[#21865B] border border-[#21865B]/20">
                       <CheckCircle2 className="w-3.5 h-3.5" />
-                      Confirmed Booking
+                      Confirmed Stay
+                    </span>
+                  )}
+                  {isRejected && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D64545]/10 text-[#D64545] border border-[#D64545]/20">
+                      <XCircle className="w-3.5 h-3.5" />
+                      Request Rejected
                     </span>
                   )}
                   {isCancelled && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D64545]/10 text-[#D64545] border border-[#D64545]/20">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#687586]/10 text-[#687586] border border-[#687586]/20">
                       <XCircle className="w-3.5 h-3.5" />
                       Cancelled
+                    </span>
+                  )}
+                  {isCompleted && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#102B50]/10 text-[#102B50] border border-[#102B50]/20">
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      Stay Completed
                     </span>
                   )}
                 </div>
@@ -196,7 +219,7 @@ export default function StudentBookingsPage() {
                   </div>
 
                   <div>
-                    <span className="text-[#687586] block mb-0.5">Move-In Date</span>
+                    <span className="text-[#687586] block mb-0.5">Target Move-In Date</span>
                     <span className="font-bold text-[#263445] flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-[#687586]" />
                       <span>
@@ -210,12 +233,12 @@ export default function StudentBookingsPage() {
                   </div>
 
                   <div>
-                    <span className="text-[#687586] block mb-0.5">Total Initial Amount</span>
+                    <span className="text-[#687586] block mb-0.5">Listing Pricing Info</span>
                     <span className="font-black text-sm text-[#102B50]">
-                      {formatCurrency(booking.totalInitialPayment)}
+                      {formatCurrency(booking.rentAmount)} / mo
                     </span>
                     <span className="text-[10px] text-[#687586] block">
-                      Rent: {formatCurrency(booking.rentAmount)} + Deposit: {formatCurrency(booking.depositAmount)}
+                      Deposit: {formatCurrency(booking.depositAmount)} (Listing reference only)
                     </span>
                   </div>
                 </div>
@@ -229,22 +252,23 @@ export default function StudentBookingsPage() {
                     </span>
                   </div>
 
-                  {isPending && (
+                  {isRequested && (
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setCancelModalId(booking.id)}
                         className="px-3.5 py-2 rounded-xl text-xs font-semibold text-[#D64545] hover:bg-[#D64545]/10 border border-[#D64545]/30 transition"
                       >
-                        Cancel Booking
+                        Withdraw Request
                       </button>
+                    </div>
+                  )}
 
-                      <Link
-                        href={`/student/bookings/${booking.id}/pay`}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] shadow-sm transition"
-                      >
-                        <CreditCard className="w-3.5 h-3.5" />
-                        <span>Pay Booking Amount</span>
-                      </Link>
+                  {isAccepted && (
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5 text-xs text-[#21865B] font-bold bg-[#21865B]/10 px-3 py-1 rounded-xl">
+                        <CheckCircle2 className="w-4 h-4 text-[#21865B]" />
+                        <span>Accepted by Owner • Payment Deferred (Out of Scope)</span>
+                      </div>
                     </div>
                   )}
 
@@ -252,16 +276,8 @@ export default function StudentBookingsPage() {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1.5 text-xs text-[#21865B] font-bold bg-[#21865B]/10 px-3 py-1 rounded-xl">
                         <ShieldCheck className="w-4 h-4 text-[#21865B]" />
-                        <span>Bed Locked for Check-in</span>
+                        <span>Bed Allocated</span>
                       </div>
-
-                      <Link
-                        href={`/student/bookings/${booking.id}/pass`}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#102B50] hover:bg-[#183D68] shadow-xs transition"
-                      >
-                        <QrCode className="w-3.5 h-3.5" />
-                        <span>View Move-In Pass</span>
-                      </Link>
                     </div>
                   )}
                 </div>
