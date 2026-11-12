@@ -18,7 +18,9 @@ import {
   UserRole,
   PropertyStatus,
   ApprovalStatus,
+  RoleApprovalStatus,
 } from '@apna-ghar/shared-types';
+import { ERROR_CODES } from '@apna-ghar/shared-constants';
 import { Property, PropertyDocument } from '../properties/schemas/property.schema';
 import { Room, RoomDocument } from '../inventory/schemas/room.schema';
 import { Bed, BedDocument } from '../inventory/schemas/bed.schema';
@@ -27,6 +29,7 @@ import { Booking, BookingDocument } from '../bookings/schemas/booking.schema';
 import { Visit, VisitDocument } from '../visits/schemas/visit.schema';
 import { Ticket, TicketDocument } from '../tickets/schemas/ticket.schema';
 import { OwnerProfile, OwnerProfileDocument } from '../users/schemas/owner-profile.schema';
+import { User, UserDocument } from '../users/schemas/user.schema';
 import { RedisService } from '../../redis/redis.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
@@ -48,6 +51,7 @@ export class OwnerService {
     @InjectModel(Visit.name) private readonly visitModel: Model<VisitDocument>,
     @InjectModel(Ticket.name) private readonly ticketModel: Model<TicketDocument>,
     @InjectModel(OwnerProfile.name) private readonly ownerProfileModel: Model<OwnerProfileDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly redisService: RedisService,
   ) {}
 
@@ -323,6 +327,14 @@ export class OwnerService {
    * Defaults to PENDING_VERIFICATION and PENDING approval.
    */
   async createProperty(ownerId: string, dto: CreatePropertyDto): Promise<PropertyDocument> {
+    const owner = await this.userModel.findById(ownerId);
+    if (owner && owner.roleApprovalStatus !== RoleApprovalStatus.APPROVED && owner.role !== UserRole.ADMIN) {
+      throw new ForbiddenException({
+        code: ERROR_CODES.AUTH_ROLE_PENDING_APPROVAL,
+        message: 'Your property owner account is pending administrative approval. You cannot publish properties until approved.',
+      });
+    }
+
     this.validateCoordinates(dto.location.coordinates);
 
     const baseSlug = dto.name

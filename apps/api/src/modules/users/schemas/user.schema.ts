@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { UserRole, UserStatus } from '@apna-ghar/shared-types';
+import { UserRole, UserStatus, AccountStatus, RoleApprovalStatus } from '@apna-ghar/shared-types';
 
 export type UserDocument = User & Document<Types.ObjectId>;
 
@@ -54,11 +54,39 @@ export class User {
   })
   status!: UserStatus;
 
+  @Prop({
+    type: String,
+    enum: Object.values(AccountStatus),
+    default: AccountStatus.PENDING_VERIFICATION,
+    index: true,
+  })
+  accountStatus!: AccountStatus;
+
   @Prop({ default: false })
   emailVerified!: boolean;
 
+  @Prop({ type: Date, default: null })
+  emailVerifiedAt?: Date | null;
+
   @Prop({ default: false })
   phoneVerified!: boolean;
+
+  @Prop({
+    type: String,
+    enum: Object.values(RoleApprovalStatus),
+    default: RoleApprovalStatus.APPROVED,
+    index: true,
+  })
+  roleApprovalStatus!: RoleApprovalStatus;
+
+  @Prop({ type: Date, default: null })
+  lastLoginAt?: Date | null;
+
+  @Prop({ type: Date, default: null })
+  lastLogoutAt?: Date | null;
+
+  @Prop({ type: Date, default: null, index: true })
+  lastActivityAt?: Date | null;
 
   @Prop({ type: String, select: false, default: null })
   refreshTokenHash?: string | null;

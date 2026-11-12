@@ -5,16 +5,20 @@ import {
   Param,
   Body,
   Query,
+  Req,
   UseGuards,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Request } from 'express';
 import { UserRole, PropertyStatus, ApprovalStatus, MediaReviewStatus } from '@apna-ghar/shared-types';
 import { AdminService } from './admin.service';
 import { VerifyCheckpointDto } from '../trust/dto/verify-checkpoint.dto';
 import { ModerateReviewDto } from '../reviews/dto/moderate-review.dto';
 import { ModerateEntityDto, ModerateUserDto } from './dto/moderate-entity.dto';
+import { ModerateRoleApprovalDto } from './dto/moderate-role-approval.dto';
+import { AdminUsersQueryDto, AdminAuditLogQueryDto } from './dto/admin-users-query.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -27,31 +31,74 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Get('users')
-  @ApiOperation({ summary: 'List user accounts across the platform' })
-  @ApiQuery({ name: 'role', required: false, enum: UserRole })
-  @ApiResponse({ status: 200, description: 'List of users' })
-  async getUsers(@Query('role') role?: UserRole) {
-    const users = await this.adminService.getAllUsers(role);
+  @Get('dashboard-stats')
+  @ApiOperation({ summary: 'Get real-time database counts for roles, verification, presence, and approvals' })
+  @ApiResponse({ status: 200, description: 'Live platform administration metrics' })
+  async getDashboardStats() {
+    const stats = await this.adminService.getDashboardStats();
     return {
       success: true,
-      data: users,
+      data: stats,
+    };
+  }
+
+  @Get('users')
+  @ApiOperation({ summary: 'List user accounts with search, role filters, and live presence status' })
+  @ApiResponse({ status: 200, description: 'Paginated user directory' })
+  async getUsers(@Query() query: AdminUsersQueryDto) {
+    const result = await this.adminService.getUsersPaginated(query);
+    return {
+      success: true,
+      data: result.users,
+      meta: result.meta,
     };
   }
 
   @Patch('users/:id/status')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Approve, suspend, or update status of user account' })
+  @ApiOperation({ summary: 'Suspend or reactivate user account (suspension revokes all sessions)' })
   @ApiResponse({ status: 200, description: 'Updated user account' })
   async moderateUser(
     @Param('id') userId: string,
     @Body() dto: ModerateUserDto,
     @CurrentUser('id') adminId: string,
+    @Req() req: Request,
   ) {
-    const user = await this.adminService.moderateUser(userId, dto, adminId);
+    const ipAddress = req.ip || req.socket?.remoteAddress;
+    const user = await this.adminService.moderateUser(userId, dto, adminId, ipAddress);
     return {
       success: true,
       data: user,
+    };
+  }
+
+  @Patch('users/:id/role-approval')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Approve or reject role application for Owner or Mess Partner' })
+  @ApiResponse({ status: 200, description: 'Updated role approval status' })
+  async moderateRoleApproval(
+    @Param('id') userId: string,
+    @Body() dto: ModerateRoleApprovalDto,
+    @CurrentUser('id') adminId: string,
+    @Req() req: Request,
+  ) {
+    const ipAddress = req.ip || req.socket?.remoteAddress;
+    const user = await this.adminService.moderateUserRoleApproval(userId, dto, adminId, ipAddress);
+    return {
+      success: true,
+      data: user,
+    };
+  }
+
+  @Get('audit-logs')
+  @ApiOperation({ summary: 'Get paginated append-only administrator audit trail' })
+  @ApiResponse({ status: 200, description: 'List of audit events' })
+  async getAuditLogs(@Query() query: AdminAuditLogQueryDto) {
+    const result = await this.adminService.getAuditLogs(query);
+    return {
+      success: true,
+      data: result.logs,
+      meta: result.meta,
     };
   }
 
@@ -79,8 +126,10 @@ export class AdminController {
     @Param('id') propertyId: string,
     @Body() dto: ModerateEntityDto,
     @CurrentUser('id') adminId: string,
+    @Req() req: Request,
   ) {
-    const property = await this.adminService.moderateProperty(propertyId, dto, adminId);
+    const ipAddress = req.ip || req.socket?.remoteAddress;
+    const property = await this.adminService.moderateProperty(propertyId, dto, adminId, ipAddress);
     return {
       success: true,
       data: property,
@@ -111,8 +160,10 @@ export class AdminController {
     @Param('id') messId: string,
     @Body() dto: ModerateEntityDto,
     @CurrentUser('id') adminId: string,
+    @Req() req: Request,
   ) {
-    const mess = await this.adminService.moderateMess(messId, dto, adminId);
+    const ipAddress = req.ip || req.socket?.remoteAddress;
+    const mess = await this.adminService.moderateMess(messId, dto, adminId, ipAddress);
     return {
       success: true,
       data: mess,
@@ -153,20 +204,16 @@ export class AdminController {
     };
   }
 
-  @Patch('trust-audits/:propertyId/checkpoint')
+  @Patch('trust-audits/:propertyId/checkpoints')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Audit (verify/reject) a specific Trust Passport checkpoint' })
-  @ApiResponse({ status: 200, description: 'Updated Trust Passport' })
+  @ApiOperation({ summary: 'Audit and verify/reject a specific Trust Passport checkpoint' })
+  @ApiResponse({ status: 200, description: 'Updated Trust Passport checkpoint' })
   async verifyTrustCheckpoint(
     @Param('propertyId') propertyId: string,
     @Body() dto: VerifyCheckpointDto,
-    @CurrentUser('id') auditorId: string,
+    @CurrentUser('id') adminId: string,
   ) {
-    const updated = await this.adminService.verifyTrustCheckpoint(
-      propertyId,
-      dto,
-      auditorId,
-    );
+    const updated = await this.adminService.verifyTrustCheckpoint(propertyId, dto, adminId);
     return {
       success: true,
       data: updated,
@@ -174,9 +221,9 @@ export class AdminController {
   }
 
   @Get('reviews')
-  @ApiOperation({ summary: 'Get all reviews across platform for admin moderation' })
+  @ApiOperation({ summary: 'List all property reviews for administrative content moderation' })
   @ApiResponse({ status: 200, description: 'List of reviews' })
-  async getAllReviews() {
+  async getReviews() {
     const reviews = await this.adminService.getAllReviews();
     return {
       success: true,
@@ -184,9 +231,9 @@ export class AdminController {
     };
   }
 
-  @Patch('reviews/:id/moderate')
+  @Patch('reviews/:id')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Approve or reject a student review' })
+  @ApiOperation({ summary: 'Publish or reject a student property review' })
   @ApiResponse({ status: 200, description: 'Updated review status' })
   async moderateReview(
     @Param('id') reviewId: string,

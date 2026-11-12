@@ -15,6 +15,7 @@
     "build:api": "pnpm --filter @apna-ghar/shared-types build && pnpm --filter @apna-ghar/shared-constants build && pnpm --filter @apna-ghar/database build && pnpm --filter @apna-ghar/api build",
     "seed": "pnpm --filter @apna-ghar/database run seed",
     "seed:api": "pnpm --filter @apna-ghar/database run seed",
+    "seed:admin": "pnpm --filter @apna-ghar/api run seed:admin",
     "start": "node server.js",
     "start:web": "pnpm --filter @apna-ghar/web start",
     "start:api": "pnpm --filter @apna-ghar/api start",

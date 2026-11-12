@@ -17,3 +17,7 @@ export * from './review.schema';
 export * from './mess.schema';
 export * from './mess-subscription.schema';
 export * from './media.schema';
+export * from './session.schema';
+export * from './otp-record.schema';
+export * from './password-reset-challenge.schema';
+export * from './admin-audit-log.schema';

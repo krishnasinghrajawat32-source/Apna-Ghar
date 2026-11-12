@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { UserRole } from '@apna-ghar/shared-types';
+import { UserRole, AccountStatus, RoleApprovalStatus, UserStatus } from '@apna-ghar/shared-types';
 import { ERROR_CODES } from '@apna-ghar/shared-constants';
 import { User, UserDocument } from './schemas/user.schema';
 import { StudentProfile, StudentProfileDocument } from './schemas/student-profile.schema';
@@ -23,6 +23,9 @@ export class UsersService {
     phone: string;
     passwordHash: string;
     role: UserRole;
+    accountStatus?: AccountStatus;
+    emailVerified?: boolean;
+    roleApprovalStatus?: RoleApprovalStatus;
   }): Promise<UserDocument> {
     const existing = await this.userModel.findOne({ email: data.email.toLowerCase() });
     if (existing) {
@@ -32,12 +35,27 @@ export class UsersService {
       });
     }
 
+    const roleApprovalStatus =
+      data.roleApprovalStatus ??
+      (data.role === UserRole.STUDENT || data.role === UserRole.ADMIN
+        ? RoleApprovalStatus.APPROVED
+        : RoleApprovalStatus.PENDING);
+
+    const accountStatus = data.accountStatus ?? AccountStatus.PENDING_VERIFICATION;
+    const emailVerified = data.emailVerified ?? false;
+    const emailVerifiedAt = emailVerified ? new Date() : null;
+
     const user = await this.userModel.create({
       name: data.name,
       email: data.email.toLowerCase(),
       phone: data.phone,
       passwordHash: data.passwordHash,
       role: data.role,
+      status: accountStatus === AccountStatus.ACTIVE ? UserStatus.ACTIVE : UserStatus.PENDING_VERIFICATION,
+      accountStatus,
+      emailVerified,
+      emailVerifiedAt,
+      roleApprovalStatus,
     });
 
     // Automatically create corresponding profile
@@ -47,6 +65,77 @@ export class UsersService {
       await this.ownerProfileModel.create({ userId: user._id });
     } else if (data.role === UserRole.MESS_PARTNER) {
       await this.messPartnerProfileModel.create({ userId: user._id });
+    }
+
+    return user;
+  }
+
+  async markEmailVerified(userId: string | Types.ObjectId): Promise<UserDocument> {
+    const now = new Date();
+    const user = await this.userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          emailVerified: true,
+          emailVerifiedAt: now,
+          accountStatus: AccountStatus.ACTIVE,
+          status: UserStatus.ACTIVE,
+        },
+      },
+      { new: true },
+    );
+
+    if (!user) {
+      throw new NotFoundException({
+        code: ERROR_CODES.AUTH_USER_NOT_FOUND,
+        message: 'User not found.',
+      });
+    }
+
+    return user;
+  }
+
+  async setAccountStatus(userId: string | Types.ObjectId, status: AccountStatus): Promise<UserDocument> {
+    const user = await this.userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          accountStatus: status,
+          status: status === AccountStatus.ACTIVE ? UserStatus.ACTIVE : status === AccountStatus.SUSPENDED ? UserStatus.SUSPENDED : UserStatus.PENDING_VERIFICATION,
+        },
+      },
+      { new: true },
+    );
+
+    if (!user) {
+      throw new NotFoundException({
+        code: ERROR_CODES.AUTH_USER_NOT_FOUND,
+        message: 'User not found.',
+      });
+    }
+
+    return user;
+  }
+
+  async setRoleApprovalStatus(
+    userId: string | Types.ObjectId,
+    roleApprovalStatus: RoleApprovalStatus,
+  ): Promise<UserDocument> {
+    const user = await this.userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          roleApprovalStatus,
+        },
+      },
+      { new: true },
+    );
+
+    if (!user) {
+      throw new NotFoundException({
+        code: ERROR_CODES.AUTH_USER_NOT_FOUND,
+        message: 'User not found.',
+      });
     }
 
     return user;

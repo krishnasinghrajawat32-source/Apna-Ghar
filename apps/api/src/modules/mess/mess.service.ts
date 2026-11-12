@@ -19,7 +19,8 @@ import { UpdateMessDto } from './dto/update-mess.dto';
 import { UpdateMealPlansDto } from './dto/update-meal-plans.dto';
 import { SubscriptionDecisionDto } from './dto/subscription-decision.dto';
 import { UpdateVendorProfileDto } from './dto/update-vendor-profile.dto';
-import { DailyMenu, UserRole, ApprovalStatus, SubscriptionStatus } from '@apna-ghar/shared-types';
+import { DailyMenu, UserRole, ApprovalStatus, SubscriptionStatus, RoleApprovalStatus } from '@apna-ghar/shared-types';
+import { ERROR_CODES } from '@apna-ghar/shared-constants';
 
 @Injectable()
 export class MessService implements OnModuleInit {
@@ -394,6 +395,14 @@ export class MessService implements OnModuleInit {
    * Defaults to INACTIVE and PENDING approval.
    */
   async createPartnerMess(partnerId: string, dto: CreateMessDto): Promise<MessDocument> {
+    const partner = await this.userModel.findById(partnerId);
+    if (partner && partner.roleApprovalStatus !== RoleApprovalStatus.APPROVED && partner.role !== UserRole.ADMIN) {
+      throw new ForbiddenException({
+        code: ERROR_CODES.AUTH_ROLE_PENDING_APPROVAL,
+        message: 'Your food vendor account is pending administrative approval. You cannot create mess outlets until approved.',
+      });
+    }
+
     const baseSlug = dto.name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')

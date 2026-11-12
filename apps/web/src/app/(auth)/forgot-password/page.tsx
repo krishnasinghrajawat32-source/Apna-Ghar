@@ -16,6 +16,7 @@ type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -29,6 +30,7 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
       setServerError(null);
+      setSubmittedEmail(data.email);
       await apiClient('/auth/forgot-password', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -70,13 +72,21 @@ export default function ForgotPasswordPage() {
               <p className="text-xs text-[#3D3A33] leading-relaxed">
                 If an account exists with that email address, password reset instructions have been sent.
               </p>
-              <div className="pt-4 border-t border-[#ECE8DD]">
+              <div className="pt-4 space-y-3 border-t border-[#ECE8DD]">
                 <Link
-                  href="/login"
-                  className="text-xs font-bold text-[#173327] hover:underline"
+                  href={`/reset-password?email=${encodeURIComponent(submittedEmail)}`}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-sm"
                 >
-                  Return to Sign In
+                  Enter 6-Digit Reset Code &rarr;
                 </Link>
+                <div>
+                  <Link
+                    href="/login"
+                    className="text-xs font-bold text-[#716D64] hover:underline"
+                  >
+                    Return to Sign In
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (

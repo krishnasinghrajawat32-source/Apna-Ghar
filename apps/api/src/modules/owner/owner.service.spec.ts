@@ -11,6 +11,7 @@ import { Booking } from '../bookings/schemas/booking.schema';
 import { Visit } from '../visits/schemas/visit.schema';
 import { Ticket } from '../tickets/schemas/ticket.schema';
 import { OwnerProfile } from '../users/schemas/owner-profile.schema';
+import { User } from '../users/schemas/user.schema';
 import { RedisService } from '../../redis/redis.service';
 import { BedStatus, UserRole, PropertyType, PropertyStatus } from '@apna-ghar/shared-types';
 
@@ -86,6 +87,10 @@ describe('OwnerService', () => {
     findOneAndUpdate: jest.fn(),
   };
 
+  const mockUserModel = {
+    findById: jest.fn().mockResolvedValue({ roleApprovalStatus: 'APPROVED', role: 'OWNER' }),
+  };
+
   const mockRedisService = {
     get: jest.fn(),
     set: jest.fn(),
@@ -106,6 +111,7 @@ describe('OwnerService', () => {
         { provide: getModelToken(Visit.name), useValue: mockVisitModel },
         { provide: getModelToken(Ticket.name), useValue: mockTicketModel },
         { provide: getModelToken(OwnerProfile.name), useValue: mockOwnerProfileModel },
+        { provide: getModelToken(User.name), useValue: mockUserModel },
         { provide: RedisService, useValue: mockRedisService },
       ],
     }).compile();

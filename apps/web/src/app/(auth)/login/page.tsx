@@ -24,6 +24,7 @@ function LoginForm() {
   const redirectUrl = searchParams.get('redirect');
   const { setAuth } = useAuthStore();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const {
     register,
@@ -36,6 +37,7 @@ function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setServerError(null);
+      setUnverifiedEmail(null);
       const res = await apiClient<{ user: User; accessToken: string }>('/auth/login', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -51,12 +53,17 @@ function LoginForm() {
         router.push('/owner/dashboard');
       } else if (res.user.role === UserRole.MESS_PARTNER) {
         router.push('/mess/dashboard');
+      } else if (res.user.role === UserRole.ADMIN) {
+        router.push('/admin/dashboard');
       } else {
         router.push('/');
       }
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setServerError(err.message);
+        if (err.message.toLowerCase().includes('not been verified') || err.message.toLowerCase().includes('verify your account')) {
+          setUnverifiedEmail(data.email);
+        }
       } else if (err instanceof Error) {
         setServerError(err.message);
       } else {
@@ -68,9 +75,21 @@ function LoginForm() {
   return (
     <div className="bg-white py-8 px-6 shadow-sm border border-[#ECE8DD] rounded-xl sm:px-10">
       {serverError && (
-        <div className="mb-6 p-3.5 rounded-lg bg-red-50 border border-red-200 flex items-start gap-2.5 text-xs text-red-800">
-          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-          <span>{serverError}</span>
+        <div className="mb-6 p-3.5 rounded-lg bg-red-50 border border-red-200 text-xs text-red-800">
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+            <span>{serverError}</span>
+          </div>
+          {unverifiedEmail && (
+            <div className="mt-2.5 pl-6">
+              <Link
+                href={`/verify-email?email=${encodeURIComponent(unverifiedEmail)}`}
+                className="inline-flex items-center gap-1 font-bold text-[#E06D3B] hover:underline"
+              >
+                Verify your email now &rarr;
+              </Link>
+            </div>
+          )}
         </div>
       )}
 

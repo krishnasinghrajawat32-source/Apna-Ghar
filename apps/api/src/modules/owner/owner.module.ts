@@ -10,6 +10,7 @@ import { Booking, BookingSchema } from '../bookings/schemas/booking.schema';
 import { Visit, VisitSchema } from '../visits/schemas/visit.schema';
 import { Ticket, TicketSchema } from '../tickets/schemas/ticket.schema';
 import { OwnerProfile, OwnerProfileSchema } from '../users/schemas/owner-profile.schema';
+import { User, UserSchema } from '../users/schemas/user.schema';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { OwnerProfile, OwnerProfileSchema } from '../users/schemas/owner-profile
       { name: Visit.name, schema: VisitSchema },
       { name: Ticket.name, schema: TicketSchema },
       { name: OwnerProfile.name, schema: OwnerProfileSchema },
+      { name: User.name, schema: UserSchema },
     ]),
   ],
   controllers: [OwnerController],

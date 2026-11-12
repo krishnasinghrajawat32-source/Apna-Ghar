@@ -6,10 +6,15 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Lock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Lock, CheckCircle2, AlertCircle, KeyRound, ArrowRight } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
 
-const resetPasswordSchema = z
+const verifyOtpSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  otp: z.string().length(6, 'OTP must be 6 digits').regex(/^\d{6}$/, 'Numbers only'),
+});
+
+const newPasswordSchema = z
   .object({
     newPassword: z
       .string()
@@ -22,26 +27,64 @@ const resetPasswordSchema = z
     path: ['confirmPassword'],
   });
 
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+type VerifyOtpFormData = z.infer<typeof verifyOtpSchema>;
+type NewPasswordFormData = z.infer<typeof newPasswordSchema>;
 
 function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token') || '';
+  const initialToken = searchParams.get('token') || '';
+  const initialEmail = searchParams.get('email') || '';
+
+  const [challengeToken, setChallengeToken] = useState<string>(initialToken);
+  const [step, setStep] = useState<'VERIFY_OTP' | 'SET_PASSWORD'>(
+    initialToken ? 'SET_PASSWORD' : 'VERIFY_OTP',
+  );
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordFormData>({
-    resolver: zodResolver(resetPasswordSchema),
+    register: registerOtp,
+    handleSubmit: handleOtpSubmit,
+    formState: { errors: otpErrors, isSubmitting: isVerifyingOtp },
+  } = useForm<VerifyOtpFormData>({
+    resolver: zodResolver(verifyOtpSchema),
+    defaultValues: { email: initialEmail },
   });
 
-  const onSubmit = async (data: ResetPasswordFormData) => {
-    if (!token) {
-      setServerError('Reset token is missing or invalid.');
+  const {
+    register: registerPassword,
+    handleSubmit: handlePasswordSubmit,
+    formState: { errors: passwordErrors, isSubmitting: isResettingPassword },
+  } = useForm<NewPasswordFormData>({
+    resolver: zodResolver(newPasswordSchema),
+  });
+
+  const onOtpSubmit = async (data: VerifyOtpFormData) => {
+    try {
+      setServerError(null);
+      const res = await apiClient<{ success: boolean; challengeToken: string; message: string }>(
+        '/auth/verify-reset-otp',
+        {
+          method: 'POST',
+          body: JSON.stringify(data),
+        },
+      );
+      setChallengeToken(res.challengeToken);
+      setStep('SET_PASSWORD');
+    } catch (err: unknown) {
+      if (err instanceof ApiError) {
+        setServerError(err.message);
+      } else {
+        setServerError('Invalid OTP code. Please check and try again.');
+      }
+    }
+  };
+
+  const onPasswordSubmit = async (data: NewPasswordFormData) => {
+    if (!challengeToken) {
+      setServerError('Reset challenge token is missing. Please re-verify OTP.');
+      setStep('VERIFY_OTP');
       return;
     }
 
@@ -50,7 +93,7 @@ function ResetPasswordForm() {
       await apiClient('/auth/reset-password', {
         method: 'POST',
         body: JSON.stringify({
-          token,
+          token: challengeToken,
           newPassword: data.newPassword,
         }),
       });
@@ -62,7 +105,7 @@ function ResetPasswordForm() {
       if (err instanceof ApiError) {
         setServerError(err.message);
       } else {
-        setServerError('Unable to reset password. The link may have expired.');
+        setServerError('Unable to reset password. The challenge token may have expired.');
       }
     }
   };
@@ -76,14 +119,14 @@ function ResetPasswordForm() {
           </div>
           <h3 className="text-sm font-bold text-[#173327]">Password Reset Successful</h3>
           <p className="text-xs text-[#3D3A33] leading-relaxed">
-            Your password has been securely updated. Redirecting you to login...
+            Your password has been securely updated and all previous active sessions have been terminated. Redirecting to login...
           </p>
           <div className="pt-4 border-t border-[#ECE8DD]">
             <Link
               href="/login"
-              className="text-xs font-bold text-[#173327] hover:underline"
+              className="text-xs font-bold text-[#173327] hover:underline inline-flex items-center gap-1"
             >
-              Go to Sign In now
+              Sign In with New Password <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -96,50 +139,119 @@ function ResetPasswordForm() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-[#173327] mb-1">
-                New Password
-              </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                {...register('newPassword')}
-                className="w-full px-3.5 py-2.5 text-xs rounded-lg border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all"
-              />
-              {errors.newPassword && (
-                <p className="mt-1 text-[11px] text-red-600 font-medium">
-                  {errors.newPassword.message}
-                </p>
-              )}
-            </div>
+          {step === 'VERIFY_OTP' ? (
+            <form onSubmit={handleOtpSubmit(onOtpSubmit)} className="space-y-4">
+              <div className="text-xs text-[#716D64] mb-2">
+                Step 1 of 2 — Verify the 6-digit code sent to your registered email
+              </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-[#173327] mb-1">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                {...register('confirmPassword')}
-                className="w-full px-3.5 py-2.5 text-xs rounded-lg border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-[11px] text-red-600 font-medium">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
-            </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#173327] mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  placeholder="student@example.com"
+                  {...registerOtp('email')}
+                  className="w-full px-3.5 py-2.5 text-xs rounded-lg border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all"
+                />
+                {otpErrors.email && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">
+                    {otpErrors.email.message}
+                  </p>
+                )}
+              </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-sm disabled:opacity-70"
-            >
-              <Lock className="w-4 h-4" />
-              {isSubmitting ? 'Updating Password...' : 'Update Password'}
-            </button>
-          </form>
+              <div>
+                <label className="block text-xs font-semibold text-[#173327] mb-1">
+                  6-Digit Reset Code
+                </label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  placeholder="654321"
+                  {...registerOtp('otp')}
+                  className="w-full px-3.5 py-2.5 text-center text-base font-mono font-bold tracking-[0.4em] rounded-lg border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all"
+                />
+                {otpErrors.otp && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">
+                    {otpErrors.otp.message}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isVerifyingOtp}
+                className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-sm disabled:opacity-70"
+              >
+                <KeyRound className="w-4 h-4" />
+                {isVerifyingOtp ? 'Verifying Code...' : 'Verify Code & Continue'}
+              </button>
+
+              <div className="pt-2 text-center text-xs">
+                <Link href="/forgot-password" className="text-[#E06D3B] hover:underline font-semibold">
+                  Need a new code? Request again
+                </Link>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-4">
+              <div className="text-xs text-[#716D64] mb-2">
+                Step 2 of 2 — Set your new secure password
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#173327] mb-1">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="At least 8 characters (letters & numbers)"
+                  {...registerPassword('newPassword')}
+                  className="w-full px-3.5 py-2.5 text-xs rounded-lg border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all"
+                />
+                {passwordErrors.newPassword && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">
+                    {passwordErrors.newPassword.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#173327] mb-1">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Re-enter your new password"
+                  {...registerPassword('confirmPassword')}
+                  className="w-full px-3.5 py-2.5 text-xs rounded-lg border border-[#DDD7C7] focus:outline-none focus:ring-2 focus:ring-[#173327] focus:border-transparent transition-all"
+                />
+                {passwordErrors.confirmPassword && (
+                  <p className="mt-1 text-[11px] text-red-600 font-medium">
+                    {passwordErrors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isResettingPassword}
+                className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-sm disabled:opacity-70"
+              >
+                <Lock className="w-4 h-4" />
+                {isResettingPassword ? 'Updating Password...' : 'Save New Password'}
+              </button>
+            </form>
+          )}
+
+          <div className="mt-6 pt-4 border-t border-[#ECE8DD] text-center text-xs text-[#3D3A33]">
+            Remember your credentials?{' '}
+            <Link href="/login" className="font-bold text-[#E06D3B] hover:underline">
+              Sign in
+            </Link>
+          </div>
         </>
       )}
     </div>
@@ -156,21 +268,15 @@ export default function ResetPasswordPage() {
           </div>
         </Link>
         <h2 className="text-2xl font-extrabold text-[#173327] tracking-tight">
-          Create new password
+          Reset Your Password
         </h2>
         <p className="text-xs text-[#3D3A33]">
-          Please enter and confirm your new secure account password
+          Verify your identity with the OTP code and set your new password
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <Suspense
-          fallback={
-            <div className="bg-white py-12 px-6 shadow-sm border border-[#ECE8DD] rounded-xl flex items-center justify-center">
-              <div className="w-6 h-6 border-2 border-[#173327] border-t-transparent rounded-full animate-spin" />
-            </div>
-          }
-        >
+        <Suspense fallback={<div className="p-8 text-center text-xs text-[#716D64]">Loading...</div>}>
           <ResetPasswordForm />
         </Suspense>
       </div>

@@ -15,6 +15,9 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { VerifyEmailOtpDto } from './dto/verify-email-otp.dto';
+import { ResendOtpDto } from './dto/resend-otp.dto';
+import { VerifyResetOtpDto } from './dto/verify-reset-otp.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { Public } from '../../common/decorators/public.decorator';
@@ -32,18 +35,42 @@ export class AuthController {
   @Public()
   @Post('register')
   @ApiOperation({ summary: 'Register a new student, owner, or mess partner account' })
-  @SwaggerResponse({ status: 201, description: 'User successfully created' })
-  async register(
-    @Body() dto: RegisterDto,
+  @SwaggerResponse({ status: 201, description: 'User account created and verification OTP sent' })
+  async register(@Body() dto: RegisterDto) {
+    return this.authService.register(dto);
+  }
+
+  @Public()
+  @Post('verify-email-otp')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Verify email address with 6-digit OTP and activate account' })
+  @SwaggerResponse({ status: 200, description: 'Email verified and session established' })
+  async verifyEmailOtp(
+    @Body() dto: VerifyEmailOtpDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const result = await this.authService.register(dto);
+    const userAgent = req.headers['user-agent'] || '';
+    const ipAddress = req.ip || req.socket?.remoteAddress || '';
+
+    const result = await this.authService.verifyEmailOtp(dto, userAgent, ipAddress);
     this.setAuthCookies(res, result.accessToken, result.refreshToken);
 
     return {
+      success: true,
+      message: result.message,
       user: result.user,
       accessToken: result.accessToken,
     };
+  }
+
+  @Public()
+  @Post('resend-email-otp')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Resend email OTP with 60s cooldown and hourly limit checks' })
+  @SwaggerResponse({ status: 200, description: 'OTP re-dispatched if eligible' })
+  async resendOtp(@Body() dto: ResendOtpDto) {
+    return this.authService.resendOtp(dto);
   }
 
   @Public()
@@ -53,9 +80,13 @@ export class AuthController {
   @SwaggerResponse({ status: 200, description: 'Successfully authenticated' })
   async login(
     @Body() dto: LoginDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const result = await this.authService.login(dto);
+    const userAgent = req.headers['user-agent'] || '';
+    const ipAddress = req.ip || req.socket?.remoteAddress || '';
+
+    const result = await this.authService.login(dto, userAgent, ipAddress);
     this.setAuthCookies(res, result.accessToken, result.refreshToken);
 
     return {
@@ -68,18 +99,22 @@ export class AuthController {
   @ApiBearerAuth()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Logout and revoke active refresh session' })
+  @ApiOperation({ summary: 'Logout and revoke active session' })
   async logout(
     @CurrentUser() user: AuthenticatedUser,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : req.cookies?.['accessToken'];
+
     if (user?.userId) {
-      await this.authService.logout(user.userId);
+      await this.authService.logout(user.userId, token);
     }
     this.clearAuthCookies(res);
 
     return {
-      message: 'Logged out successfully.',
+      message: 'Logged out successfully. Session revoked.',
     };
   }
 
@@ -93,7 +128,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const rawToken = req.cookies?.['refreshToken'] || bodyToken;
-    const result = await this.authService.refreshToken(rawToken);
+    const userAgent = req.headers['user-agent'] || '';
+    const ipAddress = req.ip || req.socket?.remoteAddress || '';
+
+    const result = await this.authService.refreshToken(rawToken, userAgent, ipAddress);
     this.setAuthCookies(res, result.accessToken, result.refreshToken);
 
     return {
@@ -119,9 +157,17 @@ export class AuthController {
   }
 
   @Public()
+  @Post('verify-reset-otp')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Verify password reset OTP and obtain single-use challenge token' })
+  async verifyResetOtp(@Body() dto: VerifyResetOtpDto) {
+    return this.authService.verifyResetOtp(dto);
+  }
+
+  @Public()
   @Post('reset-password')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Confirm password reset with one-time token' })
+  @ApiOperation({ summary: 'Confirm password reset with challenge token' })
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto);
   }

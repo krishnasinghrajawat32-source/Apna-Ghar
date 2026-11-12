@@ -311,8 +311,15 @@ export default function OwnerDashboardPage() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={() => setActiveTab('add-property')}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-[#102B50] hover:bg-[#1A3E6D] transition shadow-xs"
+                onClick={() => {
+                  if (user?.roleApprovalStatus && user.roleApprovalStatus !== 'APPROVED') {
+                    alert('Your owner account is pending administrative verification. You will be able to list properties once approved.');
+                    return;
+                  }
+                  setActiveTab('add-property');
+                }}
+                disabled={user?.roleApprovalStatus !== undefined && user.roleApprovalStatus !== 'APPROVED'}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-[#102B50] hover:bg-[#1A3E6D] transition shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Plus className="w-4 h-4" />
                 List New Property
@@ -326,6 +333,21 @@ export default function OwnerDashboardPage() {
               </Link>
             </div>
           </div>
+
+          {/* Pending Approval Banner */}
+          {user?.roleApprovalStatus && user.roleApprovalStatus !== 'APPROVED' && (
+            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-3 shadow-xs">
+              <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <span className="font-extrabold block text-sm">
+                  Partner Account Under Review ({user.roleApprovalStatus})
+                </span>
+                <p className="text-[11px] text-amber-800 leading-relaxed">
+                  Namaste {user.name}, your property owner account is pending administrative verification. You may inspect your dashboard and review current listings, but publishing new properties or accepting student booking requests will be activated as soon as our verification team reviews your documents.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Operational Metrics (Strictly non-financial) */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

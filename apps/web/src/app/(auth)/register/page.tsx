@@ -8,8 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { UserCheck, AlertCircle, GraduationCap, Building2, UtensilsCrossed } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
-import { useAuthStore } from '@/features/auth/auth-store';
-import { User, UserRole } from '@apna-ghar/shared-types';
+import { UserRole } from '@apna-ghar/shared-types';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -28,7 +27,6 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { setAuth } = useAuthStore();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -49,22 +47,16 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setServerError(null);
-      const res = await apiClient<{ user: User; accessToken: string }>('/auth/register', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+      await apiClient<{ success: boolean; message: string; requiresVerification: boolean }>(
+        '/auth/register',
+        {
+          method: 'POST',
+          body: JSON.stringify(data),
+        },
+      );
 
-      setAuth(res.user, res.accessToken);
-
-      if (res.user.role === UserRole.STUDENT) {
-        router.push('/student/dashboard');
-      } else if (res.user.role === UserRole.OWNER) {
-        router.push('/owner/dashboard');
-      } else if (res.user.role === UserRole.MESS_PARTNER) {
-        router.push('/mess/dashboard');
-      } else {
-        router.push('/');
-      }
+      // Redirect directly to Email OTP Verification
+      router.push(`/verify-email?email=${encodeURIComponent(data.email.toLowerCase())}`);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setServerError(err.message);

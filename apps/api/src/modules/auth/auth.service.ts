@@ -2,17 +2,30 @@ import {
   Injectable,
   UnauthorizedException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { UsersService } from '../users/users.service';
+import { EmailService } from '../email/email.service';
+import { OtpService } from './services/otp.service';
+import { SessionService } from './services/session.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { VerifyEmailOtpDto } from './dto/verify-email-otp.dto';
+import { ResendOtpDto } from './dto/resend-otp.dto';
+import { VerifyResetOtpDto } from './dto/verify-reset-otp.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ERROR_CODES } from '@apna-ghar/shared-constants';
-import { UserRole } from '@apna-ghar/shared-types';
+import {
+  UserRole,
+  AccountStatus,
+  OtpPurpose,
+  SessionRevocationReason,
+  RoleApprovalStatus,
+} from '@apna-ghar/shared-types';
 
 export interface TokenResult {
   accessToken: string;
@@ -24,9 +37,23 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
+    private readonly emailService: EmailService,
+    private readonly otpService: OtpService,
+    private readonly sessionService: SessionService,
   ) {}
 
+  /**
+   * Registers a new Student, Owner, or Mess Partner.
+   * Admin role is rejected. Email verification OTP is dispatched.
+   */
   async register(dto: RegisterDto) {
+    if (dto.role === UserRole.ADMIN) {
+      throw new BadRequestException({
+        code: ERROR_CODES.AUTH_FORBIDDEN,
+        message: 'Administrative registration is restricted and cannot be requested publicly.',
+      });
+    }
+
     const passwordHash = await argon2.hash(dto.password, {
       type: argon2.argon2id,
       memoryCost: 65536,
@@ -40,19 +67,116 @@ export class AuthService {
       phone: dto.phone,
       passwordHash,
       role: dto.role,
+      accountStatus: AccountStatus.PENDING_VERIFICATION,
+      emailVerified: false,
+      roleApprovalStatus:
+        dto.role === UserRole.STUDENT ? RoleApprovalStatus.APPROVED : RoleApprovalStatus.PENDING,
     });
 
-    const tokens = await this.generateTokens(user._id.toString(), user.email, user.role);
-    await this.persistRefreshToken(user._id.toString(), tokens.refreshToken);
+    // Generate & send 6-digit OTP
+    const { otp, expiresInMinutes } = await this.otpService.generateOtp(
+      user.email,
+      OtpPurpose.EMAIL_VERIFICATION,
+    );
+    await this.emailService.sendVerificationOtp(user.email, user.name, otp, expiresInMinutes);
 
     return {
-      user: user.toJSON(),
+      success: true,
+      requiresVerification: true,
+      email: user.email,
+      message:
+        'Registration initiated successfully. A 6-digit verification code has been dispatched to your email.',
+    };
+  }
+
+  /**
+   * Verifies Email OTP, marks account active, dispatches welcome email, and initiates session
+   */
+  async verifyEmailOtp(dto: VerifyEmailOtpDto, userAgent = '', ipAddress = '') {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+
+    // Verify OTP against hashed record
+    await this.otpService.verifyOtp(normalizedEmail, dto.otp, OtpPurpose.EMAIL_VERIFICATION);
+
+    const user = await this.usersService.findByEmail(normalizedEmail);
+    if (!user) {
+      throw new BadRequestException({
+        code: ERROR_CODES.AUTH_USER_NOT_FOUND,
+        message: 'No account associated with this email address.',
+      });
+    }
+
+    // Mark email verified and account active
+    const updatedUser = await this.usersService.markEmailVerified(user._id);
+
+    // Dispatch welcome notification
+    await this.emailService.sendVerificationSuccess(updatedUser.email, updatedUser.name, updatedUser.role);
+
+    // Issue tokens and register persistent session
+    const tokens = await this.generateTokens(
+      updatedUser._id.toString(),
+      updatedUser.email,
+      updatedUser.role,
+    );
+    await this.persistRefreshToken(updatedUser._id.toString(), tokens.refreshToken);
+    await this.sessionService.createSession(
+      updatedUser._id.toString(),
+      tokens.accessToken,
+      userAgent,
+      ipAddress,
+    );
+
+    return {
+      success: true,
+      message: 'Email address verified successfully. Welcome to Apna Ghar!',
+      user: updatedUser.toJSON(),
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     };
   }
 
-  async login(dto: LoginDto) {
+  /**
+   * Resends verification or reset OTP with cooldown and hourly rate limit checks
+   */
+  async resendOtp(dto: ResendOtpDto) {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+    const user = await this.usersService.findByEmail(normalizedEmail);
+
+    // Generic response if account doesn't exist
+    if (!user) {
+      return {
+        success: true,
+        message: 'If an account exists with this email address, a new OTP code has been dispatched.',
+      };
+    }
+
+    const purpose = dto.purpose || OtpPurpose.EMAIL_VERIFICATION;
+
+    if (purpose === OtpPurpose.EMAIL_VERIFICATION && user.emailVerified) {
+      return {
+        success: true,
+        message: 'This email address is already verified. You may sign in directly.',
+      };
+    }
+
+    const { otp, expiresInMinutes } = await this.otpService.generateOtp(normalizedEmail, purpose);
+
+    if (purpose === OtpPurpose.PASSWORD_RESET) {
+      await this.emailService.sendPasswordResetOtp(user.email, user.name, otp, expiresInMinutes);
+    } else {
+      await this.emailService.sendVerificationOtp(user.email, user.name, otp, expiresInMinutes);
+    }
+
+    return {
+      success: true,
+      message: 'A new 6-digit OTP code has been dispatched to your email address.',
+    };
+  }
+
+  /**
+   * Authenticates user, enforcing email verification and account status checks
+   */
+  async login(dto: LoginDto, userAgent = '', ipAddress = '') {
     const user = await this.usersService.findByEmail(dto.email, true);
     if (!user || !user.passwordHash) {
       throw new UnauthorizedException({
@@ -69,8 +193,32 @@ export class AuthService {
       });
     }
 
+    // Check email verification status
+    if (user.accountStatus === AccountStatus.PENDING_VERIFICATION || !user.emailVerified) {
+      throw new ForbiddenException({
+        code: ERROR_CODES.AUTH_EMAIL_NOT_VERIFIED,
+        message: 'Your email address has not been verified. Please verify your account with the OTP.',
+        email: user.email,
+        requiresVerification: true,
+      });
+    }
+
+    // Check account suspension status
+    if (user.accountStatus === AccountStatus.SUSPENDED) {
+      throw new ForbiddenException({
+        code: ERROR_CODES.AUTH_ACCOUNT_SUSPENDED,
+        message: 'Your account has been suspended by administration. Please contact support.',
+      });
+    }
+
     const tokens = await this.generateTokens(user._id.toString(), user.email, user.role);
     await this.persistRefreshToken(user._id.toString(), tokens.refreshToken);
+    await this.sessionService.createSession(
+      user._id.toString(),
+      tokens.accessToken,
+      userAgent,
+      ipAddress,
+    );
 
     return {
       user: user.toJSON(),
@@ -79,11 +227,20 @@ export class AuthService {
     };
   }
 
-  async logout(userId: string): Promise<void> {
+  /**
+   * Logs out user, revoking server-side session and clearing refresh token
+   */
+  async logout(userId: string, accessToken?: string): Promise<void> {
+    if (accessToken) {
+      await this.sessionService.revokeSession(userId, accessToken, SessionRevocationReason.LOGOUT);
+    }
     await this.usersService.updateRefreshToken(userId, null);
   }
 
-  async refreshToken(rawToken: string) {
+  /**
+   * Rotates tokens and validates server-side refresh session
+   */
+  async refreshToken(rawToken: string, userAgent = '', ipAddress = '') {
     if (!rawToken) {
       throw new UnauthorizedException({
         code: ERROR_CODES.AUTH_UNAUTHORIZED,
@@ -112,9 +269,16 @@ export class AuthService {
       });
     }
 
+    if (user.accountStatus === AccountStatus.SUSPENDED) {
+      throw new ForbiddenException({
+        code: ERROR_CODES.AUTH_ACCOUNT_SUSPENDED,
+        message: 'Account has been suspended.',
+      });
+    }
+
     const isTokenValid = await argon2.verify(user.refreshTokenHash, rawToken);
     if (!isTokenValid) {
-      // Possible reuse attack: revoke refresh token
+      // Possible token reuse attack: revoke refresh token immediately
       await this.usersService.updateRefreshToken(user._id, null);
       throw new UnauthorizedException({
         code: ERROR_CODES.AUTH_UNAUTHORIZED,
@@ -125,6 +289,12 @@ export class AuthService {
     // Token rotation: Issue fresh access AND refresh token
     const newTokens = await this.generateTokens(user._id.toString(), user.email, user.role);
     await this.persistRefreshToken(user._id.toString(), newTokens.refreshToken);
+    await this.sessionService.createSession(
+      user._id.toString(),
+      newTokens.accessToken,
+      userAgent,
+      ipAddress,
+    );
 
     return {
       user: user.toJSON(),
@@ -133,45 +303,86 @@ export class AuthService {
     };
   }
 
+  /**
+   * Generates password reset OTP without user enumeration
+   */
   async forgotPassword(email: string) {
-    const user = await this.usersService.findByEmail(email);
-    if (user) {
-      const resetToken = crypto.randomBytes(32).toString('hex');
-      const resetTokenHash = await argon2.hash(resetToken, { type: argon2.argon2id });
-      const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await this.usersService.findByEmail(normalizedEmail);
 
-      await this.usersService.setResetPasswordToken(user._id, resetTokenHash, expiresAt);
-
-      // In production, send via email provider. In dev, log token for testing.
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
-        console.info(`[Dev Password Reset] Token for ${email}: ${resetToken}`);
-      }
+    if (user && user.accountStatus !== AccountStatus.SUSPENDED) {
+      const { otp, expiresInMinutes } = await this.otpService.generateOtp(
+        normalizedEmail,
+        OtpPurpose.PASSWORD_RESET,
+      );
+      await this.emailService.sendPasswordResetOtp(user.email, user.name, otp, expiresInMinutes);
     }
 
     return {
+      success: true,
       message: 'If an account exists with this email address, password reset instructions have been dispatched.',
     };
   }
 
-  async resetPassword(dto: ResetPasswordDto) {
-    const candidates = await this.usersService.findActivePasswordResetCandidates();
+  /**
+   * Verifies Password Reset OTP and issues single-use reset challenge token
+   */
+  async verifyResetOtp(dto: VerifyResetOtpDto) {
+    const normalizedEmail = dto.email.toLowerCase().trim();
+    await this.otpService.verifyOtp(normalizedEmail, dto.otp, OtpPurpose.PASSWORD_RESET);
 
-    let matchedUser = null;
-    for (const candidate of candidates) {
-      if (candidate.resetPasswordTokenHash) {
-        const isMatch = await argon2.verify(candidate.resetPasswordTokenHash, dto.token);
-        if (isMatch) {
-          matchedUser = candidate;
-          break;
+    const challengeToken = await this.otpService.issueResetChallenge(normalizedEmail);
+
+    return {
+      success: true,
+      challengeToken,
+      message: 'OTP verified. You may now proceed to set a new password.',
+    };
+  }
+
+  /**
+   * Resets password using challenge token, enforces password strength, revokes all sessions
+   */
+  async resetPassword(dto: ResetPasswordDto) {
+    const token = dto.token;
+    if (!token) {
+      throw new BadRequestException({
+        code: ERROR_CODES.AUTH_RESET_CHALLENGE_INVALID,
+        message: 'Password reset token is required.',
+      });
+    }
+
+    let email = '';
+    // Try challenge token first
+    try {
+      email = await this.otpService.consumeResetChallenge(token);
+    } catch {
+      // Fallback: check legacy candidates
+      const candidates = await this.usersService.findActivePasswordResetCandidates();
+      let matchedUser = null;
+      for (const candidate of candidates) {
+        if (candidate.resetPasswordTokenHash) {
+          const isMatch = await argon2.verify(candidate.resetPasswordTokenHash, token);
+          if (isMatch) {
+            matchedUser = candidate;
+            email = candidate.email;
+            break;
+          }
         }
+      }
+      if (!matchedUser) {
+        throw new BadRequestException({
+          code: ERROR_CODES.VALIDATION_ERROR,
+          message: 'Invalid or expired password reset token.',
+        });
       }
     }
 
-    if (!matchedUser) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
       throw new BadRequestException({
-        code: ERROR_CODES.VALIDATION_ERROR,
-        message: 'Invalid or expired password reset token.',
+        code: ERROR_CODES.AUTH_USER_NOT_FOUND,
+        message: 'User account not found.',
       });
     }
 
@@ -182,10 +393,20 @@ export class AuthService {
       parallelism: 4,
     });
 
-    await this.usersService.resetPassword(matchedUser._id, newPasswordHash);
+    await this.usersService.resetPassword(user._id, newPasswordHash);
+
+    // Revoke all active user sessions across all devices
+    await this.sessionService.revokeAllUserSessions(
+      user._id.toString(),
+      SessionRevocationReason.PASSWORD_RESET,
+    );
+
+    // Send confirmation email
+    await this.emailService.sendPasswordResetConfirmation(user.email, user.name);
 
     return {
-      message: 'Password has been successfully reset. You may now log in with your new credentials.',
+      success: true,
+      message: 'Password has been successfully reset. All active sessions have been logged out. You may now sign in with your new credentials.',
     };
   }
 

@@ -55,7 +55,7 @@ type DashboardTab = 'overview' | 'menu' | 'outlet' | 'plans' | 'subscriptions' |
 
 export default function MessPartnerDashboardPage() {
   const queryClient = useQueryClient();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
 
   const [activeTab, setActiveTab] = useState<DashboardTab>('overview');
   const [selectedDay, setSelectedDay] = useState<DayOfWeek>('MONDAY');
@@ -385,6 +385,21 @@ export default function MessPartnerDashboardPage() {
             )}
           </div>
         </div>
+
+        {/* Pending Role Approval Banner */}
+        {user?.roleApprovalStatus && user.roleApprovalStatus !== 'APPROVED' && (
+          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-3 shadow-xs">
+            <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="space-y-0.5">
+              <span className="font-extrabold block text-sm">
+                Food Vendor Account Under Review ({user.roleApprovalStatus})
+              </span>
+              <p className="text-[11px] text-amber-800 leading-relaxed">
+                Namaste {user.name}, your food vendor account is currently pending administrative verification. You may review your menus and outlet profile, but publishing your outlet and accepting dining subscription requests will be activated once your FSSAI registration and documentation are verified by the compliance team.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Operational Metrics Bar (NO financial earnings, strictly operational) */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

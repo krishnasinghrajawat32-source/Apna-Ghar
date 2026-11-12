@@ -15,6 +15,35 @@ export enum UserStatus {
   SUSPENDED = 'SUSPENDED',
 }
 
+export enum AccountStatus {
+  PENDING_VERIFICATION = 'PENDING_VERIFICATION',
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+}
+
+export enum RoleApprovalStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+}
+
+export enum PresenceStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum OtpPurpose {
+  EMAIL_VERIFICATION = 'EMAIL_VERIFICATION',
+  PASSWORD_RESET = 'PASSWORD_RESET',
+}
+
+export enum SessionRevocationReason {
+  LOGOUT = 'LOGOUT',
+  EXPIRED = 'EXPIRED',
+  PASSWORD_RESET = 'PASSWORD_RESET',
+  ADMIN_SUSPENSION = 'ADMIN_SUSPENSION',
+}
+
 export enum GenderPreference {
   BOYS = 'BOYS',
   GIRLS = 'GIRLS',
@@ -220,8 +249,15 @@ export interface User {
   phone: string;
   role: UserRole;
   status: UserStatus;
+  accountStatus?: AccountStatus;
   emailVerified: boolean;
+  emailVerifiedAt?: string | null;
   phoneVerified: boolean;
+  roleApprovalStatus?: RoleApprovalStatus;
+  lastLoginAt?: string | null;
+  lastLogoutAt?: string | null;
+  lastActivityAt?: string | null;
+  presenceStatus?: PresenceStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -913,4 +949,82 @@ export interface AdminEntityDecisionDto {
   reason?: string;
   isPhysicallyVerified?: boolean;
 }
+
+// Authentication & OTP DTOs
+export interface VerifyEmailOtpDto {
+  email: string;
+  otp: string;
+}
+
+export interface ResendOtpDto {
+  email: string;
+  purpose?: OtpPurpose;
+}
+
+export interface VerifyResetOtpDto {
+  email: string;
+  otp: string;
+}
+
+export interface ResetPasswordWithChallengeDto {
+  challengeToken: string;
+  newPassword: string;
+}
+
+// Admin Management & Dashboard Statistics
+export interface AdminDashboardRoleCounts {
+  students: number;
+  owners: number;
+  messPartners: number;
+  admins: number;
+}
+
+export interface AdminDashboardAccountStatusCounts {
+  active: number;
+  pendingVerification: number;
+  suspended: number;
+}
+
+export interface AdminDashboardEmailVerificationCounts {
+  verified: number;
+  unverified: number;
+}
+
+export interface AdminDashboardPresenceCounts {
+  online: number;
+  offline: number;
+}
+
+export interface AdminDashboardRoleApprovalCounts {
+  pending: number;
+  approved: number;
+  rejected: number;
+}
+
+export interface AdminDashboardStats {
+  totalUsers: number;
+  roles: AdminDashboardRoleCounts;
+  accountStatus: AdminDashboardAccountStatusCounts;
+  emailVerification: AdminDashboardEmailVerificationCounts;
+  presence: AdminDashboardPresenceCounts;
+  roleApprovals: AdminDashboardRoleApprovalCounts;
+}
+
+export interface AdminUserListItem extends User {
+  activeSessionCount?: number;
+}
+
+export interface AdminAuditLog {
+  id: string;
+  adminId: string;
+  adminEmail?: string;
+  action: string;
+  targetType: 'USER' | 'PROPERTY' | 'MESS' | 'MEDIA';
+  targetId: string;
+  reason?: string;
+  diff?: Record<string, unknown>;
+  ipAddress?: string;
+  createdAt: string;
+}
+
 

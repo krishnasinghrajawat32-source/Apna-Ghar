@@ -38,6 +38,14 @@ import {
   MessSubscriptionSchema,
   Media,
   MediaSchema,
+  Session,
+  SessionSchema,
+  OtpRecord,
+  OtpRecordSchema,
+  PasswordResetChallenge,
+  PasswordResetChallengeSchema,
+  AdminAuditLog,
+  AdminAuditLogSchema,
 } from '../schemas';
 
 export const ModelNames = {
@@ -60,6 +68,10 @@ export const ModelNames = {
   MESS: Mess.name,
   MESS_SUBSCRIPTION: MessSubscription.name,
   MEDIA: Media.name,
+  SESSION: Session.name,
+  OTP_RECORD: OtpRecord.name,
+  PASSWORD_RESET_CHALLENGE: PasswordResetChallenge.name,
+  ADMIN_AUDIT_LOG: AdminAuditLog.name,
 } as const;
 
 export const databaseModelDefinitions: ModelDefinition[] = [
@@ -82,4 +94,8 @@ export const databaseModelDefinitions: ModelDefinition[] = [
   { name: Mess.name, schema: MessSchema },
   { name: MessSubscription.name, schema: MessSubscriptionSchema },
   { name: Media.name, schema: MediaSchema },
+  { name: Session.name, schema: SessionSchema },
+  { name: OtpRecord.name, schema: OtpRecordSchema },
+  { name: PasswordResetChallenge.name, schema: PasswordResetChallengeSchema },
+  { name: AdminAuditLog.name, schema: AdminAuditLogSchema },
 ];
