@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -30,7 +30,7 @@ interface ChargesPreview {
   totalInitialAmount: number;
 }
 
-export default function BookingCheckoutPage() {
+function BookingCheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const bedIdParam = searchParams.get('bedId');
@@ -317,5 +317,22 @@ export default function BookingCheckoutPage() {
         )}
       </main>
     </AuthGuard>
+  );
+}
+
+export default function BookingCheckoutPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FCFBF7] flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-3 border-[#173327] border-t-transparent rounded-full animate-spin" />
+            <p className="text-xs text-[#3D3A33]">Loading booking checkout...</p>
+          </div>
+        </div>
+      }
+    >
+      <BookingCheckoutContent />
+    </Suspense>
   );
 }
