@@ -423,6 +423,7 @@ export interface PropertyInventoryResponse {
   totalBeds: number;
   availableBeds: number;
   inventory: RoomTypeInventory[];
+  rooms?: any[];
 }
 
 export interface Visit {

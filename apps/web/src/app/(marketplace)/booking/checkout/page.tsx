@@ -12,7 +12,6 @@ import {
   AlertCircle,
   CheckCircle2,
   BedDouble,
-  Info,
 } from 'lucide-react';
 import { AuthGuard } from '@/features/auth/auth-guard';
 import { useBedHoldStore } from '@/features/inventory/bed-hold-store';
@@ -35,7 +34,7 @@ function BookingCheckoutContent() {
   const searchParams = useSearchParams();
   const bedIdParam = searchParams.get('bedId');
 
-  const { activeHold, releaseHold } = useBedHoldStore();
+  const { activeHold } = useBedHoldStore();
 
   const bedId = bedIdParam || activeHold?.bedId;
 
@@ -66,14 +65,17 @@ function BookingCheckoutContent() {
         method: 'POST',
         body: JSON.stringify(payload),
       }),
-    onSuccess: () => {
+    onSuccess: (res: any) => {
       setIsSuccess(true);
-      if (activeHold) {
-        releaseHold();
-      }
+      const bookingData = res?.data || res;
+      const bookingId = bookingData?.id || bookingData?._id;
       setTimeout(() => {
-        router.push('/student/bookings');
-      }, 2000);
+        if (bookingId) {
+          router.push(`/student/bookings/${bookingId}/pay`);
+        } else {
+          router.push('/student/bookings');
+        }
+      }, 1500);
     },
     onError: (err: any) => {
       setErrorMessage(err.message || 'Failed to submit booking request');
@@ -133,23 +135,23 @@ function BookingCheckoutContent() {
         <div className="space-y-2 pb-6 border-b border-[#E8E5DE]">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#102B50]/10 text-[#102B50]">
             <Clock className="w-3.5 h-3.5 text-[#F5A623]" />
-            <span>Accommodation Request Workflow</span>
+            <span>Book Room & Checkout</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#102B50] tracking-tight">
-            Submit Booking Request
+            Confirm Booking & Proceed to Payment
           </h1>
           <p className="text-xs text-[#687586]">
-            Review accommodation details and submit your stay request for the property owner to review and accept.
+            Review your accommodation details and proceed to the secure sample payment portal.
           </p>
         </div>
 
-        {/* Scope Notice */}
-        <div className="bg-[#FAF8F3] border border-[#E8E5DE] rounded-2xl p-4 flex items-start gap-3 text-xs text-[#263445]">
-          <Info className="w-4 h-4 text-[#F5A623] shrink-0 mt-0.5" />
+        {/* Instant Checkout Notice */}
+        <div className="bg-[#21865B]/10 border border-[#21865B]/30 rounded-2xl p-4 flex items-start gap-3 text-xs text-[#263445]">
+          <CheckCircle2 className="w-4 h-4 text-[#21865B] shrink-0 mt-0.5" />
           <div className="space-y-0.5">
-            <span className="font-bold text-[#102B50] block">Request Workflow (Payment Out of Scope)</span>
+            <span className="font-bold text-[#102B50] block">Secure Bed Reservation & Instant Checkout</span>
             <p className="text-[#687586]">
-              Submitting this form creates a formal booking request with the property owner. No payment gateway or checkout is processed online. Prices shown below are listing reference values only.
+              Your bed is currently held. Once you submit contact details, you will be taken directly to the sample payment gateway to simulate payment and get your instant booking pass.
             </p>
           </div>
         </div>
@@ -164,10 +166,14 @@ function BookingCheckoutContent() {
         {isSuccess ? (
           <div className="bg-white border border-[#21865B]/30 rounded-3xl p-10 text-center space-y-4 shadow-brand-sm">
             <CheckCircle2 className="w-12 h-12 text-[#21865B] mx-auto animate-bounce" />
-            <h2 className="text-xl font-black text-[#102B50]">Booking Request Submitted!</h2>
+            <h2 className="text-xl font-black text-[#102B50]">Booking Initiated!</h2>
             <p className="text-xs text-[#687586] max-w-md mx-auto leading-relaxed">
-              Your stay request has been successfully transmitted to the property owner. You will now be redirected to your bookings page to track status updates.
+              Your bed reservation is verified. Redirecting you to the secure sample payment screen...
             </p>
+            <div className="flex items-center justify-center gap-2 text-xs text-[#21865B] font-bold">
+              <span className="w-2 h-2 rounded-full bg-[#21865B] animate-ping" />
+              <span>Opening Payment Gateway...</span>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -262,7 +268,7 @@ function BookingCheckoutContent() {
                 disabled={bookingMutation.isPending}
                 className="w-full py-3.5 px-6 rounded-xl text-sm font-extrabold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
-                <span>{bookingMutation.isPending ? 'Submitting Request...' : 'Submit Booking Request'}</span>
+                <span>{bookingMutation.isPending ? 'Preparing Payment...' : 'Proceed to Sample Payment'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
@@ -307,7 +313,7 @@ function BookingCheckoutContent() {
                     </div>
 
                     <div className="pt-2 border-t border-[#E8E5DE] text-[10px] text-[#687586]">
-                      * Rent and deposit values are displayed for listing reference only. Payment processing is deferred.
+                      * 100% refundable security deposit upon move-out. Pay securely via sample payment on the next screen.
                     </div>
                   </div>
                 )}

@@ -60,7 +60,7 @@ export class PaymentsService {
       throw new ForbiddenException('You can only initiate payment for your own booking.');
     }
 
-    if (booking.status !== BookingStatus.PENDING_PAYMENT) {
+    if (booking.status !== BookingStatus.PENDING_PAYMENT && booking.status !== BookingStatus.REQUESTED) {
       throw new BadRequestException(`Booking is already ${booking.status}. Cannot initiate payment.`);
     }
 

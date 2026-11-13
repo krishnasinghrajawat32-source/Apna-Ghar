@@ -352,7 +352,7 @@ export default function PropertyDetailPage() {
                 href="#room-bed-selection"
                 className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer active:scale-98"
               >
-                <span>Select Room & Bed</span>
+                <span>Book Room</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 

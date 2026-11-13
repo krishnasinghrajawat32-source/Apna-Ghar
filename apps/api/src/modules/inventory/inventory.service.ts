@@ -149,10 +149,45 @@ export class InventoryService {
       };
     });
 
+    const flatRooms = rooms.map((room) => {
+      const rt = roomTypes.find((t) => t._id.toString() === room.roomTypeId.toString());
+      const roomBeds = bedsWithDynamicStatus.filter((b) => b.roomId.toString() === room._id.toString());
+      return {
+        id: room._id.toString(),
+        roomNumber: room.roomNumber,
+        floor: room.floorNumber,
+        roomTypeId: room.roomTypeId.toString(),
+        roomTypeName: rt?.name || 'Standard Room',
+        baseRent: rt?.baseRent || 0,
+        deposit: rt?.deposit || 0,
+        beds: roomBeds.map((b: any) => {
+          let status: 'AVAILABLE' | 'OCCUPIED' | 'HELD' = 'AVAILABLE';
+          if (
+            b.dynamicStatus === 'OCCUPIED' ||
+            b.dynamicStatus === 'MAINTENANCE' ||
+            b.permanentStatus === BedStatus.BOOKED ||
+            b.permanentStatus === BedStatus.OCCUPIED
+          ) {
+            status = 'OCCUPIED';
+          } else if (b.dynamicStatus === 'HELD_BY_OTHER' || b.dynamicStatus === 'HELD_BY_YOU') {
+            status = 'HELD';
+          }
+          return {
+            id: b.id || b._id?.toString(),
+            bedNumber: b.bedLabel || '1',
+            label: b.bedLabel || 'Bed',
+            status,
+            isHeldByMe: b.dynamicStatus === 'HELD_BY_YOU',
+          };
+        }),
+      };
+    });
+
     return {
       propertyId: propertyId.toString(),
       totalBeds,
       availableBeds,
+      rooms: flatRooms,
       inventory: structuredRoomTypes,
     };
   }

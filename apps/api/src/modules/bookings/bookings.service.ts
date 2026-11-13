@@ -165,7 +165,7 @@ export class BookingsService {
       maintenanceFee,
       moveInCharges,
       totalInitialPayment,
-      status: BookingStatus.REQUESTED,
+      status: BookingStatus.PENDING_PAYMENT,
       emergencyContact: dto.emergencyContact,
       studentIdCardRef: dto.studentIdCardRef || null,
     });
