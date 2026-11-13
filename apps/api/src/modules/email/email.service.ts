@@ -25,13 +25,26 @@ export class EmailService {
       process.env.EMAIL_FROM ||
       'Apna Ghar Security <no-reply@apnaghar.in>';
 
-    if (host && user && pass) {
+    const isPlaceholder =
+      !user ||
+      !pass ||
+      user.includes('your-address') ||
+      user.includes('example.com') ||
+      user.includes('placeholder') ||
+      pass.includes('your-gmail') ||
+      pass.includes('placeholder') ||
+      pass === 'your-gmail-app-password';
+
+    if (host && user && pass && !isPlaceholder) {
       try {
         this.transporter = nodemailer.createTransport({
           host,
           port,
           secure: port === 465,
           auth: { user, pass },
+          connectionTimeout: 4000,
+          greetingTimeout: 4000,
+          socketTimeout: 5000,
         });
         this.logger.log(`SMTP transporter initialized with host: ${host}:${port}`);
       } catch (err: unknown) {
@@ -39,23 +52,29 @@ export class EmailService {
         this.transporter = null;
       }
     } else {
-      this.logger.log('SMTP not configured or incomplete; operating in Development Console Fallback mode.');
+      this.logger.log('SMTP not configured or placeholder detected; operating in fast Development Console Fallback mode.');
     }
   }
 
   /**
-   * Dispatches or simulates an email.
+   * Dispatches or simulates an email with a strict timeout to prevent hanging the request.
    */
   async sendMail(to: string, subject: string, html: string, textFallback: string): Promise<EmailDispatchResult> {
     if (this.transporter) {
       try {
-        const info = await this.transporter.sendMail({
-          from: this.fromAddress,
-          to,
-          subject,
-          text: textFallback,
-          html,
-        });
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('SMTP connection timed out after 4000ms')), 4000),
+        );
+        const info = await Promise.race([
+          this.transporter.sendMail({
+            from: this.fromAddress,
+            to,
+            subject,
+            text: textFallback,
+            html,
+          }),
+          timeoutPromise,
+        ]);
         this.logger.log(`Email dispatched to ${to} (MessageId: ${info.messageId})`);
         return { success: true, messageId: info.messageId, simulated: false };
       } catch (error: unknown) {

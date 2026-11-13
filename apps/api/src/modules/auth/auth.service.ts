@@ -54,11 +54,12 @@ export class AuthService {
       });
     }
 
+    // OWASP recommended interactive Argon2id parameters (low latency, high security)
     const passwordHash = await argon2.hash(dto.password, {
       type: argon2.argon2id,
-      memoryCost: 65536,
-      timeCost: 3,
-      parallelism: 4,
+      memoryCost: 19456,
+      timeCost: 2,
+      parallelism: 1,
     });
 
     const user = await this.usersService.create({
