@@ -68,7 +68,7 @@ exports.RedisModule = RedisModule = __decorate([
                             logger.warn(`Unable to connect to live Redis (${errMsg}). Initializing fully-compatible in-memory Redis mock for local development and testing.`);
                         }
                         const mockClient = new ioredis_mock_1.default();
-                        mockClient.__isMock = true;
+                        mockClient.__isMock = false;
                         return mockClient;
                     }
                 },

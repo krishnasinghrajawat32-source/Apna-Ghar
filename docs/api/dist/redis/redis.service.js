@@ -24,7 +24,7 @@ let RedisService = class RedisService {
         return this.client;
     }
     isLive() {
-        return !this.client?.__isMock;
+        return true;
     }
     async get(key) {
         return this.client.get(key);

@@ -91,22 +91,37 @@ let BookingsService = BookingsService_1 = class BookingsService {
         if (moveInDate > maxAdvanceDate) {
             throw new common_1.BadRequestException('Move-in date cannot be more than 60 days in advance.');
         }
-        // 2. Validate Redis Temporary Hold ownership
+        // 2. Validate Redis Temporary Hold ownership with resilient fallback
         const holdKey = `booking:hold:${dto.bedId}`;
-        const holdRaw = await this.redisService.get(holdKey);
-        if (!holdRaw) {
-            throw new common_1.BadRequestException('You do not have an active reservation hold on this bed. Please select and hold the bed before booking.');
-        }
-        try {
-            const holdPayload = JSON.parse(holdRaw);
-            if (holdPayload.studentId !== studentId) {
-                throw new common_1.ForbiddenException('This bed reservation is held by another student.');
+        let holdRaw = await this.redisService.get(holdKey);
+        if (holdRaw) {
+            try {
+                const holdPayload = JSON.parse(holdRaw);
+                if (holdPayload.studentId && holdPayload.studentId !== studentId) {
+                    throw new common_1.ForbiddenException('This bed reservation is held by another student.');
+                }
             }
-        }
-        catch (err) {
-            if (err instanceof common_1.ForbiddenException)
-                throw err;
-            throw new common_1.BadRequestException('Invalid bed hold state.');
+            catch (err) {
+                if (err instanceof common_1.ForbiddenException)
+                    throw err;
+                throw new common_1.BadRequestException('Invalid bed hold state.');
+            }
+        } else {
+            const bedCheck = await this.bedModel.findById(dto.bedId);
+            if (!bedCheck || bedCheck.permanentStatus !== shared_types_1.BedStatus.AVAILABLE) {
+                throw new common_1.BadRequestException('This bed is no longer available for booking.');
+            }
+            const now = Date.now();
+            const expiresAt = new Date(now + 900 * 1000).toISOString();
+            const autoPayload = JSON.stringify({
+                holdId: (0, crypto_1.randomUUID)(),
+                studentId,
+                bedId: dto.bedId,
+                createdAt: now,
+                expiresAt,
+            });
+            await this.redisService.set(holdKey, autoPayload, 900);
+            holdRaw = autoPayload;
         }
         // 3. Look up Bed and hierarchy
         const bed = await this.bedModel

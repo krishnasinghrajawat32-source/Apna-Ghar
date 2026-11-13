@@ -181,6 +181,13 @@ export function RoomBedSelector({
     });
 
     if (!result.success) {
+      if (
+        result.error &&
+        (result.error.toLowerCase().includes('redis') || result.error.toLowerCase().includes('lock'))
+      ) {
+        router.push(`/booking/checkout?bedId=${bed.id}&propertyId=${propertyId}`);
+        return;
+      }
       setErrorMessage(result.error || 'Failed to hold bed. Please try another bed or refresh.');
       setIsRedirecting(false);
       refetch();

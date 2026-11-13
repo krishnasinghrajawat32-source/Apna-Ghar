@@ -280,7 +280,16 @@ export class AuthService {
       });
     }
 
-    const isTokenValid = await argon2.verify(user.refreshTokenHash, rawToken);
+    let isTokenValid = false;
+    if (user.refreshTokenHash.startsWith('$argon2')) {
+      isTokenValid = await argon2.verify(user.refreshTokenHash, rawToken);
+    } else {
+      const computedHash = this.hashRefreshToken(rawToken);
+      isTokenValid =
+        user.refreshTokenHash.length === computedHash.length &&
+        crypto.timingSafeEqual(Buffer.from(user.refreshTokenHash), Buffer.from(computedHash));
+    }
+
     if (!isTokenValid) {
       // Possible token reuse attack: revoke refresh token immediately
       await this.usersService.updateRefreshToken(user._id, null);
@@ -437,8 +446,12 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  private hashRefreshToken(token: string): string {
+    return crypto.createHash('sha256').update(token.trim()).digest('hex');
+  }
+
   private async persistRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    const tokenHash = await argon2.hash(refreshToken, { type: argon2.argon2id });
+    const tokenHash = this.hashRefreshToken(refreshToken);
     await this.usersService.updateRefreshToken(userId, tokenHash);
   }
 }

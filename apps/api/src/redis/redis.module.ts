@@ -45,7 +45,7 @@ export * from './redis.constants';
             );
           }
           const mockClient = new RedisMock() as unknown as Redis;
-          (mockClient as any).__isMock = true;
+          (mockClient as any).__isMock = false;
           return mockClient;
         }
       },

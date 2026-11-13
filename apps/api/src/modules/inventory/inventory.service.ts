@@ -42,7 +42,7 @@ export class InventoryService {
     @InjectModel(Room.name) private readonly roomModel: Model<RoomDocument>,
     @InjectModel(Bed.name) private readonly bedModel: Model<BedDocument>,
     private readonly redisService: RedisService,
-  ) {}
+  ) { }
 
   async getRoomTypesByProperty(propertyId: string | Types.ObjectId): Promise<RoomTypeDocument[]> {
     return this.roomTypeModel
