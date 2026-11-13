@@ -147,13 +147,28 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <button
             type="button"
+            role="switch"
             onClick={toggleTheme}
-            aria-label={`Switch to ${isDarkTheme ? 'light' : 'dark'} theme`}
-            title={`Switch to ${isDarkTheme ? 'light' : 'dark'} theme`}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[#E8E5DE] px-2.5 py-2 text-[10px] font-bold text-[#263445] transition-colors hover:bg-[#F0F4F8] sm:px-3"
+            aria-checked={isDarkTheme}
+            aria-label={isDarkTheme ? 'Dark theme' : 'Light theme'}
+            title="Toggle color theme"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E8E5DE] px-2.5 py-2 text-[10px] font-bold text-[#263445] transition-colors hover:bg-[#F0F4F8] sm:px-3"
           >
-            {isDarkTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             <span>{isDarkTheme ? 'Dark theme' : 'Light theme'}</span>
+            <span
+              aria-hidden="true"
+              className={`flex h-6 w-10 items-center rounded-full p-0.5 transition-colors ${
+                isDarkTheme ? 'bg-slate-700' : 'bg-slate-300'
+              }`}
+            >
+              <span
+                className={`flex h-5 w-5 items-center justify-center rounded-full bg-white text-[#102B50] shadow-sm transition-transform ${
+                  isDarkTheme ? 'translate-x-4' : 'translate-x-0'
+                }`}
+              >
+                {isDarkTheme ? <Moon className="h-3 w-3" /> : <Sun className="h-3 w-3" />}
+              </span>
+            </span>
           </button>
 
           {isLoading ? (
