@@ -71,7 +71,13 @@ export class PaymentsController {
     @Body('orderId') orderId: string,
     @Body('method') method?: 'UPI' | 'NETBANKING' | 'CARD' | 'SIMULATOR',
   ) {
-    if (process.env.NODE_ENV === 'production' && process.env.ENABLE_PAYMENT_SIMULATOR !== 'true') {
+    const isExplicitlyDisabled = process.env.ENABLE_PAYMENT_SIMULATOR === 'false';
+    const isLiveProductionWithRealKeys =
+      process.env.NODE_ENV === 'production' &&
+      !!process.env.PAYMENT_KEY_ID &&
+      !process.env.PAYMENT_KEY_ID.startsWith('rzp_test_');
+
+    if (isExplicitlyDisabled || (isLiveProductionWithRealKeys && process.env.ENABLE_PAYMENT_SIMULATOR !== 'true')) {
       throw new ForbiddenException(
         'Payment simulation is strictly disabled in production environments. Please use verified gateway callbacks.',
       );
