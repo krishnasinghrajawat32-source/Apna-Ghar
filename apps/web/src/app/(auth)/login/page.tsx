@@ -1,12 +1,12 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { LogIn, AlertCircle } from 'lucide-react';
+import { LogIn, AlertCircle, Loader2 } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
 import { useAuthStore } from '@/features/auth/auth-store';
 import { User, UserRole } from '@apna-ghar/shared-types';
@@ -24,6 +24,12 @@ function LoginForm() {
   const redirectUrl = searchParams.get('redirect');
   const { setAuth } = useAuthStore();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isSlowNotice, setIsSlowNotice] = useState(false);
+
+  // Pre-warm backend API on mount so cloud server is awake by the time user clicks submit
+  useEffect(() => {
+    apiClient('/health').catch(() => {});
+  }, []);
 
   const {
     register,
@@ -32,6 +38,16 @@ function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isSubmitting) {
+      timer = setTimeout(() => setIsSlowNotice(true), 2500);
+    } else {
+      setIsSlowNotice(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isSubmitting]);
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -124,8 +140,17 @@ function LoginForm() {
           disabled={isSubmitting}
           className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-sm disabled:opacity-70"
         >
-          <LogIn className="w-4 h-4" />
-          {isSubmitting ? 'Signing In...' : 'Sign In'}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>{isSlowNotice ? 'Connecting to secure server...' : 'Signing In...'}</span>
+            </>
+          ) : (
+            <>
+              <LogIn className="w-4 h-4" />
+              <span>Sign In</span>
+            </>
+          )}
         </button>
       </form>
 

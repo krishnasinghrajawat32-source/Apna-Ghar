@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { UserCheck, AlertCircle, GraduationCap, Building2, UtensilsCrossed } from 'lucide-react';
+import { UserCheck, AlertCircle, GraduationCap, Building2, UtensilsCrossed, Loader2 } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
 import { useAuthStore } from '@/features/auth/auth-store';
 import { User, UserRole } from '@apna-ghar/shared-types';
@@ -30,6 +30,12 @@ export default function RegisterPage() {
   const router = useRouter();
   const { setAuth } = useAuthStore();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isSlowNotice, setIsSlowNotice] = useState(false);
+
+  // Pre-warm backend API on mount so cloud server is awake by the time form is submitted
+  useEffect(() => {
+    apiClient('/health').catch(() => {});
+  }, []);
 
   const {
     register,
@@ -45,6 +51,16 @@ export default function RegisterPage() {
   });
 
   const selectedRole = watch('role');
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isSubmitting) {
+      timer = setTimeout(() => setIsSlowNotice(true), 2500);
+    } else {
+      setIsSlowNotice(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isSubmitting]);
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
@@ -246,8 +262,17 @@ export default function RegisterPage() {
               disabled={isSubmitting}
               className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-xs font-bold text-white bg-[#173327] hover:bg-[#1F4333] transition-colors shadow-sm disabled:opacity-70"
             >
-              <UserCheck className="w-4 h-4" />
-              {isSubmitting ? 'Creating Account...' : 'Complete Registration'}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>{isSlowNotice ? 'Connecting to secure server...' : 'Creating Account...'}</span>
+                </>
+              ) : (
+                <>
+                  <UserCheck className="w-4 h-4" />
+                  <span>Complete Registration</span>
+                </>
+              )}
             </button>
           </form>
 
