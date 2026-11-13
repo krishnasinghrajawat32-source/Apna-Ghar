@@ -12,7 +12,6 @@ import {
   Utensils,
   Calendar,
   BookOpen,
-  MessageCircle,
   User,
   LayoutDashboard,
   Building2,
@@ -108,58 +107,6 @@ function NavbarContent() {
     router.push('/login');
   };
 
-<<<<<<< HEAD
-  const getRoleLabel = (role: UserRole) => {
-    switch (role) {
-      case UserRole.STUDENT:
-        return 'Student';
-      case UserRole.OWNER:
-        return 'Property Owner';
-      case UserRole.MESS_PARTNER:
-        return 'Mess Partner';
-      case UserRole.ADMIN:
-        return 'Admin';
-      default:
-        return role;
-    }
-  };
-
-  const getDashboardHref = (role: UserRole) => {
-    switch (role) {
-      case UserRole.STUDENT:
-        return '/student/dashboard';
-      case UserRole.OWNER:
-        return '/owner/dashboard';
-      case UserRole.MESS_PARTNER:
-        return '/mess/dashboard';
-      case UserRole.ADMIN:
-        return '/admin/dashboard';
-      default:
-        return '/';
-    }
-  };
-
-  const navLinks = [
-    { label: 'Home', href: '/', icon: Home },
-    { label: 'Find Stays', href: '/search', icon: ShieldCheck },
-    { label: 'Mess Plans', href: '/mess', icon: Utensils },
-    { label: 'My Visits', href: '/student/visits', icon: Calendar },
-    { label: 'My Bookings', href: '/student/bookings', icon: BookOpen },
-    ...(user?.role === UserRole.STUDENT
-      ? [{ label: 'Messages', href: '/student/messages', icon: MessageCircle }]
-      : []),
-    ...(user?.role === UserRole.OWNER
-      ? [{ label: 'Owner Inbox', href: '/owner/inbox', icon: MessageCircle }]
-      : []),
-  ];
-
-  const isActive = (href: string) => {
-    if (href === '/') return pathname === '/';
-    return pathname.startsWith(href);
-  };
-
-=======
->>>>>>> edee983 (feat: implement role-based dynamic navbar and student login with dashboard tab sync)
   const toggleTheme = () => {
     const nextTheme = isDarkTheme ? 'light' : 'dark';
     document.documentElement.dataset.theme = nextTheme;
@@ -253,7 +200,7 @@ function NavbarContent() {
   return (
     <header className="sticky top-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E8E5DE] shadow-brand-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        
+
         {/* Brand Logo & Tagline */}
         <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
           <div className="w-10 h-10 rounded-xl bg-[#102B50] flex items-center justify-center text-[#F5A623] font-black text-xl shadow-brand-sm transition-transform group-hover:scale-105">
@@ -291,11 +238,10 @@ function NavbarContent() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`relative py-1.5 flex items-center gap-1.5 whitespace-nowrap transition-colors duration-150 ${
-                    active
+                  className={`relative py-1.5 flex items-center gap-1.5 whitespace-nowrap transition-colors duration-150 ${active
                       ? 'text-[#102B50] font-bold'
                       : 'text-[#687586] hover:text-[#102B50]'
-                  }`}
+                    }`}
                 >
                   <Icon className={`w-3.5 h-3.5 ${active ? 'text-[#F5A623]' : 'text-[#687586]'}`} />
                   <span>{item.label}</span>
@@ -314,11 +260,10 @@ function NavbarContent() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`relative py-1.5 flex items-center gap-1.5 whitespace-nowrap transition-colors duration-150 ${
-                    active
+                  className={`relative py-1.5 flex items-center gap-1.5 whitespace-nowrap transition-colors duration-150 ${active
                       ? 'text-[#102B50] font-bold'
                       : 'text-[#687586] hover:text-[#102B50]'
-                  }`}
+                    }`}
                 >
                   <Icon className={`w-3.5 h-3.5 ${active ? 'text-[#F5A623]' : 'text-[#687586]'}`} />
                   <span>{item.label}</span>
@@ -342,7 +287,7 @@ function NavbarContent() {
 
         {/* Right Actions: Theme Toggle, Auth Buttons, or User Menu */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          
+
           {/* Theme Toggle Button */}
           <button
             type="button"
@@ -356,14 +301,12 @@ function NavbarContent() {
             <span>{isDarkTheme ? 'Dark' : 'Light'}</span>
             <span
               aria-hidden="true"
-              className={`flex h-5 w-8 items-center rounded-full p-0.5 transition-colors ${
-                isDarkTheme ? 'bg-slate-700' : 'bg-slate-300'
-              }`}
+              className={`flex h-5 w-8 items-center rounded-full p-0.5 transition-colors ${isDarkTheme ? 'bg-slate-700' : 'bg-slate-300'
+                }`}
             >
               <span
-                className={`flex h-4 w-4 items-center justify-center rounded-full bg-white text-[#102B50] shadow-sm transition-transform ${
-                  isDarkTheme ? 'translate-x-3' : 'translate-x-0'
-                }`}
+                className={`flex h-4 w-4 items-center justify-center rounded-full bg-white text-[#102B50] shadow-sm transition-transform ${isDarkTheme ? 'translate-x-3' : 'translate-x-0'
+                  }`}
               >
                 {isDarkTheme ? <Moon className="h-2.5 w-2.5" /> : <Sun className="h-2.5 w-2.5" />}
               </span>
@@ -377,21 +320,19 @@ function NavbarContent() {
             <div className="hidden md:flex items-center gap-2">
               <Link
                 href="/login"
-                className={`text-xs font-semibold px-3.5 py-2 rounded-xl transition-colors ${
-                  isItemActive('/login')
+                className={`text-xs font-semibold px-3.5 py-2 rounded-xl transition-colors ${isItemActive('/login')
                     ? 'bg-[#102B50] text-white'
                     : 'text-[#102B50] hover:bg-[#F0F4F8]'
-                }`}
+                  }`}
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className={`text-xs font-bold px-4 py-2 rounded-xl shadow-brand-sm transition-all ${
-                  isItemActive('/register')
+                className={`text-xs font-bold px-4 py-2 rounded-xl shadow-brand-sm transition-all ${isItemActive('/register')
                     ? 'bg-[#E99A12] text-[#102B50]'
                     : 'bg-[#F5A623] text-[#102B50] hover:bg-[#E99A12]'
-                }`}
+                  }`}
               >
                 Create Account
               </Link>
@@ -441,7 +382,7 @@ function NavbarContent() {
       {/* Mobile Responsive Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[#E8E5DE] bg-white px-4 pt-3 pb-6 space-y-2 shadow-brand-lg animate-in fade-in slide-in-from-top-2">
-          
+
           {/* User Status Bar if Logged In */}
           {isAuthenticated && user && (
             <div className="p-3 mb-2 rounded-xl bg-[#FAF8F3] border border-[#E8E5DE] flex items-center justify-between">
@@ -468,11 +409,10 @@ function NavbarContent() {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
-                  active
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${active
                     ? 'bg-[#102B50] text-white'
                     : 'text-[#263445] hover:bg-[#FAF8F3]'
-                }`}
+                  }`}
               >
                 <Icon className={`w-4 h-4 ${active ? 'text-[#F5A623]' : 'text-[#687586]'}`} />
                 <span>{item.label}</span>
