@@ -4,7 +4,7 @@ import { REDIS_CLIENT } from './redis.constants';
 
 @Injectable()
 export class RedisService {
-  constructor(@Inject(REDIS_CLIENT) private readonly client: Redis) {}
+  constructor(@Inject(REDIS_CLIENT) private readonly client: Redis) { }
 
   getClient(): Redis {
     return this.client;

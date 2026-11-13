@@ -55,4 +55,4 @@ export * from './redis.constants';
   ],
   exports: [REDIS_CLIENT, RedisService],
 })
-export class RedisModule {}
+export class RedisModule { }
