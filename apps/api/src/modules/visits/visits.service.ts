@@ -7,11 +7,15 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { ConfigService } from '@nestjs/config';
+import * as argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 import { Visit, VisitDocument } from './schemas/visit.schema';
 import { Property, PropertyDocument } from '../properties/schemas/property.schema';
+import { User, UserDocument } from '../users/schemas/user.schema';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { UpdateVisitStatusDto } from './dto/update-visit-status.dto';
-import { VisitStatus, UserRole } from '@apna-ghar/shared-types';
+import { VisitStatus, UserRole, UserStatus, AccountStatus } from '@apna-ghar/shared-types';
 
 export const STANDARD_VISIT_SLOTS = [
   '10:00-12:00',
@@ -29,12 +33,18 @@ export class VisitsService {
     private readonly visitModel: Model<VisitDocument>,
     @InjectModel(Property.name)
     private readonly propertyModel: Model<PropertyDocument>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>,
+    private readonly configService: ConfigService,
   ) {}
 
   /**
-   * Schedule a new visit request by student
+   * Schedule a new visit request by student or guest lead
    */
-  async createVisit(studentId: string, dto: CreateVisitDto): Promise<VisitDocument> {
+  async createVisit(
+    authenticatedStudentId: string | null | undefined,
+    dto: CreateVisitDto,
+  ): Promise<{ visit: VisitDocument; accessToken?: string; user?: unknown }> {
     if (!Types.ObjectId.isValid(dto.propertyId)) {
       throw new BadRequestException(`Invalid property ID: ${dto.propertyId}`);
     }
@@ -52,13 +62,65 @@ export class VisitsService {
       throw new BadRequestException('Cannot schedule a visit for a date in the past');
     }
 
+    let resolvedStudentId: Types.ObjectId;
+    let newAccessToken: string | undefined;
+    let studentUser: UserDocument | null = null;
+
+    if (authenticatedStudentId && Types.ObjectId.isValid(authenticatedStudentId)) {
+      resolvedStudentId = new Types.ObjectId(authenticatedStudentId);
+      studentUser = await this.userModel.findById(resolvedStudentId).exec();
+    } else {
+      // Find or create student lead by phone or email
+      const cleanPhone = dto.contactPhone.trim();
+      const searchConditions: any[] = [{ phone: cleanPhone }];
+      if (dto.visitorEmail) {
+        searchConditions.push({ email: dto.visitorEmail.toLowerCase().trim() });
+      }
+
+      studentUser = await this.userModel.findOne({ $or: searchConditions }).exec();
+
+      if (!studentUser) {
+        const fallbackEmail =
+          dto.visitorEmail?.trim().toLowerCase() ||
+          `student_${cleanPhone.replace(/\D/g, '').slice(-10)}_${Date.now().toString(36)}@apnaghar.in`;
+        const tempPassword = await argon2.hash(`ApnaGhar@${Date.now()}`, { type: argon2.argon2id });
+
+        studentUser = await this.userModel.create({
+          name: dto.visitorName?.trim() || 'Prospective Student',
+          email: fallbackEmail,
+          phone: cleanPhone,
+          passwordHash: tempPassword,
+          role: UserRole.STUDENT,
+          status: UserStatus.ACTIVE,
+          accountStatus: AccountStatus.ACTIVE,
+          emailVerified: true,
+        });
+      }
+
+      resolvedStudentId = studentUser._id;
+
+      // Generate JWT Access Token for instant seamless authentication
+      const jwtSecret =
+        this.configService.get<string>('jwtAccessSecret') ||
+        'dev_jwt_access_secret_min_32_characters_seed';
+      newAccessToken = jwt.sign(
+        {
+          sub: studentUser._id.toString(),
+          email: studentUser.email,
+          role: studentUser.role,
+        },
+        jwtSecret,
+        { expiresIn: '7d' },
+      );
+    }
+
     // Check for duplicate pending/confirmed visit on the same day for this student
     const existing = await this.visitModel.findOne({
-      studentId: new Types.ObjectId(studentId),
+      studentId: resolvedStudentId,
       propertyId: property._id,
       scheduledAt: {
-        $gte: new Date(scheduledDate.setHours(0, 0, 0, 0)),
-        $lte: new Date(scheduledDate.setHours(23, 59, 59, 999)),
+        $gte: new Date(new Date(dto.scheduledDate).setHours(0, 0, 0, 0)),
+        $lte: new Date(new Date(dto.scheduledDate).setHours(23, 59, 59, 999)),
       },
       status: { $in: [VisitStatus.REQUESTED, VisitStatus.CONFIRMED] },
     }).exec();
@@ -70,7 +132,7 @@ export class VisitsService {
     }
 
     const visit = await this.visitModel.create({
-      studentId: new Types.ObjectId(studentId),
+      studentId: resolvedStudentId,
       propertyId: property._id,
       ownerId: property.ownerId,
       scheduledAt: new Date(dto.scheduledDate),
@@ -81,7 +143,22 @@ export class VisitsService {
     });
 
     this.logger.log(`Created visit request ${visit._id} for property ${property.name}`);
-    return visit;
+
+    return {
+      visit,
+      ...(newAccessToken
+        ? {
+            accessToken: newAccessToken,
+            user: {
+              id: studentUser?._id.toString(),
+              name: studentUser?.name,
+              email: studentUser?.email,
+              phone: studentUser?.phone,
+              role: studentUser?.role,
+            },
+          }
+        : {}),
+    };
   }
 
   /**

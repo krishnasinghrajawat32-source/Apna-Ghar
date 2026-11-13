@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -8,11 +8,11 @@ import {
   MapPin,
   RotateCcw,
   Building2,
+  Search,
 } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
 import { PropertyCard, PropertyCardProps } from '@/components/property/property-card';
-import { SEARCH_RADIUS_TIERS } from '@apna-ghar/shared-constants';
-import { GenderPreference, SharingType } from '@apna-ghar/shared-types';
+import { GenderPreference, SharingType, PropertyType } from '@apna-ghar/shared-types';
 
 interface SearchResponse {
   data: PropertyCardProps['property'][];
@@ -30,8 +30,10 @@ function SearchContent() {
   const searchParams = useSearchParams();
 
   // URL state
-  const collegeParam = searchParams.get('college') || 'amity-university-noida';
-  const radiusParam = searchParams.get('radius') || '3000';
+  const cityParam = searchParams.get('city') || '';
+  const collegeParam = searchParams.get('college') || '';
+  const qParam = searchParams.get('q') || '';
+  const propertyTypeParam = searchParams.get('propertyType') || '';
   const genderParam = searchParams.get('gender') || '';
   const sharingParam = searchParams.get('sharing') || '';
   const maxPriceParam = searchParams.get('maxPrice') || '';
@@ -40,8 +42,13 @@ function SearchContent() {
   const verifiedOnlyParam = searchParams.get('verifiedOnly') === 'true';
   const sortParam = searchParams.get('sort') || 'recommended';
 
-  // Local filter states
+  // Search input state
+  const [searchInput, setSearchInput] = useState(qParam || cityParam || '');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    setSearchInput(qParam || cityParam || '');
+  }, [qParam, cityParam]);
 
   // Sync filters to URL
   const updateFilter = (key: string, value: string | null) => {
@@ -51,13 +58,40 @@ function SearchContent() {
     } else {
       params.set(key, value);
     }
+    // When explicitly setting city, clear college so city search takes precedence
+    if (key === 'city' && value) {
+      params.delete('college');
+      params.delete('q');
+    }
     params.set('page', '1');
     router.push(`/search?${params.toString()}`);
   };
 
   const clearAllFilters = () => {
     const params = new URLSearchParams();
-    if (collegeParam) params.set('college', collegeParam);
+    if (cityParam) params.set('city', cityParam);
+    else if (collegeParam) params.set('college', collegeParam);
+    router.push(`/search?${params.toString()}`);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = searchInput.trim();
+    const params = new URLSearchParams(searchParams.toString());
+    if (!val) {
+      params.delete('q');
+      params.delete('city');
+    } else {
+      const lower = val.toLowerCase();
+      if (['bhopal', 'indore', 'gwalior'].includes(lower)) {
+        params.set('city', val.charAt(0).toUpperCase() + val.slice(1).toLowerCase());
+        params.delete('q');
+        params.delete('college');
+      } else {
+        params.set('q', val);
+      }
+    }
+    params.set('page', '1');
     router.push(`/search?${params.toString()}`);
   };
 
@@ -69,22 +103,111 @@ function SearchContent() {
 
   const properties = Array.isArray(data) ? data : data?.data || [];
   const total = (data as any)?.meta?.total ?? properties.length;
-  const collegeAnchor = (data as any)?.meta?.collegeAnchor || collegeParam.replace(/-/g, ' ');
+  const activeLocation =
+    (data as any)?.meta?.collegeAnchor ||
+    cityParam ||
+    (collegeParam ? collegeParam.replace(/-/g, ' ') : '') ||
+    'Madhya Pradesh';
+
+  const CITIES = [
+    { label: 'All MP', value: '' },
+    { label: 'Bhopal', value: 'Bhopal' },
+    { label: 'Indore', value: 'Indore' },
+    { label: 'Gwalior', value: 'Gwalior' },
+  ];
+
+  const PROPERTY_TYPES = [
+    { label: 'All Stays', value: '' },
+    { label: 'Hostels', value: PropertyType.HOSTEL },
+    { label: 'PGs', value: PropertyType.PG },
+    { label: 'Student Flats', value: PropertyType.STUDENT_FLAT },
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      {/* Search Bar & City Selector Header */}
+      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E5DE] shadow-brand-sm space-y-4">
+        <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search className="w-5 h-5 text-[#102B50] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Search by city (Bhopal, Indore, Gwalior), college or stay name..."
+              className="w-full pl-12 pr-4 py-3.5 text-xs sm:text-sm rounded-2xl border border-[#E8E5DE] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3] text-[#263445] font-medium"
+            />
+          </div>
+          <button
+            type="submit"
+            className="px-6 py-3.5 rounded-2xl text-xs sm:text-sm font-black text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-colors shadow-xs shrink-0"
+          >
+            Search Stays
+          </button>
+        </form>
+
+        {/* Quick City Filter Pills */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[#E8E5DE]">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-bold text-[#687586] flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5 text-[#F5A623]" />
+              City:
+            </span>
+            {CITIES.map((c) => {
+              const isActive = (cityParam.toLowerCase() === c.value.toLowerCase()) || (!cityParam && !c.value);
+              return (
+                <button
+                  key={c.label}
+                  type="button"
+                  onClick={() => updateFilter('city', c.value || null)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    isActive
+                      ? 'bg-[#102B50] text-[#F5A623] shadow-xs'
+                      : 'bg-[#FAF8F3] text-[#263445] hover:bg-white border border-[#E8E5DE]'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Quick Property Type Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-bold text-[#687586]">Type:</span>
+            {PROPERTY_TYPES.map((t) => {
+              const isActive = (propertyTypeParam === t.value) || (!propertyTypeParam && !t.value);
+              return (
+                <button
+                  key={t.label}
+                  type="button"
+                  onClick={() => updateFilter('propertyType', t.value || null)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    isActive
+                      ? 'bg-[#F5A623] text-[#102B50] shadow-xs'
+                      : 'bg-[#FAF8F3] text-[#263445] hover:bg-white border border-[#E8E5DE]'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Top Banner / Breadcrumb */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-[#E8E5DE]">
-        <div className="space-y-1.5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#E8E5DE]">
+        <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs font-bold text-[#F5A623]">
             <MapPin className="w-3.5 h-3.5" />
-            <span className="capitalize">{collegeAnchor}</span>
+            <span className="capitalize">{activeLocation}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#102B50] tracking-tight">
-            Verified Student Accommodations
+            Verified Accommodations in {activeLocation}
           </h1>
           <p className="text-xs text-[#687586]">
-            {isLoading ? 'Scanning proximity...' : `${total} verified ${total === 1 ? 'stay' : 'stays'} available near campus`}
+            {isLoading ? 'Scanning city inventory...' : `${total} verified ${total === 1 ? 'stay' : 'stays'} available in ${activeLocation}`}
           </p>
         </div>
 
@@ -107,7 +230,6 @@ function SearchContent() {
               className="bg-transparent text-xs font-bold text-[#102B50] focus:outline-none cursor-pointer"
             >
               <option value="recommended">Recommended</option>
-              <option value="nearest">Nearest to Campus</option>
               <option value="lowest_rent">Lowest Rent</option>
               <option value="recently_updated">Recently Updated</option>
             </select>
@@ -132,24 +254,47 @@ function SearchContent() {
             </button>
           </div>
 
-          {/* Search Radius Tier */}
+          {/* City Selection */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-[#102B50] block">
-              Proximity Radius
+              City
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {SEARCH_RADIUS_TIERS.map((tier) => (
+              {CITIES.map((c) => (
                 <button
-                  key={tier.value}
+                  key={c.label}
                   type="button"
-                  onClick={() => updateFilter('radius', tier.value.toString())}
+                  onClick={() => updateFilter('city', c.value || null)}
                   className={`py-2 px-2.5 rounded-xl text-xs font-bold border transition-all ${
-                    radiusParam === tier.value.toString()
+                    (cityParam.toLowerCase() === c.value.toLowerCase()) || (!cityParam && !c.value)
                       ? 'border-[#102B50] bg-[#102B50] text-white shadow-sm'
                       : 'border-[#E8E5DE] bg-[#FAF8F3] text-[#263445] hover:bg-white hover:border-[#F5A623]'
                   }`}
                 >
-                  {tier.label}
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Accommodation Type */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-[#102B50] block">
+              Accommodation Type
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {PROPERTY_TYPES.map((t) => (
+                <button
+                  key={t.label}
+                  type="button"
+                  onClick={() => updateFilter('propertyType', t.value || null)}
+                  className={`py-2 px-2 rounded-xl text-[11px] font-bold border transition-all ${
+                    (propertyTypeParam === t.value) || (!propertyTypeParam && !t.value)
+                      ? 'border-[#102B50] bg-[#102B50] text-white shadow-sm'
+                      : 'border-[#E8E5DE] bg-[#FAF8F3] text-[#263445] hover:bg-white hover:border-[#F5A623]'
+                  }`}
+                >
+                  {t.label}
                 </button>
               ))}
             </div>
@@ -212,6 +357,7 @@ function SearchContent() {
               className="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-[#E8E5DE] bg-[#FAF8F3] text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623]"
             >
               <option value="">Any Budget</option>
+              <option value="6000">Up to ₹6,000 / mo</option>
               <option value="8000">Up to ₹8,000 / mo</option>
               <option value="12000">Up to ₹12,000 / mo</option>
               <option value="16000">Up to ₹16,000 / mo</option>
@@ -284,19 +430,19 @@ function SearchContent() {
               </div>
               <div className="space-y-1.5 max-w-md mx-auto">
                 <h3 className="text-base font-extrabold text-[#102B50]">
-                  No verified accommodations found within this radius
+                  No verified accommodations found in {activeLocation}
                 </h3>
                 <p className="text-xs text-[#687586] leading-relaxed">
-                  We could not find any active student properties matching your exact filters near {collegeAnchor}. Try expanding your search radius to 15 km or clearing filters.
+                  We could not find any active student properties matching your exact filters in {activeLocation}. Try selecting another city (Bhopal, Indore, Gwalior) or resetting filters.
                 </p>
               </div>
               <div className="pt-2 flex flex-wrap justify-center gap-3">
                 <button
                   type="button"
-                  onClick={() => updateFilter('radius', '15000')}
+                  onClick={() => updateFilter('city', 'Bhopal')}
                   className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-[#102B50] hover:bg-[#183D68] transition-colors shadow-sm"
                 >
-                  Expand Radius to 15 km
+                  View Bhopal Stays
                 </button>
                 <button
                   type="button"
@@ -313,7 +459,7 @@ function SearchContent() {
                 <PropertyCard
                   key={property.id}
                   property={property}
-                  collegeAnchor={collegeAnchor}
+                  collegeAnchor={activeLocation}
                 />
               ))}
             </div>
@@ -331,7 +477,7 @@ export default function SearchPage() {
         <div className="min-h-screen flex items-center justify-center bg-[#FAF8F3]">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-3 border-[#102B50] border-t-[#F5A623] rounded-full animate-spin" />
-            <p className="text-xs text-[#263445] font-semibold">Loading verified campus stays...</p>
+            <p className="text-xs text-[#263445] font-semibold">Loading verified accommodations...</p>
           </div>
         </div>
       }

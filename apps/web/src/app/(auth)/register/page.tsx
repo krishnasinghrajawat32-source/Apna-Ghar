@@ -8,7 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { UserCheck, AlertCircle, GraduationCap, Building2, UtensilsCrossed } from 'lucide-react';
 import { apiClient, ApiError } from '@/lib/api-client';
-import { UserRole } from '@apna-ghar/shared-types';
+import { useAuthStore } from '@/features/auth/auth-store';
+import { User, UserRole } from '@apna-ghar/shared-types';
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -27,6 +28,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { setAuth } = useAuthStore();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -47,16 +49,30 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setServerError(null);
-      await apiClient<{ success: boolean; message: string; requiresVerification: boolean }>(
-        '/auth/register',
-        {
-          method: 'POST',
-          body: JSON.stringify(data),
-        },
-      );
+      const regRes = await apiClient<{
+        success: boolean;
+        message: string;
+        user: User;
+        accessToken: string;
+      }>('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
 
-      // Redirect directly to Email OTP Verification
-      router.push(`/verify-email?email=${encodeURIComponent(data.email.toLowerCase())}`);
+      if (regRes.user && regRes.accessToken) {
+        setAuth(regRes.user, regRes.accessToken);
+        if (regRes.user.role === UserRole.STUDENT) {
+          router.push('/student/dashboard');
+        } else if (regRes.user.role === UserRole.OWNER) {
+          router.push('/owner/dashboard');
+        } else if (regRes.user.role === UserRole.MESS_PARTNER) {
+          router.push('/mess/dashboard');
+        } else {
+          router.push('/');
+        }
+      } else {
+        router.push('/login');
+      }
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setServerError(err.message);

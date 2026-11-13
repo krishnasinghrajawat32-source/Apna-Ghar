@@ -22,6 +22,16 @@ export class CreateVisitDto {
   @IsNotEmpty()
   contactPhone!: string;
 
+  @ApiProperty({ required: false, description: 'Visitor full name' })
+  @IsString()
+  @IsOptional()
+  visitorName?: string;
+
+  @ApiProperty({ required: false, description: 'Visitor email address' })
+  @IsString()
+  @IsOptional()
+  visitorEmail?: string;
+
   @ApiProperty({ required: false, description: 'Optional special requests or questions for the owner' })
   @IsString()
   @IsOptional()

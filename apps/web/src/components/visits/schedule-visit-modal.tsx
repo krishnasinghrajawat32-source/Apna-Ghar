@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Calendar,
@@ -12,8 +13,12 @@ import {
   AlertCircle,
   Loader2,
   ShieldCheck,
+  User as UserIcon,
+  Mail,
+  ArrowRight,
 } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
+import { useAuthStore } from '@/features/auth/auth-store';
 
 interface ScheduleVisitModalProps {
   isOpen: boolean;
@@ -34,6 +39,7 @@ export function ScheduleVisitModal({
   propertyName,
 }: ScheduleVisitModalProps) {
   const queryClient = useQueryClient();
+  const { user, isAuthenticated, setAuth } = useAuthStore();
 
   // Helper: next 7 days dates in YYYY-MM-DD
   const availableDates = Array.from({ length: 7 }).map((_, index) => {
@@ -50,10 +56,21 @@ export function ScheduleVisitModal({
     availableDates[0]?.isoString || '',
   );
   const [selectedSlot, setSelectedSlot] = useState<string>('10:00-12:00');
+  const [fullName, setFullName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+
+  // Sync user details when authenticated
+  useEffect(() => {
+    if (user) {
+      if (user.name) setFullName(user.name);
+      if (user.phone) setPhone(user.phone);
+      if (user.email) setEmail(user.email);
+    }
+  }, [user, isOpen]);
 
   // Live query for available slots on chosen date
   const { data: slotsData, isLoading: slotsLoading } = useQuery<SlotsResponse>({
@@ -82,17 +99,31 @@ export function ScheduleVisitModal({
           propertyId,
           scheduledDate: selectedDate,
           slot: selectedSlot,
-          contactPhone: phone,
+          contactPhone: phone.trim(),
+          visitorName: fullName.trim() || undefined,
+          visitorEmail: email.trim() || undefined,
           notes: notes.trim() || undefined,
         }),
       }),
-    onSuccess: () => {
+    onSuccess: (res: any) => {
       setSuccess(true);
       setErrorMsg('');
+
+      // Auto-authenticate guest user if token was issued
+      const resData = res?.data || res;
+      if (res?.accessToken && res?.user) {
+        setAuth(res.user, res.accessToken);
+      } else if (resData?.accessToken && resData?.user) {
+        setAuth(resData.user, resData.accessToken);
+      }
+
       queryClient.invalidateQueries({ queryKey: ['student-visits'] });
     },
     onError: (err: any) => {
-      setErrorMsg(err.message || 'Failed to schedule visit. Please verify your contact details and try again.');
+      setErrorMsg(
+        err.message ||
+          'Failed to schedule visit. Please verify your contact details and try again.',
+      );
     },
   });
 
@@ -101,7 +132,11 @@ export function ScheduleVisitModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone.trim()) {
-      setErrorMsg('Please provide a valid contact phone number for the property caretaker.');
+      setErrorMsg('Please enter a valid mobile number for gate entry.');
+      return;
+    }
+    if (!isAuthenticated && !fullName.trim()) {
+      setErrorMsg('Please enter your name so the caretaker knows who to expect.');
       return;
     }
     setErrorMsg('');
@@ -145,7 +180,7 @@ export function ScheduleVisitModal({
             <div className="space-y-1.5">
               <h4 className="text-xl font-black text-[#102B50]">Visit Request Confirmed!</h4>
               <p className="text-xs text-[#687586] max-w-sm mx-auto leading-relaxed">
-                Your visit to <span className="font-bold text-[#102B50]">{propertyName}</span> has been requested for{' '}
+                Your free visit to <span className="font-bold text-[#102B50]">{propertyName}</span> has been confirmed for{' '}
                 <span className="font-bold text-[#102B50]">{selectedDate}</span> during the{' '}
                 <span className="font-bold text-[#102B50]">{selectedSlot}</span> slot.
               </p>
@@ -153,18 +188,29 @@ export function ScheduleVisitModal({
             <div className="p-4 bg-[#FAF8F3] rounded-2xl border border-[#E8E5DE] text-xs text-[#263445] text-left space-y-1">
               <div className="flex items-center gap-1.5 font-bold text-[#102B50]">
                 <ShieldCheck className="w-4 h-4 text-[#F5A623]" />
-                Zero Obligation Guarantee
+                Zero Cost • Zero Obligation
               </div>
               <p className="text-[11px] text-[#687586]">
-                Visiting is completely free. The property warden will meet you at the gate and guide you through the verified room options.
+                Visiting is 100% free. The property warden will meet you at the gate and show you all verified room configurations.
               </p>
             </div>
-            <button
-              onClick={handleModalClose}
-              className="w-full py-3.5 rounded-xl text-xs font-bold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-colors shadow-sm"
-            >
-              Done
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2.5 pt-2">
+              <Link
+                href="/student/visits"
+                onClick={handleModalClose}
+                className="flex-1 py-3 px-4 rounded-xl text-xs font-bold text-white bg-[#102B50] hover:bg-[#183D68] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+              >
+                <span>View in My Visits</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <button
+                type="button"
+                onClick={handleModalClose}
+                className="py-3 px-5 rounded-xl text-xs font-bold text-[#102B50] bg-[#FAF8F3] hover:bg-[#E8E5DE] border border-[#E8E5DE] transition-colors"
+              >
+                Done
+              </button>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-5">
@@ -172,6 +218,16 @@ export function ScheduleVisitModal({
               <div className="p-3.5 bg-[#D64545]/10 border border-[#D64545]/30 rounded-2xl text-xs text-[#D64545] font-semibold flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0 text-[#D64545]" />
                 <span>{errorMsg}</span>
+              </div>
+            )}
+
+            {/* Authenticated user pill */}
+            {isAuthenticated && user && (
+              <div className="flex items-center gap-2 p-3 rounded-2xl bg-[#21865B]/10 border border-[#21865B]/20 text-xs text-[#21865B] font-semibold">
+                <ShieldCheck className="w-4 h-4 text-[#21865B] shrink-0" />
+                <span>
+                  Booking visit as <strong className="text-[#102B50]">{user.name}</strong> ({user.phone || user.email})
+                </span>
               </div>
             )}
 
@@ -228,7 +284,11 @@ export function ScheduleVisitModal({
                     >
                       <span>{s.slot}</span>
                       {s.available ? (
-                        <span className={`text-[10px] font-bold ${selectedSlot === s.slot ? 'text-[#F5A623]' : 'text-[#21865B]'}`}>
+                        <span
+                          className={`text-[10px] font-bold ${
+                            selectedSlot === s.slot ? 'text-[#F5A623]' : 'text-[#21865B]'
+                          }`}
+                        >
                           Open
                         </span>
                       ) : (
@@ -240,11 +300,45 @@ export function ScheduleVisitModal({
               )}
             </div>
 
+            {/* Contact details for guests */}
+            {!isAuthenticated && (
+              <div className="space-y-3 pt-1">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
+                    <UserIcon className="w-4 h-4 text-[#F5A623]" />
+                    Your Full Name:
+                  </label>
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="e.g. Rahul Sharma"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-[#E8E5DE] text-xs sm:text-sm text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3]/50"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
+                    <Mail className="w-4 h-4 text-[#F5A623]" />
+                    Email Address (Optional):
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="e.g. rahul@gmail.com"
+                    className="w-full px-4 py-3 rounded-xl border border-[#E8E5DE] text-xs sm:text-sm text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3]/50"
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Student Contact Phone */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-[#102B50] flex items-center gap-1.5">
                 <Phone className="w-4 h-4 text-[#F5A623]" />
-                Your Mobile Number for Gate Entry:
+                Your Mobile Number for Gate Entry Pass:
               </label>
               <input
                 type="tel"
@@ -255,7 +349,7 @@ export function ScheduleVisitModal({
                 className="w-full px-4 py-3 rounded-xl border border-[#E8E5DE] text-xs sm:text-sm text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3]/50"
               />
               <p className="text-[10px] text-[#687586]">
-                Shared only with the verified caretaker for gate pass and arrival coordination.
+                Used only by the property warden for arrival coordination and visitor entry gate verification.
               </p>
             </div>
 
@@ -269,7 +363,7 @@ export function ScheduleVisitModal({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
-                placeholder="e.g. Coming with parents, want to check AC twin sharing room..."
+                placeholder="e.g. Coming with parents, want to inspect AC twin sharing room..."
                 className="w-full px-4 py-2.5 rounded-xl border border-[#E8E5DE] text-xs text-[#263445] focus:outline-none focus:ring-2 focus:ring-[#F5A623] bg-[#FAF8F3]/50 resize-none"
               />
             </div>
@@ -278,12 +372,12 @@ export function ScheduleVisitModal({
             <button
               type="submit"
               disabled={visitMutation.isPending}
-              className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-colors flex items-center justify-center gap-2 shadow-md disabled:opacity-50 active:scale-98"
+              className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-[#102B50] bg-[#F5A623] hover:bg-[#E99A12] transition-colors flex items-center justify-center gap-2 shadow-md disabled:opacity-50 active:scale-98 cursor-pointer"
             >
               {visitMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Scheduling Visit...</span>
+                  <span>Scheduling Free Visit...</span>
                 </>
               ) : (
                 <>

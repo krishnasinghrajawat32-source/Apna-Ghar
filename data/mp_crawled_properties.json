@@ -1,0 +1,3164 @@
+[
+  {
+    "name": "Jai Shree Krishna Boys Hostel and Guest House",
+    "slug": "jai-shree-krishna-boys-hostel-and-guest-house-piplani-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Piplani, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Jai Shree Krishna Boys Hostel and Guest House, Near Piplani",
+      "landmark": "Piplani",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.480332,
+        23.235084
+      ]
+    },
+    "genderPreference": "BOYS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 21,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/bhopal/35/0755p755std703535/catalogue/simran-girls-hostel-indrapuri-bhopal-hostels-for-men-wofqhlwumv-250.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/d6/0755px755.x755.150220134014.b1d6/catalogue/om-sairam-boys-hostel-piplani-bhopal-hostels-for-working-men-yfc0gr2bfk-250.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/x4/0755px755.x755.221014190509.t2x4/catalogue/ashiyana-girls-hostel-kolar-road-bhopal-hostels-ruy4urf40n.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "08511417394",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Usha Jyoti Girls Hostel",
+    "slug": "usha-jyoti-girls-hostel-trilanga-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Trilanga, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Usha Jyoti Girls Hostel, Near Trilanga",
+      "landmark": "Trilanga",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.429242,
+        23.190024
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 28,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/bhopal/p2/0755px755.x755.260611135139.v1p2/catalogue/ishika-girls-hostel-and-pg-kolar-bhopal-hostels-bq005pkuo7.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h180_w240/87317783_5_PropertyImage221-42081103629164_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87305321_4_PropertyImage92-6225082289861_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 4800,
+    "publicMobile": "08401268477",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Sarla Sobhagya Niwas",
+    "slug": "sarla-sobhagya-niwas-saket-nagar-bhopal",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Saket Nagar, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Sarla Sobhagya Niwas, Near Saket Nagar",
+      "landmark": "Saket Nagar",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.453705,
+        23.207027
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 52,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/bhopal/x4/0755px755.x755.221014190509.t2x4/catalogue/ashiyana-girls-hostel-kolar-road-bhopal-hostels-svuivh0oe6.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVG88A9dM9fknFASJAAF6CYBuzcTBor/Photo_h180_w240/83269205_5_hatsAppImage20260205at1.21.29PM2_180_240.jpeg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/a4/0755px755.x755.260624113222.y9a4/catalogue/d48ez5dwh7bkchs-19pda2ibnu-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 7000,
+    "publicMobile": "09725633762",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Rajshree Girls Hostel",
+    "slug": "rajshree-girls-hostel-mp-nagar-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in MP Nagar, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Rajshree Girls Hostel, Near MP Nagar",
+      "landmark": "MP Nagar",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.4329,
+        23.231283
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 23,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9ds2d6_tOPVbRkb7B7EWRLRle/Photo_h180_w240/86661509_9_PropertyImage767-6492929548525_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h180_w240/87305321_4_PropertyImage92-6225082289861_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 6000,
+    "publicMobile": "08401512790",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Om Sai Ram",
+    "slug": "om-sai-ram-piplani-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Piplani, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Om Sai Ram, Near Piplani",
+      "landmark": "Piplani",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.479381,
+        23.230026
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 51,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dsjG_yg-r0jPm1g1PWtcoPkB/Photo_h180_w240/3863_1792668745514.957_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9ds-VX1HJaisLx9s0rXkrh_6f/Photo_h180_w240/84672305_4_PropertyImage746-8622948057388_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h180_w240/87300825_1_PropertyImage966-5700439766808_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": "08401425269",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Siya Sant Kuteer",
+    "slug": "siya-sant-kuteer-kolar-road-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Kolar Road, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Siya Sant Kuteer, Near Kolar Road",
+      "landmark": "Kolar Road",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.41265,
+        23.167567
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 45,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/bhopal/a8/0755px755.x755.230411142806.p3a8/catalogue/siya-sant-kutir-kolar-road-bhopal-hostels-zx6vt9jd20.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/a7/0755px755.x755.221230235046.b2a7/catalogue/bheem-hostel-karond-bhopal-hostels-6lwcop353k.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/z1/0755px755.x755.231123122813.j6z1/catalogue/rathore-girl-s-hostel-kolar-road-bhopal-hostels-7q4rzrap9y.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 5000,
+    "publicMobile": "08123379150",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "JSV Tower Gurudev Girls Hostel",
+    "slug": "jsv-tower-gurudev-girls-hostel-arera-colonybasant-kunj-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Arera Colony/Basant Kunj, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "JSV Tower Gurudev Girls Hostel, Near Arera Colony/Basant Kunj",
+      "landmark": "Arera Colony/Basant Kunj",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.426073,
+        23.214705
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 25,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content2.jdmagicbox.com/checkin/bhopal/0755PX755.X755.150627121508.B6V6.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/a8/0755px755.x755.230411142806.p3a8/catalogue/siya-sant-kuteer-kolar-road-bhopal-hostels-t9f77b6y0d.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/a7/0755px755.x755.221230235046.b2a7/catalogue/bheem-hostel-karond-bhopal-hostels-6lwcop353k.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "08105237577",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Student/nct-12057018",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Fame Girls Hostel",
+    "slug": "fame-girls-hostel-kolar-road-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Kolar Road, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Fame Girls Hostel, Near Kolar Road",
+      "landmark": "Kolar Road",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.417378,
+        23.17035
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 19,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/bhopal/d3/0755px755.x755.250702170405.r1d3/catalogue/arera-girls-hostel-jatkhedi-bhopal-hostels-safdv0tur6.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/z1/0755px755.x755.231123122813.j6z1/catalogue/rathore-girl-s-hostel-kolar-road-bhopal-hostels-6v6zjd15f6.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/v1/0755px755.x755.230220163553.p4v1/catalogue/the-new-karishma-pg-services-gandhinagar-bhopal-hostels-vu73wjav3t.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 6500,
+    "publicMobile": "08401781699",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Roshan PG Center",
+    "slug": "roshan-pg-center-gandhinagar-bhopal",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Gandhinagar, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Roshan PG Center, Near Gandhinagar",
+      "landmark": "Gandhinagar",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.3488,
+        23.30764
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 36,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/bhopal/x4/0755px755.x755.221014190509.t2x4/catalogue/ashiyana-girls-hostel-kolar-road-bhopal-hostels-jy419ki2rv-250.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcvHWJgbYEZoJvbsZMkDnhRE/Photo_h180_w240/4762_PropertyImage81.27161011309903_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9ds2d6_tOPVbRkb7B7EWRLRle/Photo_h180_w240/86661509_9_PropertyImage767-6492929548525_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 6500,
+    "publicMobile": "08460477288",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Kanchan Sadan Paying Guest House",
+    "slug": "kanchan-sadan-paying-guest-house-bagh-swaniya-bhopal",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Bagh Swaniya, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Kanchan Sadan Paying Guest House, Near Bagh Swaniya",
+      "landmark": "Bagh Swaniya",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.430233,
+        23.269923
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 18,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcvHWJgbYEZoJvbsZMkDnhRE/Photo_h180_w240/87330515_6_PropertyImage541-1957680737346_180_240.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/h4/0755px755.x755.160724193705.t7h4/catalogue/shanti-girls-hostel-indrapuri-bhopal-hostels-for-working-women-c8z62tbw1a.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcnP7DKcNzuycJMZJfW5NPOF/Photo_h180_w240/87351161_7_PropertyImage63-0228746060516_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 6500,
+    "publicMobile": "08971475845",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Shastri PG",
+    "slug": "shastri-pg-shakti-nagar-bhopal",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Shakti Nagar, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Shastri PG, Near Shakti Nagar",
+      "landmark": "Shakti Nagar",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.39453,
+        23.257743
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 64,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/bhopal/v1/0755px755.x755.230220163553.p4v1/catalogue/the-new-karishma-pg-services-gandhinagar-bhopal-hostels-ua1vuc07jm.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/d6/0755px755.x755.150220134014.b1d6/catalogue/om-sairam-boys-hostel-piplani-bhopal-hostels-for-working-men-syav0vaqf3.jpg",
+      "https://img.staticmb.com/mbphoto/locality/original_images/2021/Dec/24/71699_MAP.png",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "07490952679",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Matoshree Girls Stay",
+    "slug": "matoshree-girls-stay-gautam-nagargovindpura-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Gautam Nagar/Govindpura, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Matoshree Girls Stay, Near Gautam Nagar/Govindpura",
+      "landmark": "Gautam Nagar/Govindpura",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.393746,
+        23.267898
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 15,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/bhopal/a8/0755px755.x755.181213183428.n7a8/catalogue/kolar-girls-hostel-bhopal-bhpjg0ulkz.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/z1/0755px755.x755.231123122813.j6z1/catalogue/rathore-girl-s-hostel-kolar-road-bhopal-hostels-6v6zjd15f6.jpg",
+      "https://content.jdmagicbox.com/comp/bhopal/a8/0755px755.x755.230411142806.p3a8/catalogue/siya-sant-kuteer-kolar-road-bhopal-hostels-ztsvj3dtny.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "09035035342",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Mahesh Girls Hostel",
+    "slug": "mahesh-girls-hostel-amrai-parisar-bhopal",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Amrai Parisar, Bhopal. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Mahesh Girls Hostel, Near Amrai Parisar",
+      "landmark": "Amrai Parisar",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.414495,
+        23.271146
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 15,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/bhopal/p2/0755px755.x755.260611135139.v1p2/catalogue/ishika-girls-hostel-and-pg-kolar-bhopal-hostels-3gkkvzfeaa-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/n7/0755px755.x755.260113134928.s6n7/catalogue/roshan-pg-center-gandhinagar-bhopal-paying-guest-accommodations-67sqws4p6e-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": "08904604277",
+    "sourceUrl": "https://www.justdial.com/Bhopal/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Mahakal PG Rooms",
+    "slug": "mahakal-pg-rooms-geeta-bhawanbengali-square-indore",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Geeta Bhawan/Bengali Square, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Mahakal PG Rooms, Near Geeta Bhawan/Bengali Square",
+      "landmark": "Geeta Bhawan/Bengali Square",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.883045,
+        22.714037
+      ]
+    },
+    "genderPreference": "BOYS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 35,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content2.jdmagicbox.com/checkin/indore/0731PX731.X731.240714195146.U7A9.jpg",
+      "https://content.jdmagicbox.com/comp/indore/v4/0731px731.x731.200206133424.t6v4/catalogue/happy-boys-hostel-bhawar-kuan-indore-hostel-for-boy-students-t1o3rweyom.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/e2/0731px731.x731.211111155949.q5e2/catalogue/wow-girls-pg-mahalaxmi-nagar-indore-hostels-m77hlzss4h.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 7500,
+    "publicMobile": "09054709852",
+    "sourceUrl": "https://www.flatmate.in/pg-in-indore",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Indore Hostel",
+    "slug": "indore-hostel-manorama-ganj-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Manorama Ganj, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Indore Hostel, Near Manorama Ganj",
+      "landmark": "Manorama Ganj",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.859597,
+        22.701996
+      ]
+    },
+    "genderPreference": "BOYS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 37,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/indore/l5/0731px731.x731.250520152014.p2l5/catalogue/siddhi-vinayak-girls-boys-hostel-patrakar-colony-indore-hostel-for-boy-students-jxuipgxr1s.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnjVN99s9d8uI7KWzAVuU4NGeNa4ym7r_/Photo_h180_w240/79790879_5_IMG20250425WA0037_180_240.jpg",
+      "https://www.flatmate.in/api/ranbasera/app/images/pg/2882/7974970259.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 5000,
+    "publicMobile": "08401887065",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Men/nct-12086264",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Sumiran Hostels & PG",
+    "slug": "sumiran-hostels-pg-bhawarkuan-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Bhawarkuan, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Sumiran Hostels & PG, Near Bhawarkuan",
+      "landmark": "Bhawarkuan",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.867091,
+        22.688951
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 51,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h180_w240/87304943_9_PropertyImage741-4129684842677_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcgqtmffnIVfW6HjhWvkYYBl/Photo_h300_w450/87333453_5_hatsAppImage20261111at11.25.30_300_450.jpeg",
+      "https://content2.jdmagicbox.com/checkin/indore/0731PX731.X731.220903211711.P7I3.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": "08197322336",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Men/nct-12086264",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Home Away From Home",
+    "slug": "home-away-from-home-nipania-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Nipania, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Home Away From Home, Near Nipania",
+      "landmark": "Nipania",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.917644,
+        22.765601
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 27,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnzVK98w9d8oS7g2ds2i4QJf-YnfENPyR/Photo_h180_w240/71148995_4_MG20240128WA0088_180_240.jpg",
+      "https://content.jdmagicbox.com/comp/indore/u4/0731px731.x731.220628153330.j8u4/catalogue/wow-living-vijay-nagar-indore-hostels-3wmsgyrrx2-250.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mDkjVB5tA9dstTxsam1cAtogC0Coz-NmCs/Photo_h180_w240/41487561_4_IMG-20180629-WA0015_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 7000,
+    "publicMobile": "08511495796",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Men/nct-12086264",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Aditya Boys Hostel",
+    "slug": "aditya-boys-hostel-chiman-bagh-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Chiman Bagh, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Aditya Boys Hostel, Near Chiman Bagh",
+      "landmark": "Chiman Bagh",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.864195,
+        22.702624
+      ]
+    },
+    "genderPreference": "BOYS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 39,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content2.jdmagicbox.com/checkin/indore/0731PX731.X731.190505095934.U3T1.jpg",
+      "https://content.jdmagicbox.com/comp/indore/l5/0731px731.x731.170924215230.y1l5/catalogue/new-city-boys-hostel-geeta-bhawan-indore-hostel-for-boy-students-qlp7ojgs3q.jpg",
+      "https://content.jdmagicbox.com/comp/indore/b6/0731px731.x731.190521175029.w2b6/catalogue/gyandeep-pg-vijay-nagar-indore-paying-guest-accommodations-for-men-5vp7pha6v5.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 7000,
+    "publicMobile": "08904089012",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Men/nct-12086264",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Maa Vaishno Girls and Boys Hostel",
+    "slug": "maa-vaishno-girls-and-boys-hostel-bhawrasla-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Bhawrasla, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Maa Vaishno Girls and Boys Hostel, Near Bhawrasla",
+      "landmark": "Bhawrasla",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.868672,
+        22.722458
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 41,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/indore/f3/0731px731.x731.170907024433.c9f3/catalogue/sita-bhawan-girls-hostel-navlakha-indore-hostels-for-women-s1mmp9zzh5.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/m9/0731px731.x731.190524140047.n9m9/catalogue/mahakal-pg-rooms-bengali-square-indore-hostels-for-men-mtqbiuljeg.jpg",
+      "https://content.jdmagicbox.com/comp/indore/n3/0731px731.x731.240510122645.r4n3/catalogue/xfkolyvao9r3ds8-d74il5r1ma-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 6000,
+    "publicMobile": "08904885799",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Men/nct-12086264",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "The Maan’s Girls Hostel",
+    "slug": "the-maans-girls-hostel-vijay-nagar-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Vijay Nagar, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "The Maan’s Girls Hostel, Near Vijay Nagar",
+      "landmark": "Vijay Nagar",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.896892,
+        22.750682
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 21,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/indore/u4/0731px731.x731.220628153330.j8u4/catalogue/wow-living-vijay-nagar-indore-hostels-3wmsgyrrx2-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/p6/0731px731.x731.140719143607.t9p6/catalogue/yola-spacess-bhawar-kuan-indore-hostels-for-working-men-kfn6jmeul7-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/a9/0731px731.x731.240714195146.u7a9/catalogue/kx4xq691mib3ruj-2ps2v6k494.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 7000,
+    "publicMobile": "06364919829",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Shree Mahadev Girls Hostel",
+    "slug": "shree-mahadev-girls-hostel-bhawarkuan-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Bhawarkuan, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Shree Mahadev Girls Hostel, Near Bhawarkuan",
+      "landmark": "Bhawarkuan",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.864214,
+        22.691298
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 54,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/indore/i3/0731px731.x731.220903211711.p7i3/catalogue/vr-boys-hostel-indore-hostel-for-boy-students-m3h88vdfna.jpg",
+      "https://www.flatmate.in/api/ranbasera/app/images/pg/2880/9763218981.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/i3/0731px731.x731.220903211711.p7i3/catalogue/vr-boys-hostel-indore-hostel-for-boy-students-cb29zjya9y-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 6000,
+    "publicMobile": "08105102792",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Meenu Girls Hostel",
+    "slug": "meenu-girls-hostel-hig-colony-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in HIG Colony, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Meenu Girls Hostel, Near HIG Colony",
+      "landmark": "HIG Colony",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.873224,
+        22.729414
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 16,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/indore/p6/0731px731.x731.140719143607.t9p6/catalogue/yola-spacess-bhawar-kuan-indore-hostels-for-working-men-k1k36jhem8.jpg",
+      "https://content2.jdmagicbox.com/checkin/indore/0731PX731.X731.220628153330.J8U4.jpg",
+      "https://content.jdmagicbox.com/comp/indore/b6/0731px731.x731.190521175029.w2b6/catalogue/aadarsh-dixit-vijay-nagar-indore-hostels-eu3r2lp3ui.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 7000,
+    "publicMobile": "08511473266",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Shiv Sakshi Girls Hostel",
+    "slug": "shiv-sakshi-girls-hostel-vijay-nagar-indore",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Vijay Nagar, Indore. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Shiv Sakshi Girls Hostel, Near Vijay Nagar",
+      "landmark": "Vijay Nagar",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.897578,
+        22.751748
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 31,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://cdn.staticmb.com/magicservicestatic/images/mb-home-web/collection/buy/webp/owner-property.webp",
+      "https://www.flatmate.in/api/ranbasera/app/images/pg/2870/8109628642.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/j3/0731px731.x731.250831233623.i6j3/catalogue/indore-54-hostel-vijay-nagar-indore-paying-guest-accommodations-8v5z0z5in8.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "07411589117",
+    "sourceUrl": "https://www.justdial.com/Indore/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Lady Shriram Girls Hostel",
+    "slug": "lady-shriram-girls-hostel-lashkarlalitpur-colony-gwalior",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Lashkar/Lalitpur Colony, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Lady Shriram Girls Hostel, Near Lashkar/Lalitpur Colony",
+      "landmark": "Lashkar/Lalitpur Colony",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.167395,
+        26.207394
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 45,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/gwalior/c7/9999px751.x751.240711184724.v3c7/catalogue/aaru-residential-girls-pg-gandhi-nagar-gwalior-hostels-l8n00g7pq2.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVB48U9dcKzTt7N4__ZrqzZI4Efi3c6/Photo_h300_w450/85680165_10_hatsAppImage20260818at3.53.37PM10_300_450.jpeg",
+      "https://content.jdmagicbox.com/comp/gwalior/y6/9999px751.x751.220626162059.i3y6/catalogue/m-d-services-city-centre-gwalior-estate-agents-lvp43d2714.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 6500,
+    "publicMobile": "07947077787",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Shree Bankebihari Boys Hostel",
+    "slug": "shree-bankebihari-boys-hostel-vayu-nagarmaharajpura-gwalior",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Vayu Nagar/Maharajpura, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Shree Bankebihari Boys Hostel, Near Vayu Nagar/Maharajpura",
+      "landmark": "Vayu Nagar/Maharajpura",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.16669,
+        26.222664
+      ]
+    },
+    "genderPreference": "BOYS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 24,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/w2/9999px751.x751.160629190015.t2w2/catalogue/s-k-villa-girls-hostel-govindpuri-gwalior-hostels-7ln60a5zqr.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/e5/9999px751.x751.250526081427.q3e5/catalogue/aparajita-pg-and-girls-stay-moti-mahal-gwalior-hostel-for-girl-students-nju91y6f1c.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/q2/9999px751.x751.140108213003.u7q2/catalogue/vidhya-valley-girls-pg-lalitpur-colony-gwalior-hostels-for-working-women-gztan4l618-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "09725309387",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Aparajita PG and Stay",
+    "slug": "aparajita-pg-and-stay-moti-mahal-gwalior",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Moti Mahal, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Aparajita PG and Stay, Near Moti Mahal",
+      "landmark": "Moti Mahal",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.185491,
+        26.210621
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 29,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/gwalior/q2/9999px751.x751.140108213003.u7q2/catalogue/vidhya-valley-girls-pg-lalitpur-colony-gwalior-hostels-for-working-women-gztan4l618.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/c3/9999px751.x751.170626192836.a8c3/catalogue/surabhi-plaza-ac-girls-hostel-maharajpura-a-f-gwalior-paying-guest-accommodation-for-women-eq3dzxk3tq.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-lashkar-gwalior-real-estate-agents-209ouih3x7.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "09724633729",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Rai Hostel",
+    "slug": "rai-hostel-vinay-nagar-gwalior",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Vinay Nagar, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Rai Hostel, Near Vinay Nagar",
+      "landmark": "Vinay Nagar",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.164359,
+        26.220929
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 41,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/p3/9999px751.x751.190801194615.g1p3/catalogue/pleasant-shelter-lashkar-gwalior-hostels-v0u59sbtc4.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.250526081427.Q3E5.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dc2KM-yPaTrrS67EvWuLNGTo/Photo_h300_w450/86179351_1_PropertyImage322-43388969086897_300_450.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": "07041509853",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "M D Services",
+    "slug": "m-d-services-city-centre-gwalior",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in City Centre, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "M D Services, Near City Centre",
+      "landmark": "City Centre",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.195025,
+        26.202568
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 42,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/gwalior/g8/9999px751.x751.150513171905.b6g8/catalogue/a-m-girls-and-working-women-hostel-city-centre-gwalior-hostels-for-working-women-ikgymzjnk3.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Oct/25/Photo_h300_w450/2190_1792910077293.98581_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/d5/9999px751.x751.260120060239.y3d5/catalogue/securestayzz-girls-pg-rj-puram-gwalior-hostels-h5syrgmatz.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 7000,
+    "publicMobile": "08128769392",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Vidhya Valley Girls PG",
+    "slug": "vidhya-valley-girls-pg-lalitpur-colony-gwalior",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Lalitpur Colony, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Vidhya Valley Girls PG, Near Lalitpur Colony",
+      "landmark": "Lalitpur Colony",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.171055,
+        26.207181
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 16,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/gwalior/d5/9999px751.x751.260120060239.y3d5/catalogue/securestayzz-girls-pg-rj-puram-gwalior-hostels-roq01j07fy.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/e6/9999px751.x751.250523225546.l4e6/catalogue/sengar-villa-girls-hostel-pg-gole-ka-mandir-gwalior-hostels-n944grlquv-250.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/m1/9999px751.x751.111115172149.v3m1/catalogue/lady-shri-ram-hostel-lashkar-gwalior-hostels-for-women-3lzr28w-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 6000,
+    "publicMobile": "09972284381",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Shreya Girls Hostel",
+    "slug": "shreya-girls-hostel-deen-dayal-nagar-gwalior",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Deen Dayal Nagar, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Shreya Girls Hostel, Near Deen Dayal Nagar",
+      "landmark": "Deen Dayal Nagar",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.193699,
+        26.204741
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 36,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/w2/9999px751.x751.160629190015.t2w2/catalogue/s-k-villa-girls-hostel-govindpuri-gwalior-hostels-cpyps166ul.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-gwalior-1963ipaeln-250.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/w2/9999px751.x751.160629190015.t2w2/catalogue/s-k-villa-girls-hostel-govindpuri-gwalior-hostels-7ln60a5zqr.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": "09724914551",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Ashirwad Guest House",
+    "slug": "ashirwad-guest-house-gandhi-nagar-gwalior",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Gandhi Nagar, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Ashirwad Guest House, Near Gandhi Nagar",
+      "landmark": "Gandhi Nagar",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.179473,
+        26.199063
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 44,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/gwalior/e5/9999px751.x751.250526081427.q3e5/catalogue/aparajita-pg-and-stay-moti-mahal-gwalior-hostel-for-boy-students-5b82hlwu2l.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/p6/9999px751.x751.230705113027.v3p6/catalogue/shreya-girls-hostel-deen-dayal-nagar-gwalior-hostels-3y3avrj4z8.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dsk3cl92f9lwNWfkFYN_uu47/Photo_h180_w240/85680165_1_hatsAppImage20260723at6.27.18PM_180_240.jpeg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 6500,
+    "publicMobile": "07383359486",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Parkland Guest House",
+    "slug": "parkland-guest-house-govindpuri-gwalior",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Govindpuri, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Parkland Guest House, Near Govindpuri",
+      "landmark": "Govindpuri",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.17258,
+        26.209913
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 61,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/y6/9999px751.x751.220626162059.i3y6/catalogue/-l08ikwtinh.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/p3/9999px751.x751.190801194615.g1p3/catalogue/pleasant-shelter-lashkar-gwalior-hostels-v0u59sbtc4.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dsranKCygxpHSDDr9CGYRXoa/Photo_h180_w240/85626277_4_Screenshot20260718142344YouTube_180_240.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": "08460234517",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations/nct-10934649",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Aaru Residential Girls PG",
+    "slug": "aaru-residential-girls-pg-gandhi-nagar-gwalior",
+    "propertyType": "PG",
+    "description": "Verified student accommodation located in Gandhi Nagar, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Aaru Residential Girls PG, Near Gandhi Nagar",
+      "landmark": "Gandhi Nagar",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.188243,
+        26.216629
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 38,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/s8/9999px751.x751.150312133514.x3s8/catalogue/parkland-guest-house-govindpuri-gwalior-guest-house-8x1l7miyte-250.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/d5/9999px751.x751.260120060239.y3d5/catalogue/securestayzz-girls-pg-rj-puram-gwalior-hostels-9qqvboemrw-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.150324175548.M9R3.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 6500,
+    "publicMobile": "07490809662",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Wisdom Girls Hostel",
+    "slug": "wisdom-girls-hostel-lashkar-gwalior",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Lashkar, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Wisdom Girls Hostel, Near Lashkar",
+      "landmark": "Lashkar",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.162646,
+        26.20244
+      ]
+    },
+    "genderPreference": "GIRLS",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 49,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.240711184724.V3C7.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/e5/9999px751.x751.250526081427.q3e5/catalogue/aparajita-pg-and-stay-moti-mahal-gwalior-hostel-for-boy-students-5b82hlwu2l.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/q2/9999px751.x751.140108213003.u7q2/catalogue/vidhya-valley-girls-pg-lalitpur-colony-gwalior-hostels-for-working-women-gztan4l618.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 5000,
+    "publicMobile": "08128091618",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "Surbhi Plaza Hostel",
+    "slug": "surbhi-plaza-hostel-maharajpura-gwalior",
+    "propertyType": "HOSTEL",
+    "description": "Verified student accommodation located in Maharajpura, Gwalior. Offers furnished rooms, nutritious mess meals, high-speed Wi-Fi, 24/7 security, and power backup.",
+    "address": {
+      "street": "Surbhi Plaza Hostel, Near Maharajpura",
+      "landmark": "Maharajpura",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.163415,
+        26.216323
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.3,
+    "reviewCount": 30,
+    "amenities": [
+      "wifi",
+      "food",
+      "laundry",
+      "cctv",
+      "power_backup",
+      "study_table",
+      "ac"
+    ],
+    "rules": [
+      "Gate closes at 10:00 PM",
+      "Smoking and alcohol strictly prohibited",
+      "Visitors permitted only in lounge"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/v2/comp/gwalior/c7/9999px751.x751.240711184724.v3c7/catalogue/aaru-residential-girls-pg-gandhi-nagar-gwalior-hostels-eh7rhqxru4.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dsranKCygxpHSDDr9CGYRXoa/Photo_h180_w240/85626277_4_Screenshot20260718142344YouTube_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/gwalior/c3/9999px751.x751.170626192836.a8c3/catalogue/surbhi-plaza-hostel-maharajpura-a-f-gwalior-hostels-for-working-women-0t3mm5htda.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 5500,
+    "publicMobile": "08105919605",
+    "sourceUrl": "https://www.justdial.com/Gwalior/Paying-Guest-Accommodations-For-Women/nct-11273561",
+    "category": "Hostel/PG"
+  },
+  {
+    "name": "South T T Nagar Colony flat (2 BHK)",
+    "slug": "south-t-t-nagar-colony-flat-2-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in South T T Nagar Colony flat, 175, South T T Nagar Colony, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "175, South T T Nagar Colony",
+      "landmark": "South T T Nagar Colony flat",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.396019,
+        23.232425
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 41,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/locality/original_images/2021/Dec/24/85955_MAP.png",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h180_w240/87304065_1_IMG20261109WA0008_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMLWhSTuKOLHZqljXvjhExgm/Photo_h300_w450/3016_1794147520034.9613_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 15000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Orchard Valley (3 BHK)",
+    "slug": "orchard-valley-3-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Orchard Valley, Near Palace Orchard, Damkheda, Kolar Road, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Near Palace Orchard, Damkheda, Kolar Road",
+      "landmark": "Orchard Valley",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.416347,
+        23.170787
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 10,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h300_w450/87304065_1_IMG20261109WA0008_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVB5tA9dsMSEL1-RrDRHrs_yhhLs882/Photo_h180_w240/84436851_3_1777461187245-4263_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/locality/original_images/2021/Dec/24/71686_MAP.png",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 26000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Agrawal Sagar Eden Garden (3 BHK)",
+    "slug": "agrawal-sagar-eden-garden-3-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Agrawal Sagar Eden Garden, Near Vrindavan Garden, Narmadapuram Road, Bagmugaliya, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Near Vrindavan Garden, Narmadapuram Road, Bagmugaliya",
+      "landmark": "Agrawal Sagar Eden Garden",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.464249,
+        23.187424
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 26,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnzVB48U9dsJp1O9wHHIOHmI10gBYLZtr/Photo_h180_w240/74583331_3_PropertyImage907-6620622896311_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87305321_4_PropertyImage92-6225082289861_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcvHWJgbYEZoJvbsZMkDnhRE/Photo_h300_w450/4762_PropertyImage81.27161011309903_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 32000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Meenakshi Regency (2 BHK)",
+    "slug": "meenakshi-regency-2-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Meenakshi Regency, Idgah Hills, Bhopal, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Idgah Hills, Bhopal",
+      "landmark": "Meenakshi Regency",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.422762,
+        23.265021
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 37,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVB5tA9dsMSEL1-RrDRHrs_yhhLs882/Photo_h300_w450/84436851_2_1777461176083-085_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVN99s9dcJymdJbKC-5Y6B7V63LqTwh/Photo_h180_w240/84669719_10_1779084982305-4884_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9dM3zQXwZQIyH9EuA0P87ythT/Photo_h180_w240/3644c456-8fca-443b-96ce-25682dfeb2f4_86357115_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 30000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Rudraksh Park Phase 1 (3 BHK)",
+    "slug": "rudraksh-park-phase-1-3-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Rudraksh Park Phase 1, E-8 Extension, next to Gulmohar Colony, Bawaria Kalan, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "E-8 Extension, next to Gulmohar Colony, Bawaria Kalan",
+      "landmark": "Rudraksh Park Phase 1",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.425089,
+        23.275746
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 37,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcgqtmffnIVfW6HjhWvkYYBl/Photo_h300_w450/87346305_3_hatsAppImage20261026at8.46.52PM7_300_450.jpeg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVB5tA9dsMSEL1-RrDRHrs_yhhLs882/Photo_h180_w240/84436851_3_1777461187245-4263_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcnP7DKcNzuycJMZJfW5NPOF/Photo_h180_w240/4388_1794550111248.0513_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 20000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Agrawal Sagar Landmark (3 BHK)",
+    "slug": "agrawal-sagar-landmark-3-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Agrawal Sagar Landmark, Ayodhya Bypass, Bhopal, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Ayodhya Bypass, Bhopal",
+      "landmark": "Agrawal Sagar Landmark",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.475957,
+        23.276537
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 25,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h180_w240/87305321_4_PropertyImage92-6225082289861_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9ds2d6_tOPVbRkb7B7EWRLRle/Photo_h300_w450/86661509_1_PropertyImage499-22382513953_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/locality/original_images/2021/Dec/24/71686_MAP.png",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 22000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Lodhi Kasturi Courtyard (3 BHK)",
+    "slug": "lodhi-kasturi-courtyard-3-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Lodhi Kasturi Courtyard, Near New RTO Office, Kokta Bypass Road, Raisen Road, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Near New RTO Office, Kokta Bypass Road, Raisen Road",
+      "landmark": "Lodhi Kasturi Courtyard",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.407997,
+        23.2462
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 40,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h300_w450/87300825_1_PropertyImage966-5700439766808_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dsjG_yg-r0jPm1g1PWtcoPkB/Photo_h180_w240/3863_1792668745514.957_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9dcs8ycA7B-fCPB8_jeehRhCW/Photo_h180_w240/86333411_11_MG6502_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 20000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Abhinav Tulsi Parisar (1 BHK)",
+    "slug": "abhinav-tulsi-parisar-1-bhk-bhopal",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 1 BHK student flat in Abhinav Tulsi Parisar, Awadhpuri, Bhopal, Bhopal. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Awadhpuri, Bhopal",
+      "landmark": "Abhinav Tulsi Parisar",
+      "city": "Bhopal",
+      "state": "Madhya Pradesh",
+      "pincode": "462001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.409043,
+        23.250618
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 30,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dsjG_yg-r0jPm1g1PWtcoPkB/Photo_h180_w240/3863_1792668745514.957_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcvHWJgbYEZoJvbsZMkDnhRE/Photo_h180_w240/87330515_6_PropertyImage541-1957680737346_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87305321_4_PropertyImage92-6225082289861_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/bhopal/r3/0755px755.x755.250210142157.s8r3/catalogue/sarla-sobhagya-niwas-habibganj-bhopal-paying-guest-accommodations-d1sfj9q6j9-250.jpg"
+    ],
+    "startingRent": 7500,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-bhopal-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Sukhlia flat (1 BHK)",
+    "slug": "sukhlia-flat-1-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 1 BHK student flat in Sukhlia flat, Sukhlia, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Sukhlia, Indore",
+      "landmark": "Sukhlia flat",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.861751,
+        22.700388
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 36,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h180_w240/87310555_4_PropertyImage575-8592780373302_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mDkjVB5tA9dstTxsam1cAtogC0Coz-NmCs/Photo_h180_w240/41487561_4_IMG-20180629-WA0015_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87318131_2_PropertyImage135-1863521447052_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 10000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Prayas Apartment (2 BHK)",
+    "slug": "prayas-apartment-2-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Prayas Apartment, 102, Prayas Apartment, Brijeshwari Nx, Brijeshwari Colony, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "102, Prayas Apartment, Brijeshwari Nx, Brijeshwari Colony",
+      "landmark": "Prayas Apartment",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.847688,
+        22.715883
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 29,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnzVE88E9dcMkaNAx57iaLfOw2SIdE3Zw/Photo_h180_w240/76615653_3_1734610846839-8628_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dM8AZI6-cFD3uMemeO0juDtA/Photo_h180_w240/87008223_2_ALL2_180_240.jpeg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h300_w450/87304713_1_PropertyImage111-3862063175517_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 17000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Leeds Enclave (3 BHK)",
+    "slug": "leeds-enclave-3-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Leeds Enclave, Opposite Manu Shree Nagar, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Opposite Manu Shree Nagar, Indore",
+      "landmark": "Leeds Enclave",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.854094,
+        22.724535
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 37,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h180_w240/87310555_4_PropertyImage575-8592780373302_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h180_w240/87304713_1_PropertyImage111-3862063175517_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dMyt69hsB0Z_12u1C979XZNU/Photo_h180_w240/85085467_3_PropertyImage48-78836304375977_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 50000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Kittu Boutique House (2 BHK)",
+    "slug": "kittu-boutique-house-2-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Kittu Boutique House, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Indore",
+      "landmark": "Kittu Boutique House",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.869124,
+        22.723563
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 12,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcnP7DKcNzuycJMZJfW5NPOF/Photo_h180_w240/87351097_3_83e21e2d76ba416bae558a83c1c94704_180_240.jpeg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnjVN99s9dM7EIGECxymwMCdvta7lDycW/Photo_h180_w240/79157039_1_IMG_0976_180_240.jpeg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAmjVK98w9dMOYYCYdYT5B2V-sa4KgIsyn/Photo_h300_w450/52978387_3_PropertyImage288-0158591944346_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 5999,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Super Corridor flat (2 BHK)",
+    "slug": "super-corridor-flat-2-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Super Corridor flat, Super Corridor, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Super Corridor, Indore",
+      "landmark": "Super Corridor flat",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.821626,
+        22.775685
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 30,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h300_w450/87304943_10_PropertyImage480-57729038956677_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dM8AZI6-cFD3uMemeO0juDtA/Photo_h180_w240/87008223_2_ALL2_180_240.jpeg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnzVT89I9d8rVXOdu7TnTlRmJQqXuxm-h/Photo_h180_w240/74377541_5_PropertyImage562-553005496306_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 32000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Manishpuri flat (1 BHK)",
+    "slug": "manishpuri-flat-1-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 1 BHK student flat in Manishpuri flat, Manishpuri near Saket Nagar, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Manishpuri near Saket Nagar, Indore",
+      "landmark": "Manishpuri flat",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        77.452344,
+        23.21092
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 35,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcnP7DKcNzuycJMZJfW5NPOF/Photo_h180_w240/87353707_10_PropertyImage151-79337814765404_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dMyt69hsB0Z_12u1C979XZNU/Photo_h180_w240/85085467_3_PropertyImage48-78836304375977_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMztinF6jJPAxZCpmU_ER69h/Photo_h300_w450/87280271_1_PropertyImage413-5313595477321_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 13500,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Vijay Nagar flat (1 BHK)",
+    "slug": "vijay-nagar-flat-1-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 1 BHK student flat in Vijay Nagar flat, Vijay Nagar, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Vijay Nagar, Indore",
+      "landmark": "Vijay Nagar flat",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.895863,
+        22.750968
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 14,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87310555_3_PropertyImage770-2653400986957_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnjVN99s9d8uI7KWzAVuU4NGeNa4ym7r_/Photo_h300_w450/79790879_1_Screenshot202505202213342292460851df6f172a4592fca41cc2d2e6_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87318131_2_PropertyImage135-1863521447052_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 12000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Naman Shubam Nariman Enclave (2 BHK)",
+    "slug": "naman-shubam-nariman-enclave-2-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Naman Shubam Nariman Enclave, Super Corridor, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Super Corridor, Indore",
+      "landmark": "Naman Shubam Nariman Enclave",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.817307,
+        22.775162
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 40,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcnP7DKcNzuycJMZJfW5NPOF/Photo_h180_w240/87353973_5_PropertyImage119-9506946030242_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dcoiAs1Yy_iFDcQWxFdey2ek/Photo_h300_w450/87318131_2_PropertyImage135-1863521447052_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAmjVO-dQ9dctQxH14u9TCfVV9ONGX0CTH/Photo_h180_w240/57931257_10_IMG-20211018-WA0021_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 15000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Kanha Heights (2 BHK)",
+    "slug": "kanha-heights-2-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Kanha Heights, Rau, Indore, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Rau, Indore",
+      "landmark": "Kanha Heights",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.805843,
+        22.630328
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 32,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVB48U9d8sabKbEaGwLufy3u1cCklrT/Photo_h180_w240/85368075_8_PropertyImage955-6962434801096_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVB48U9ds44CuUi08R5DP8HB-1_4QY3/Photo_h180_w240/86136939_4_PropertyImage580-7947540713074_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMztinF6jJPAxZCpmU_ER69h/Photo_h300_w450/87280271_1_PropertyImage413-5313595477321_300_450.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 25000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Kalyan Orchid (1 BHK)",
+    "slug": "kalyan-orchid-1-bhk-indore",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 1 BHK student flat in Kalyan Orchid, Kalyan Sampat Orchid, Sanwer Road, Bhawrasla, Indore. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Kalyan Sampat Orchid, Sanwer Road, Bhawrasla",
+      "landmark": "Kalyan Orchid",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "pincode": "452001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        75.877472,
+        22.716851
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.9,
+    "reviewCount": 20,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnzVK98w9d8oS7g2ds2i4QJf-YnfENPyR/Photo_h180_w240/71148995_4_MG20240128WA0088_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mDkjVB5tA9dstTxsam1cAtogC0Coz-NmCs/Photo_h180_w240/41487561_4_IMG-20180629-WA0015_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVO-dQ9dMMz33Gtg1wqTZuZ_ma8RmvG/Photo_h180_w240/87304713_1_PropertyImage111-3862063175517_180_240.jpg",
+      "https://content.jdmagicbox.com/v2/comp/indore/x6/0731px731.x731.260609182238.v7x6/catalogue/jd-boys-hostel-and-pg-vijay-nagar-indore-paying-guest-accommodations-xz3o217fpa.jpg"
+    ],
+    "startingRent": 4500,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-indore-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Cosmo Empire (2 BHK)",
+    "slug": "cosmo-empire-2-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Cosmo Empire, Sirol Main Road, New City Centre, Gwalior, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Sirol Main Road, New City Centre, Gwalior",
+      "landmark": "Cosmo Empire",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.194566,
+        26.20671
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 41,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Jul/03/Photo_h300_w450/85378871_1_PropertyImage440-7888360581645_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2022/Jan/01/Photo_h300_w450/58767297_11_PropertyImage635-1684065142044_300_450.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-gwalior-1963ipaeln-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 16000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "HG Emerald Greens (3 BHK)",
+    "slug": "hg-emerald-greens-3-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in HG Emerald Greens, Chitora Road Flyover, Rairu-Dabra Bypass Road, Shekhpura, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Chitora Road Flyover, Rairu-Dabra Bypass Road, Shekhpura",
+      "landmark": "HG Emerald Greens",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.16717,
+        26.229245
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 20,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-lashkar-gwalior-real-estate-agents-209ouih3x7.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2025/Jan/03/Photo_h300_w450/58137979_1_MG20230202WA0015_300_450.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-gwalior-1963ipaeln-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 15000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Alkapuri flat (4 BHK)",
+    "slug": "alkapuri-flat-4-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 4 BHK student flat in Alkapuri flat, Alkapuri, Gwalior, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Alkapuri, Gwalior",
+      "landmark": "Alkapuri flat",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.196332,
+        26.202468
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 31,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAmTVE88E9dc5UJ2Wi-sVV295iCpwX7wN4/Photo_h180_w240/63423267_5_PropertyImage779-0574433862573_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2024/Mar/30/Photo_h300_w450/71740955_3_PropertyImage916-6626624522389_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Oct/25/Photo_h300_w450/2190_1792910077293.98581_300_450.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 20000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Sangam Avenue (3 BHK)",
+    "slug": "sangam-avenue-3-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Sangam Avenue, Near Bank Colony, Alkapuri, Ohadpur, City Centre, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Near Bank Colony, Alkapuri, Ohadpur, City Centre",
+      "landmark": "Sangam Avenue",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.195686,
+        26.206774
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 23,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Oct/25/Photo_h300_w450/2190_1792910077293.98581_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9dM_79daeF_Fdoi51kcOBYD-S/Photo_h300_w450/86246545_4_IMG20210210222322_1_300_450.jpg",
+      "https://images.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-gwalior-1963ipaeln-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 18000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "New City Center flat (3 BHK)",
+    "slug": "new-city-center-flat-3-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in New City Center flat, 101, New City Center, Gwalior, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "101, New City Center, Gwalior",
+      "landmark": "New City Center flat",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.19232,
+        26.203205
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.8,
+    "reviewCount": 15,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dsranKCygxpHSDDr9CGYRXoa/Photo_h180_w240/85626277_4_Screenshot20260718142344YouTube_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dc2KM-yPaTrrS67EvWuLNGTo/Photo_h300_w450/86179351_1_PropertyImage322-43388969086897_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Sep/10/Photo_h300_w450/86412823_6_IMG0457_300_450.jpeg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 20000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Shri Ji Awas Woods Residency (2 BHK)",
+    "slug": "shri-ji-awas-woods-residency-2-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Shri Ji Awas Woods Residency, C-1 Wood's Residency, near New District Education Office, Sirol, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "C-1 Wood's Residency, near New District Education Office, Sirol",
+      "landmark": "Shri Ji Awas Woods Residency",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.168408,
+        26.233759
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.6,
+    "reviewCount": 18,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-gwalior-1963ipaeln.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Oct/25/Photo_h300_w450/2190_1792910077293.98581_300_450.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-lashkar-gwalior-real-estate-agents-209ouih3x7.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 16000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Sharda Vihar flat (3 BHK)",
+    "slug": "sharda-vihar-flat-3-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 3 BHK student flat in Sharda Vihar flat, Sharda Vihar, Gwalior, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Sharda Vihar, Gwalior",
+      "landmark": "Sharda Vihar flat",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.191605,
+        26.202656
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "FULLY_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.5,
+    "reviewCount": 18,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Jul/26/Photo_h300_w450/85665233_1_osmohouseimage_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9dM_79daeF_Fdoi51kcOBYD-S/Photo_h180_w240/86246545_4_IMG20210210222322_1_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVK4849dsk3cl92f9lwNWfkFYN_uu47/Photo_h180_w240/85680165_1_hatsAppImage20260723at6.27.18PM_180_240.jpeg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 20000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Shanti Enclave (2 BHK)",
+    "slug": "shanti-enclave-2-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Shanti Enclave, Flat 403, Shanti Enclave, City Centre, Gwalior, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Flat 403, Shanti Enclave, City Centre, Gwalior",
+      "landmark": "Shanti Enclave",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.193629,
+        26.206954
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.4,
+    "reviewCount": 23,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVT89I9dM_79daeF_Fdoi51kcOBYD-S/Photo_h180_w240/86246545_4_IMG20210210222322_1_180_240.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dc2KM-yPaTrrS67EvWuLNGTo/Photo_h300_w450/86179351_1_PropertyImage322-43388969086897_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/ver2/XIwvQlc61t8ZIpanz4mAnTVP9dY9dc2KM-yPaTrrS67EvWuLNGTo/Photo_h180_w240/86179351_1_PropertyImage442-4581476225814_180_240.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 16000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  },
+  {
+    "name": "Bahodapur flat (2 BHK)",
+    "slug": "bahodapur-flat-2-bhk-gwalior",
+    "propertyType": "STUDENT_FLAT",
+    "description": "Spacious 2 BHK student flat in Bahodapur flat, Bahodapur, Gwalior, Gwalior. Perfect for student group sharing with independent kitchen, zero brokerage, and modern building amenities.",
+    "address": {
+      "street": "Bahodapur, Gwalior",
+      "landmark": "Bahodapur flat",
+      "city": "Gwalior",
+      "state": "Madhya Pradesh",
+      "pincode": "474001"
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        78.17469,
+        26.205951
+      ]
+    },
+    "genderPreference": "CO_ED",
+    "furnishing": "SEMI_FURNISHED",
+    "status": "ACTIVE",
+    "approvalStatus": "APPROVED",
+    "isFullyVerified": true,
+    "rating": 4.7,
+    "reviewCount": 12,
+    "amenities": [
+      "wifi",
+      "parking",
+      "power_backup",
+      "cctv",
+      "lift",
+      "security",
+      "water_purifier"
+    ],
+    "rules": [
+      "Respect society quiet hours after 10:30 PM",
+      "Keep common areas clean",
+      "Pets subject to society guidelines"
+    ],
+    "images": [
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Jul/03/Photo_h300_w450/85378871_1_PropertyImage440-7888360581645_300_450.jpg",
+      "https://img.staticmb.com/mbphoto/property/cropped_images/2026/Sep/03/Photo_h300_w450/9585_1788375016643.780_300_450.jpg",
+      "https://content.jdmagicbox.com/comp/gwalior/dc/9999px751.x751.091130151038.r4c5dc/catalogue/bharat-property-dealer-gwalior-1963ipaeln-250.jpg",
+      "https://content2.jdmagicbox.com/checkin/gwalior/9999PX751.X751.220626162059.I3Y6.jpg"
+    ],
+    "startingRent": 15000,
+    "publicMobile": null,
+    "sourceUrl": "https://www.magicbricks.com/flats-for-rent-in-gwalior-price-15000-to-20000-pppfr",
+    "category": "Flat"
+  }
+]

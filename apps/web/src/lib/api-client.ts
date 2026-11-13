@@ -6,7 +6,11 @@ const PROD_API_FALLBACK = 'https://apna-ghar-2-4766.onrender.com/api/v1';
 export function getBaseUrl(): string {
   if (typeof window !== 'undefined') {
     const currentHost = window.location.hostname;
-    const isLocalhost = currentHost === 'localhost' || currentHost === '127.0.0.1';
+    const isLocalhost =
+      currentHost === 'localhost' ||
+      currentHost === '127.0.0.1' ||
+      currentHost === '0.0.0.0' ||
+      currentHost === '';
     const isLan =
       /^10\.\d+\.\d+\.\d+$/.test(currentHost) ||
       /^192\.168\.\d+\.\d+$/.test(currentHost) ||
@@ -39,7 +43,8 @@ export function getBaseUrl(): string {
   // Server-side execution
   const envUrl = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_API_URL;
   if (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1')) {
-    return process.env.NODE_ENV === 'production'
+    const isCloud = Boolean(process.env.VERCEL || process.env.RENDER);
+    return isCloud
       ? PROD_API_FALLBACK
       : 'http://localhost:4000/api/v1';
   }

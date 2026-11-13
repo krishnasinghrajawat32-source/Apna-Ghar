@@ -4,7 +4,7 @@ import { Model, Types, PipelineStage } from 'mongoose';
 import { CollegesService } from '../colleges/colleges.service';
 import { Property, PropertyDocument } from '../properties/schemas/property.schema';
 import { SearchPropertiesDto } from './dto/search-properties.dto';
-import { BedStatus, AvailabilityFreshness } from '@apna-ghar/shared-types';
+import { BedStatus, AvailabilityFreshness, PropertyType } from '@apna-ghar/shared-types';
 import { FRESHNESS_THRESHOLDS } from '@apna-ghar/shared-constants';
 
 export interface PropertySearchResult {
@@ -46,14 +46,54 @@ export class SearchService {
   ) {}
 
   async search(dto: SearchPropertiesDto) {
+    // Determine city filter
+    let searchCity: string | null = null;
+    if (dto.city) {
+      searchCity = dto.city.trim();
+    } else if (dto.college) {
+      const c = dto.college.toLowerCase().trim();
+      if (['bhopal', 'indore', 'gwalior'].includes(c)) {
+        searchCity = dto.college.trim();
+      }
+    } else if (dto.q) {
+      const q = dto.q.toLowerCase().trim();
+      if (['bhopal', 'indore', 'gwalior'].includes(q)) {
+        searchCity = dto.q.trim();
+      } else if (q.includes('bhopal')) {
+        searchCity = 'Bhopal';
+      } else if (q.includes('indore')) {
+        searchCity = 'Indore';
+      } else if (q.includes('gwalior')) {
+        searchCity = 'Gwalior';
+      }
+    }
+
+    let collegeAnchorName: string | null = null;
+    if (searchCity) {
+      searchCity = searchCity.charAt(0).toUpperCase() + searchCity.slice(1).toLowerCase();
+      collegeAnchorName = searchCity;
+    }
+
+    // Determine property type filter
+    let propertyTypeFilter = dto.propertyType;
+    if (!propertyTypeFilter && dto.q) {
+      const qLower = dto.q.toLowerCase();
+      if (qLower.includes('hostel')) {
+        propertyTypeFilter = PropertyType.HOSTEL;
+      } else if (qLower.includes('pg') || qLower.includes('paying guest')) {
+        propertyTypeFilter = PropertyType.PG;
+      } else if (qLower.includes('flat') || qLower.includes('apartment')) {
+        propertyTypeFilter = PropertyType.STUDENT_FLAT;
+      }
+    }
+
     const page = dto.page || 1;
-    const limit = dto.limit || 12;
+    const limit = dto.limit && dto.limit !== 12 ? dto.limit : (searchCity ? 50 : 12);
     const skip = (page - 1) * limit;
 
     let centerCoordinates: [number, number] | null = null;
-    let collegeAnchorName: string | null = null;
 
-    if (dto.college) {
+    if (dto.college && !['bhopal', 'indore', 'gwalior'].includes(dto.college.toLowerCase().trim())) {
       try {
         let collegeDoc;
         if (Types.ObjectId.isValid(dto.college)) {
@@ -73,8 +113,49 @@ export class SearchService {
 
     const pipeline: PipelineStage[] = [];
 
-    // Stage 1: Geospatial $geoNear if college coordinates are resolved
-    if (centerCoordinates) {
+    const baseMatch: Record<string, any> = {
+      status: 'ACTIVE',
+      ...(dto.gender ? { genderPreference: dto.gender } : {}),
+      ...(dto.verifiedOnly ? { isFullyVerified: true } : {}),
+    };
+
+    if (searchCity) {
+      baseMatch['address.city'] = new RegExp(`^${searchCity}$`, 'i');
+    }
+
+    if (propertyTypeFilter) {
+      if ((propertyTypeFilter as string) === 'FLAT' || propertyTypeFilter === PropertyType.STUDENT_FLAT) {
+        baseMatch['propertyType'] = { $in: ['STUDENT_FLAT', 'FLAT'] };
+      } else {
+        baseMatch['propertyType'] = propertyTypeFilter;
+      }
+    }
+
+    if (dto.q && !searchCity) {
+      const escapedQ = dto.q.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      baseMatch['$or'] = [
+        { name: new RegExp(escapedQ, 'i') },
+        { 'address.city': new RegExp(escapedQ, 'i') },
+        { 'address.street': new RegExp(escapedQ, 'i') },
+        { 'address.landmark': new RegExp(escapedQ, 'i') },
+      ];
+    } else if (dto.q && searchCity) {
+      const qRemaining = dto.q
+        .replace(new RegExp(searchCity, 'gi'), '')
+        .replace(/hostel|pg|flat|in|for|boys|girls/gi, '')
+        .trim();
+      if (qRemaining.length > 2) {
+        const escapedQ = qRemaining.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        baseMatch['$or'] = [
+          { name: new RegExp(escapedQ, 'i') },
+          { 'address.street': new RegExp(escapedQ, 'i') },
+          { 'address.landmark': new RegExp(escapedQ, 'i') },
+        ];
+      }
+    }
+
+    // Stage 1: Geospatial $geoNear if college coordinates are resolved AND no explicit city was given
+    if (centerCoordinates && !searchCity) {
       pipeline.push({
         $geoNear: {
           near: {
@@ -82,22 +163,14 @@ export class SearchService {
             coordinates: centerCoordinates,
           },
           distanceField: 'distanceMeters',
-          maxDistance: dto.radius || 3000,
+          maxDistance: dto.radius || 5000,
           spherical: true,
-          query: {
-            status: 'ACTIVE',
-            ...(dto.gender ? { genderPreference: dto.gender } : {}),
-            ...(dto.verifiedOnly ? { isFullyVerified: true } : {}),
-          },
+          query: baseMatch,
         },
       } as PipelineStage);
     } else {
       pipeline.push({
-        $match: {
-          status: 'ACTIVE',
-          ...(dto.gender ? { genderPreference: dto.gender } : {}),
-          ...(dto.verifiedOnly ? { isFullyVerified: true } : {}),
-        },
+        $match: baseMatch,
       });
     }
 
@@ -234,7 +307,7 @@ export class SearchService {
     });
 
     return {
-      collegeAnchor: collegeAnchorName,
+      collegeAnchor: collegeAnchorName || 'Madhya Pradesh',
       data: formattedData,
       meta: {
         page,

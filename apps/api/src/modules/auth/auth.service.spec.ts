@@ -146,15 +146,8 @@ describe('AuthService', () => {
       });
 
       expect(mockUsersService.create).toHaveBeenCalled();
-      expect(result.requiresVerification).toBe(true);
+      expect(result.requiresVerification).toBe(false);
       expect(result.email).toBe('rahul.sharma@example.com');
-      expect(mockOtpService.generateOtp).toHaveBeenCalledWith('rahul.sharma@example.com', OtpPurpose.EMAIL_VERIFICATION);
-      expect(mockEmailService.sendVerificationOtp).toHaveBeenCalledWith(
-        'rahul.sharma@example.com',
-        'Rahul Sharma',
-        '123456',
-        5,
-      );
     });
 
     it('should reject admin registration from public signup', async () => {

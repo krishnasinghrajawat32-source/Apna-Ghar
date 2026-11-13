@@ -59,12 +59,20 @@ export function CollegeSearchHero() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const collegeSlug = selectedCollege ? selectedCollege.slug : query.trim();
-    if (!collegeSlug) return;
+    const inputVal = (selectedCollege ? selectedCollege.slug : query).trim();
+    if (!inputVal) return;
 
     const params = new URLSearchParams();
-    params.set('college', collegeSlug);
-    params.set('radius', '3000'); // Default 3 km
+    const qLower = inputVal.toLowerCase();
+    if (['bhopal', 'indore', 'gwalior'].includes(qLower)) {
+      params.set('city', inputVal.charAt(0).toUpperCase() + inputVal.slice(1).toLowerCase());
+    } else if (selectedCollege) {
+      params.set('college', selectedCollege.slug);
+      params.set('radius', '5000');
+    } else {
+      params.set('q', inputVal);
+    }
+
     if (budget) {
       params.set('maxPrice', budget);
     }
@@ -75,19 +83,45 @@ export function CollegeSearchHero() {
     router.push(`/search?${params.toString()}`);
   };
 
+  const handleQuickCity = (cityName: string) => {
+    const params = new URLSearchParams();
+    params.set('city', cityName);
+    if (budget) params.set('maxPrice', budget);
+    if (accommodationType && accommodationType !== 'all') {
+      params.set('propertyType', accommodationType);
+    }
+    router.push(`/search?${params.toString()}`);
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl border border-[#E8E5DE] shadow-brand-lg p-5 sm:p-8 space-y-6">
       <div className="text-center sm:text-left space-y-1.5">
         <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F5A623] uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Campus-Anchored Accommodation Finder</span>
+          <span>Verified Student Accommodation Finder</span>
         </div>
         <h2 className="text-lg sm:text-xl font-black text-[#102B50] tracking-tight">
-          Which college or university are you studying at?
+          Where are you looking to stay?
         </h2>
         <p className="text-xs text-[#687586]">
-          Search verified hostels, PGs, and student flats within walking or short commute distance.
+          Search verified hostels, PGs, and student flats in Madhya Pradesh (Bhopal, Indore, Gwalior) or near your university.
         </p>
+
+        {/* Quick City Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2 pt-2">
+          <span className="text-[11px] font-bold text-[#687586]">Top Cities:</span>
+          {['Bhopal', 'Indore', 'Gwalior'].map((city) => (
+            <button
+              key={city}
+              type="button"
+              onClick={() => handleQuickCity(city)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#102B50]/5 hover:bg-[#102B50] text-[#102B50] hover:text-[#F5A623] border border-[#102B50]/15 transition-all shadow-2xs"
+            >
+              <MapPin className="w-3 h-3 text-[#F5A623]" />
+              <span>{city}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <form onSubmit={handleSearch} className="space-y-4">
@@ -105,7 +139,7 @@ export function CollegeSearchHero() {
               onFocus={() => {
                 if (colleges.length > 0) setIsOpen(true);
               }}
-              placeholder="Type university name (e.g. Amity University Noida, IIT Delhi, DU North Campus...)"
+              placeholder="Search by City (Bhopal, Indore, Gwalior) or University (MANIT, IIT Indore...)"
               className="w-full pl-12 pr-10 py-4 text-xs sm:text-sm rounded-2xl border border-[#E8E5DE] focus:outline-none focus:ring-2 focus:ring-[#F5A623] focus:border-[#F5A623] transition-all bg-[#FAF8F3]/60 text-[#263445] placeholder:text-[#687586] font-medium shadow-inner"
             />
             {isLoading && (

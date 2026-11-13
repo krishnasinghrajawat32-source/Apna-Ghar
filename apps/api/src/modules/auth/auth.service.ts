@@ -46,7 +46,7 @@ export class AuthService {
    * Registers a new Student, Owner, or Mess Partner.
    * Admin role is rejected. Email verification OTP is dispatched.
    */
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterDto, userAgent = '', ipAddress = '') {
     if (dto.role === UserRole.ADMIN) {
       throw new BadRequestException({
         code: ERROR_CODES.AUTH_FORBIDDEN,
@@ -67,25 +67,30 @@ export class AuthService {
       phone: dto.phone,
       passwordHash,
       role: dto.role,
-      accountStatus: AccountStatus.PENDING_VERIFICATION,
-      emailVerified: false,
+      accountStatus: AccountStatus.ACTIVE,
+      emailVerified: true,
       roleApprovalStatus:
         dto.role === UserRole.STUDENT ? RoleApprovalStatus.APPROVED : RoleApprovalStatus.PENDING,
     });
 
-    // Generate & send 6-digit OTP
-    const { otp, expiresInMinutes } = await this.otpService.generateOtp(
-      user.email,
-      OtpPurpose.EMAIL_VERIFICATION,
+    // Automatically issue tokens and register active session
+    const tokens = await this.generateTokens(user._id.toString(), user.email, user.role);
+    await this.persistRefreshToken(user._id.toString(), tokens.refreshToken);
+    await this.sessionService.createSession(
+      user._id.toString(),
+      tokens.accessToken,
+      userAgent,
+      ipAddress,
     );
-    await this.emailService.sendVerificationOtp(user.email, user.name, otp, expiresInMinutes);
 
     return {
       success: true,
-      requiresVerification: true,
+      requiresVerification: false,
       email: user.email,
-      message:
-        'Registration initiated successfully. A 6-digit verification code has been dispatched to your email.',
+      user: user.toJSON(),
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      message: 'Account created successfully. Welcome to Apna Ghar!',
     };
   }
 
@@ -167,8 +172,11 @@ export class AuthService {
       await this.emailService.sendVerificationOtp(user.email, user.name, otp, expiresInMinutes);
     }
 
+    const isDevFallback = !this.configService.get<string>('SMTP_USER') || process.env.NODE_ENV !== 'production';
+
     return {
       success: true,
+      devOtp: isDevFallback ? otp : undefined,
       message: 'A new 6-digit OTP code has been dispatched to your email address.',
     };
   }
@@ -193,14 +201,9 @@ export class AuthService {
       });
     }
 
-    // Check email verification status
-    if (user.accountStatus === AccountStatus.PENDING_VERIFICATION || !user.emailVerified) {
-      throw new ForbiddenException({
-        code: ERROR_CODES.AUTH_EMAIL_NOT_VERIFIED,
-        message: 'Your email address has not been verified. Please verify your account with the OTP.',
-        email: user.email,
-        requiresVerification: true,
-      });
+    // Ensure active status and verified flag
+    if (!user.emailVerified || user.accountStatus === AccountStatus.PENDING_VERIFICATION) {
+      await this.usersService.markEmailVerified(user._id);
     }
 
     // Check account suspension status

@@ -7,10 +7,17 @@ import { CollegeSearchHero } from '@/components/search/college-search-hero';
 
 export default function HomePage() {
   const verifiedColleges = [
-    { name: 'Amity University, Noida', slug: 'amity-university-noida' },
-    { name: 'IIT Delhi', slug: 'iit-delhi' },
-    { name: 'DU North Campus', slug: 'delhi-university-north-campus' },
-    { name: 'BITS Pilani', slug: 'bits-pilani' },
+    { name: 'MANIT Bhopal', slug: 'manit-bhopal' },
+    { name: 'IIT Indore', slug: 'iit-indore' },
+    { name: 'DAVV Indore', slug: 'davv-indore' },
+    { name: 'ABV-IIITM Gwalior', slug: 'abv-iiitm-gwalior' },
+    { name: 'AIIMS Bhopal', slug: 'aiims-bhopal' },
+  ];
+
+  const mpCities = [
+    { name: 'Bhopal', city: 'Bhopal', count: '21 Stays' },
+    { name: 'Indore', city: 'Indore', count: '20 Stays' },
+    { name: 'Gwalior', city: 'Gwalior', count: '21 Stays' },
   ];
 
   const stayCategories = [
@@ -70,14 +77,30 @@ export default function HomePage() {
             <CollegeSearchHero />
           </div>
 
-          {/* Quick Access Campus Anchor Pills */}
+          {/* Quick Access MP City Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-3">
-            <span className="text-xs font-bold text-[#687586]">Popular campus hubs:</span>
+            <span className="text-xs font-bold text-[#687586]">Explore MP Cities:</span>
+            {mpCities.map((c) => (
+              <Link
+                key={c.city}
+                href={`/search?city=${c.city}`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#102B50] text-[#F5A623] hover:bg-[#183D68] hover:text-white transition-all shadow-xs"
+              >
+                <MapPin className="w-3 h-3 text-[#F5A623]" />
+                <span>{c.name}</span>
+                <span className="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full font-semibold">{c.count}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Quick Access Campus Anchor Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <span className="text-xs font-bold text-[#687586]">MP Universities:</span>
             {verifiedColleges.map((college) => (
               <Link
                 key={college.slug}
-                href={`/search?college=${college.slug}&radius=3000`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-[#E8E5DE] text-[#102B50] hover:border-[#102B50] hover:bg-[#F0F4F8] transition-all shadow-xs"
+                href={`/search?college=${college.slug}&radius=5000`}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white border border-[#E8E5DE] text-[#102B50] hover:border-[#102B50] hover:bg-[#F0F4F8] transition-all shadow-xs"
               >
                 <MapPin className="w-3 h-3 text-[#F5A623]" />
                 <span>{college.name}</span>

@@ -32,38 +32,42 @@ export class JwtAuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractToken(request);
+
+    if (token) {
+      try {
+        const secret = this.configService.get<string>('jwtAccessSecret') || 'dev_jwt_access_secret_min_32_characters_seed';
+        const decoded = jwt.verify(token, secret) as JwtPayload;
+
+        request.user = {
+          userId: decoded.sub,
+          id: decoded.sub,
+          email: decoded.email,
+          role: decoded.role,
+        };
+
+        return true;
+      } catch (err: unknown) {
+        if (isPublic) {
+          return true;
+        }
+        const isExpired = err instanceof jwt.TokenExpiredError;
+        throw new UnauthorizedException({
+          code: isExpired ? ERROR_CODES.AUTH_SESSION_EXPIRED : ERROR_CODES.AUTH_UNAUTHORIZED,
+          message: isExpired ? 'Session expired. Please refresh your token.' : 'Invalid authentication token.',
+        });
+      }
+    }
+
     if (isPublic) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractToken(request);
-
-    if (!token) {
-      throw new UnauthorizedException({
-        code: ERROR_CODES.AUTH_UNAUTHORIZED,
-        message: 'Authentication token missing or invalid.',
-      });
-    }
-
-    try {
-      const secret = this.configService.get<string>('jwtAccessSecret') || 'dev_jwt_access_secret_min_32_characters_seed';
-      const decoded = jwt.verify(token, secret) as JwtPayload;
-
-      request.user = {
-        userId: decoded.sub,
-        email: decoded.email,
-        role: decoded.role,
-      };
-
-      return true;
-    } catch (err: unknown) {
-      const isExpired = err instanceof jwt.TokenExpiredError;
-      throw new UnauthorizedException({
-        code: isExpired ? ERROR_CODES.AUTH_SESSION_EXPIRED : ERROR_CODES.AUTH_UNAUTHORIZED,
-        message: isExpired ? 'Session expired. Please refresh your token.' : 'Invalid authentication token.',
-      });
-    }
+    throw new UnauthorizedException({
+      code: ERROR_CODES.AUTH_UNAUTHORIZED,
+      message: 'Authentication token missing or invalid.',
+    });
   }
 
   private extractToken(request: { headers: Record<string, string | undefined>; cookies?: Record<string, string> }): string | null {

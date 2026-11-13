@@ -177,6 +177,8 @@ export default function PropertyDetailPage() {
             src={primaryImage!}
             alt={property.name}
             fill
+            unoptimized
+            referrerPolicy="no-referrer"
             priority
             className="object-cover"
           />
@@ -187,6 +189,8 @@ export default function PropertyDetailPage() {
               src={property.images?.[1] || primaryImage!}
               alt="Room view"
               fill
+              unoptimized
+              referrerPolicy="no-referrer"
               className="object-cover"
             />
           </div>
@@ -369,7 +373,7 @@ export default function PropertyDetailPage() {
       <ScheduleVisitModal
         isOpen={visitModalOpen}
         onClose={() => setVisitModalOpen(false)}
-        propertyId={property.id}
+        propertyId={property.id || (property as any)._id}
         propertyName={property.name}
       />
     </main>

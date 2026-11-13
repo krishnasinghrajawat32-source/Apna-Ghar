@@ -3,13 +3,18 @@ import { UserRole } from '@apna-ghar/shared-types';
 
 export interface AuthenticatedUser {
   userId: string;
+  id?: string;
   email: string;
   role: UserRole;
 }
 
 export const CurrentUser = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext): AuthenticatedUser => {
+  (data: string | undefined, ctx: ExecutionContext): any => {
     const request = ctx.switchToHttp().getRequest();
-    return request.user;
+    const user = request.user;
+    if (!user) return null;
+    if (data === 'id' || data === 'userId') return user.userId || user.id || user._id;
+    if (data) return user[data];
+    return user;
   },
 );

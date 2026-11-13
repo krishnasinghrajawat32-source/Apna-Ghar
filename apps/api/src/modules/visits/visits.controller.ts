@@ -44,19 +44,21 @@ export class VisitsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.STUDENT, UserRole.OWNER, UserRole.ADMIN)
+  @Public()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Schedule a free physical visit to a property' })
+  @ApiOperation({ summary: 'Schedule a free physical visit to a property (Authenticated or Guest Lead)' })
   @ApiResponse({ status: 201, description: 'Visit successfully requested' })
   async createVisit(
-    @CurrentUser('id') studentId: string,
+    @CurrentUser('id') studentId: string | undefined,
     @Body() dto: CreateVisitDto,
   ) {
-    const visit = await this.visitsService.createVisit(studentId, dto);
+    const result = await this.visitsService.createVisit(studentId, dto);
     return {
       success: true,
-      data: visit,
+      data: result.visit,
+      accessToken: result.accessToken,
+      user: result.user,
     };
   }
 

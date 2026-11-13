@@ -35,9 +35,24 @@ export class AuthController {
   @Public()
   @Post('register')
   @ApiOperation({ summary: 'Register a new student, owner, or mess partner account' })
-  @SwaggerResponse({ status: 201, description: 'User account created and verification OTP sent' })
-  async register(@Body() dto: RegisterDto) {
-    return this.authService.register(dto);
+  @SwaggerResponse({ status: 201, description: 'User account created and session established' })
+  async register(
+    @Body() dto: RegisterDto,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const userAgent = req.headers['user-agent'] || '';
+    const ipAddress = req.ip || req.socket?.remoteAddress || '';
+
+    const result = await this.authService.register(dto, userAgent, ipAddress);
+    this.setAuthCookies(res, result.accessToken, result.refreshToken);
+
+    return {
+      success: true,
+      message: result.message,
+      user: result.user,
+      accessToken: result.accessToken,
+    };
   }
 
   @Public()

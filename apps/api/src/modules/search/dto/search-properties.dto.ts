@@ -9,13 +9,28 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
-import { GenderPreference, SharingType } from '@apna-ghar/shared-types';
+import { GenderPreference, SharingType, PropertyType } from '@apna-ghar/shared-types';
 
 export class SearchPropertiesDto {
   @ApiPropertyOptional({ description: 'College ID or slug' })
   @IsOptional()
   @IsString()
   college?: string;
+
+  @ApiPropertyOptional({ description: 'City name (e.g. Bhopal, Indore, Gwalior)' })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @ApiPropertyOptional({ description: 'Search term for city, property name, or locality' })
+  @IsOptional()
+  @IsString()
+  q?: string;
+
+  @ApiPropertyOptional({ enum: PropertyType, description: 'Property type: HOSTEL | PG | STUDENT_FLAT' })
+  @IsOptional()
+  @IsIn(Object.values(PropertyType))
+  propertyType?: PropertyType;
 
   @ApiPropertyOptional({ description: 'Search radius in meters (e.g. 1000, 3000, 5000)', default: 3000 })
   @IsOptional()
