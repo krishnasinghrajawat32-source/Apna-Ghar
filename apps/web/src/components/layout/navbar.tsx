@@ -3,7 +3,18 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { LogOut, Menu, X, ShieldCheck, Home, Utensils, Calendar, BookOpen } from 'lucide-react';
+import {
+  LogOut,
+  Menu,
+  X,
+  ShieldCheck,
+  Home,
+  Utensils,
+  Calendar,
+  BookOpen,
+  Sun,
+  Moon,
+} from 'lucide-react';
 import { useAuthStore } from '@/features/auth/auth-store';
 import { UserRole } from '@apna-ghar/shared-types';
 
@@ -12,10 +23,15 @@ export function Navbar() {
   const pathname = usePathname();
   const { user, isAuthenticated, isLoading, fetchMe, logout } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   useEffect(() => {
     fetchMe();
   }, [fetchMe]);
+
+  useEffect(() => {
+    setIsDarkTheme(document.documentElement.dataset.theme === 'dark');
+  }, []);
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -70,6 +86,13 @@ export function Navbar() {
     return pathname.startsWith(href);
   };
 
+  const toggleTheme = () => {
+    const nextTheme = isDarkTheme ? 'light' : 'dark';
+    document.documentElement.dataset.theme = nextTheme;
+    window.localStorage.setItem('apna-ghar-theme', nextTheme);
+    setIsDarkTheme(nextTheme === 'dark');
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E8E5DE] shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -122,6 +145,17 @@ export function Navbar() {
 
         {/* Right Actions & Auth */}
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${isDarkTheme ? 'light' : 'dark'} theme`}
+            title={`Switch to ${isDarkTheme ? 'light' : 'dark'} theme`}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#E8E5DE] px-2.5 py-2 text-[10px] font-bold text-[#263445] transition-colors hover:bg-[#F0F4F8] sm:px-3"
+          >
+            {isDarkTheme ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            <span>{isDarkTheme ? 'Dark theme' : 'Light theme'}</span>
+          </button>
+
           {isLoading ? (
             <div className="w-24 h-9 bg-[#E8E5DE]/60 animate-pulse rounded-xl" />
           ) : isAuthenticated && user ? (

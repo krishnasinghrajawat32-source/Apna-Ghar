@@ -25,6 +25,69 @@
   --danger: #D64545;         /* Danger */
 }
 
+html[data-theme='dark'] {
+  color-scheme: dark;
+
+  --primary: #9dbce5;
+  --primary-hover: #bdd2ef;
+  --background: #0b1220;
+  --surface: #141e2e;
+  --foreground: #e5eaf2;
+  --muted: #a4afbf;
+  --border: #2b3749;
+  --success: #63c995;
+}
+
+html[data-theme='dark'] body {
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+html[data-theme='dark'] [class*='bg-white'],
+html[data-theme='dark'] [class*='bg-[#FFFFFF]'],
+html[data-theme='dark'] [class*='bg-[#FAF8F3]'],
+html[data-theme='dark'] [class*='bg-[#FCFBF7]'],
+html[data-theme='dark'] [class*='bg-[#FAF9F5]'],
+html[data-theme='dark'] [class*='bg-[#F0F4F8]'],
+html[data-theme='dark'] [class*='bg-[#F8FAFC]'],
+html[data-theme='dark'] [class*='bg-[#E8E5DE]'],
+html[data-theme='dark'] [class*='bg-[#ECE8DD]'],
+html[data-theme='dark'] [class*='bg-[#DDD7C7]'],
+html[data-theme='dark'] [class*='bg-[#F0F5F2]'],
+html[data-theme='dark'] [class*='bg-[#DCE8E2]'],
+html[data-theme='dark'] [class*='bg-[#EBF7EE]'] {
+  background-color: var(--surface);
+}
+
+html[data-theme='dark'] body[class*='bg-[#FAF8F3]'] {
+  background-color: var(--background);
+}
+
+html[data-theme='dark'] [class*='text-[#102B50]']:not([class*='bg-[#F5A623]']):not([class*='bg-[#E99A12]']),
+html[data-theme='dark'] [class*='text-[#263445]']:not([class*='bg-[#F5A623]']):not([class*='bg-[#E99A12]']),
+html[data-theme='dark'] [class*='text-[#173327]']:not([class*='bg-[#F5A623]']):not([class*='bg-[#E99A12]']),
+html[data-theme='dark'] [class*='text-[#3D3A33]']:not([class*='bg-[#F5A623]']):not([class*='bg-[#E99A12]']) {
+  color: var(--foreground);
+}
+
+html[data-theme='dark'] [class*='text-[#687586]'],
+html[data-theme='dark'] [class*='text-[#716D64]'] {
+  color: var(--muted);
+}
+
+html[data-theme='dark'] [class*='text-[#21865B]'],
+html[data-theme='dark'] [class*='text-[#1F4333]'],
+html[data-theme='dark'] [class*='text-[#1B6F4B]'],
+html[data-theme='dark'] [class*='text-[#1A6C49]'] {
+  color: var(--success);
+}
+
+html[data-theme='dark'] [class*='border-[#E8E5DE]'],
+html[data-theme='dark'] [class*='border-[#DDD7C7]'],
+html[data-theme='dark'] [class*='border-[#D5D1C7]'] {
+  border-color: var(--border);
+}
+
 /* =================================
    GLOBAL BASE STYLES
 ================================= */
