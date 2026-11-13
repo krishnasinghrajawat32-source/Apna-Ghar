@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   Utensils,
   ShieldCheck,
@@ -23,6 +24,9 @@ import {
   X,
   User,
   Info,
+  QrCode,
+  Wallet,
+  ShoppingBag,
 } from 'lucide-react';
 import { AuthGuard } from '@/features/auth/auth-guard';
 import { useAuthStore } from '@/features/auth/auth-store';
@@ -51,13 +55,44 @@ const DAYS: DayOfWeek[] = [
   'SUNDAY',
 ];
 
-type DashboardTab = 'overview' | 'menu' | 'outlet' | 'plans' | 'subscriptions' | 'profile';
+export type DashboardTab =
+  | 'overview'
+  | 'menu'
+  | 'outlet'
+  | 'plans'
+  | 'subscriptions'
+  | 'profile'
+  | 'qr'
+  | 'customers'
+  | 'earnings';
 
-export default function MessPartnerDashboardPage() {
+function MessPartnerDashboardInner() {
   const queryClient = useQueryClient();
   const { isAuthenticated, user } = useAuthStore();
+  const searchParams = useSearchParams();
+  const tabQuery = searchParams.get('tab');
 
   const [activeTab, setActiveTab] = useState<DashboardTab>('overview');
+
+  useEffect(() => {
+    if (tabQuery) {
+      if (
+        [
+          'overview',
+          'menu',
+          'outlet',
+          'plans',
+          'subscriptions',
+          'profile',
+          'qr',
+          'customers',
+          'earnings',
+        ].includes(tabQuery)
+      ) {
+        setActiveTab(tabQuery as DashboardTab);
+      }
+    }
+  }, [tabQuery]);
   const [selectedDay, setSelectedDay] = useState<DayOfWeek>('MONDAY');
 
   // Menu Form State
@@ -444,8 +479,8 @@ export default function MessPartnerDashboardPage() {
               {mess?.dietaryType === 'PURE_VEG'
                 ? '100% Pure Veg'
                 : mess?.dietaryType === 'JAIN_AVAILABLE'
-                ? 'Satvik / Jain Options'
-                : 'Veg & Non-Veg'}
+                  ? 'Satvik / Jain Options'
+                  : 'Veg & Non-Veg'}
             </p>
             <span className="text-[10px] text-[#687586]">FSSAI: {mess?.fssaiNumber || 'Pending'}</span>
           </div>
@@ -454,23 +489,29 @@ export default function MessPartnerDashboardPage() {
         {/* Tab Navigation */}
         <div className="flex items-center gap-2 border-b border-[#E8E5DE] overflow-x-auto pb-1">
           {[
-            { id: 'overview', label: 'Subscription Requests', icon: Users, badge: pendingRequestsCount },
-            { id: 'menu', label: 'Rotating Weekly Menu', icon: Calendar },
-            { id: 'outlet', label: 'Outlet Setup & Media', icon: Building },
-            { id: 'plans', label: 'Meal Plans (Listing Info)', icon: FileText },
-            { id: 'profile', label: 'Vendor Profile', icon: User },
+            { id: 'overview', label: 'Dashboard', icon: Building },
+            { id: 'outlet', label: 'My Outlet', icon: Building },
+            { id: 'menu', label: 'Menu Management', icon: Calendar },
+            { id: 'plans', label: 'Meal Plans', icon: FileText },
+            { id: 'subscriptions', label: 'Orders', icon: ShoppingBag, badge: pendingRequestsCount },
+            { id: 'qr', label: 'QR Meal Pass', icon: QrCode },
+            { id: 'customers', label: 'Customers', icon: Users, badge: activeSubscribersCount },
+            { id: 'earnings', label: 'Earnings', icon: Wallet },
+            { id: 'profile', label: 'Profile', icon: User },
           ].map((tab) => {
             const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
+            const isActive =
+              activeTab === tab.id ||
+              (tab.id === 'overview' && activeTab === 'overview') ||
+              (tab.id === 'subscriptions' && activeTab === 'subscriptions');
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as DashboardTab)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition whitespace-nowrap ${
-                  isActive
+                className={`flex items-center gap-2 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition whitespace-nowrap ${isActive
                     ? 'bg-[#102B50] text-white shadow-sm'
                     : 'text-[#687586] hover:text-[#102B50] hover:bg-white'
-                }`}
+                  }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 <span>{tab.label}</span>
@@ -674,11 +715,10 @@ export default function MessPartnerDashboardPage() {
                 <button
                   key={day}
                   onClick={() => setSelectedDay(day)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-                    selectedDay === day
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${selectedDay === day
                       ? 'bg-[#102B50] text-white shadow-sm'
                       : 'bg-[#FAF8F3] text-[#263445] border border-[#E8E5DE] hover:border-[#F5A623]'
-                  }`}
+                    }`}
                 >
                   {day}
                 </button>
@@ -1249,6 +1289,107 @@ export default function MessPartnerDashboardPage() {
           </div>
         )}
 
+        {/* TAB: QR Meal Pass */}
+        {activeTab === 'qr' && (
+          <div className="bg-white border border-[#E8E5DE] rounded-3xl p-6 sm:p-8 shadow-brand-sm space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E8E5DE]">
+              <div>
+                <h2 className="text-base font-extrabold text-[#102B50]">Digital QR Meal Pass Validation</h2>
+                <p className="text-xs text-[#687586] mt-0.5">
+                  Scan and validate student dining passes for breakfast, lunch, and dinner.
+                </p>
+              </div>
+              <span className="text-xs font-bold text-[#102B50] px-3 py-1 rounded-full bg-[#FAF8F3] border border-[#E8E5DE]">
+                Live Terminal
+              </span>
+            </div>
+            <div className="p-8 rounded-2xl bg-[#FAF8F3] border border-dashed border-[#E8E5DE] text-center space-y-2">
+              <QrCode className="w-10 h-10 text-[#102B50] mx-auto opacity-70" />
+              <h3 className="text-sm font-bold text-[#102B50]">Camera & QR Scanner Ready</h3>
+              <p className="text-xs text-[#687586] max-w-md mx-auto">
+                Students scan or display their active meal pass QR code from the Apna Ghar student app for touchless meal verification.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* TAB: Customers */}
+        {activeTab === 'customers' && (
+          <div className="bg-white border border-[#E8E5DE] rounded-3xl p-6 sm:p-8 shadow-brand-sm space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E8E5DE]">
+              <div>
+                <h2 className="text-base font-extrabold text-[#102B50]">Subscribed Students & Dining Customers</h2>
+                <p className="text-xs text-[#687586] mt-0.5">
+                  Customer roster, dietary preferences, and meal plan statuses.
+                </p>
+              </div>
+              <span className="text-xs font-bold text-[#21865B] px-3 py-1 rounded-full bg-[#EBF7EE]">
+                {activeSubscribersCount} Active Subscribers
+              </span>
+            </div>
+            <div className="space-y-3">
+              {subscribers.filter((s) => s.status === 'ACCEPTED' || (s.status as string) === 'ACTIVE').length > 0 ? (
+                subscribers
+                  .filter((s) => s.status === 'ACCEPTED' || (s.status as string) === 'ACTIVE')
+                  .map((sub) => (
+                    <div
+                      key={sub.id}
+                      className="p-4 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE] flex items-center justify-between"
+                    >
+                      <div>
+                        <p className="text-xs font-bold text-[#102B50]">
+                          {(sub as any).studentId?.name || 'Verified Student Member'}
+                        </p>
+                        <p className="text-[11px] text-[#687586]">
+                          {(sub as any).studentId?.phone || (sub as any).planType || 'Monthly Dining Pass'}
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#102B50] text-white">
+                        Active Dining Member
+                      </span>
+                    </div>
+                  ))
+              ) : (
+                <div className="p-8 rounded-2xl bg-[#FAF8F3] border border-dashed border-[#E8E5DE] text-center space-y-2">
+                  <Users className="w-8 h-8 text-[#102B50] mx-auto opacity-70" />
+                  <p className="text-xs text-[#687586]">No active dining subscribers yet. Approved student subscriptions will appear here.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* TAB: Earnings */}
+        {activeTab === 'earnings' && (
+          <div className="bg-white border border-[#E8E5DE] rounded-3xl p-6 sm:p-8 shadow-brand-sm space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E8E5DE]">
+              <div>
+                <h2 className="text-base font-extrabold text-[#102B50]">Vendor Earnings & Settlements</h2>
+                <p className="text-xs text-[#687586] mt-0.5">
+                  Subscription plan inflows, platform fee breakdown, and weekly disbursements.
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE]">
+                <span className="text-xs font-semibold text-[#687586]">Active Dining Subscribers</span>
+                <p className="text-2xl font-black text-[#102B50] mt-1">{activeSubscribersCount}</p>
+              </div>
+              <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE]">
+                <span className="text-xs font-semibold text-[#687586]">Pending Inflow</span>
+                <p className="text-2xl font-black text-[#F5A623] mt-1">{pendingRequestsCount} orders</p>
+              </div>
+              <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE]">
+                <span className="text-xs font-semibold text-[#687586]">Payout Status</span>
+                <p className="text-sm font-bold text-[#102B50] mt-2 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#21865B]" />
+                  Weekly Settlement Active
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Modal: Rejection Reason */}
         {rejectingSubId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
@@ -1303,5 +1444,22 @@ export default function MessPartnerDashboardPage() {
         )}
       </main>
     </AuthGuard>
+  );
+}
+
+export default function MessPartnerDashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FAF8F3] py-12 flex items-center justify-center">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#102B50]">
+            <Clock className="w-4 h-4 animate-spin text-[#F5A623]" />
+            Loading Food Vendor Portal...
+          </div>
+        </div>
+      }
+    >
+      <MessPartnerDashboardInner />
+    </Suspense>
   );
 }

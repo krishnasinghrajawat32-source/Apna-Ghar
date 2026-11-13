@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Building2,
@@ -74,10 +75,21 @@ interface BookingRequest {
   createdAt: string;
 }
 
-export default function OwnerDashboardPage() {
+export type OwnerTab = 'properties' | 'bookings' | 'add-property' | 'profile' | 'visits' | 'earnings';
+
+function OwnerDashboardInner() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'properties' | 'bookings' | 'add-property' | 'profile'>('properties');
+  const searchParams = useSearchParams();
+  const tabQuery = searchParams.get('tab');
+
+  const [activeTab, setActiveTab] = useState<OwnerTab>('properties');
+
+  useEffect(() => {
+    if (tabQuery && ['properties', 'bookings', 'add-property', 'profile', 'visits', 'earnings'].includes(tabQuery)) {
+      setActiveTab(tabQuery as OwnerTab);
+    }
+  }, [tabQuery]);
 
   // Form states for adding property
   const [name, setName] = useState('');
@@ -389,26 +401,46 @@ export default function OwnerDashboardPage() {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-[#E8E5DE] gap-6 text-xs font-bold">
+          <div className="flex border-b border-[#E8E5DE] gap-5 text-xs font-bold overflow-x-auto">
             <button
               onClick={() => setActiveTab('properties')}
-              className={`pb-3 transition ${
+              className={`pb-3 transition whitespace-nowrap ${
                 activeTab === 'properties'
                   ? 'border-b-2 border-[#102B50] text-[#102B50]'
                   : 'text-[#687586] hover:text-[#102B50]'
               }`}
             >
-              Managed Properties & Inventory ({properties.length})
+              My Properties ({properties.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('add-property')}
+              className={`pb-3 transition whitespace-nowrap ${
+                activeTab === 'add-property'
+                  ? 'border-b-2 border-[#102B50] text-[#102B50]'
+                  : 'text-[#687586] hover:text-[#102B50]'
+              }`}
+            >
+              + Add Property
+            </button>
+            <button
+              onClick={() => setActiveTab('visits')}
+              className={`pb-3 transition whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'visits'
+                  ? 'border-b-2 border-[#102B50] text-[#102B50]'
+                  : 'text-[#687586] hover:text-[#102B50]'
+              }`}
+            >
+              <span>Visit Requests</span>
             </button>
             <button
               onClick={() => setActiveTab('bookings')}
-              className={`pb-3 transition flex items-center gap-1.5 ${
+              className={`pb-3 transition whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'bookings'
                   ? 'border-b-2 border-[#102B50] text-[#102B50]'
                   : 'text-[#687586] hover:text-[#102B50]'
               }`}
             >
-              <span>Booking Requests</span>
+              <span>Bookings</span>
               {bookings.filter((b) => b.status === BookingStatus.REQUESTED).length > 0 && (
                 <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-[#E06D3B] text-white">
                   {bookings.filter((b) => b.status === BookingStatus.REQUESTED).length}
@@ -416,24 +448,24 @@ export default function OwnerDashboardPage() {
               )}
             </button>
             <button
-              onClick={() => setActiveTab('add-property')}
-              className={`pb-3 transition ${
-                activeTab === 'add-property'
+              onClick={() => setActiveTab('earnings')}
+              className={`pb-3 transition whitespace-nowrap flex items-center gap-1.5 ${
+                activeTab === 'earnings'
                   ? 'border-b-2 border-[#102B50] text-[#102B50]'
                   : 'text-[#687586] hover:text-[#102B50]'
               }`}
             >
-              + List New Property
+              <span>Earnings</span>
             </button>
             <button
               onClick={() => setActiveTab('profile')}
-              className={`pb-3 transition ${
+              className={`pb-3 transition whitespace-nowrap ${
                 activeTab === 'profile'
                   ? 'border-b-2 border-[#102B50] text-[#102B50]'
                   : 'text-[#687586] hover:text-[#102B50]'
               }`}
             >
-              Owner Profile & KYC
+              Profile & KYC
             </button>
           </div>
 
@@ -1056,8 +1088,84 @@ export default function OwnerDashboardPage() {
               </form>
             </div>
           )}
+
+          {/* TAB 5: Visit Requests */}
+          {activeTab === 'visits' && (
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E5DE] shadow-sm space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-[#E8E5DE]">
+                <div>
+                  <h2 className="text-base font-extrabold text-[#102B50]">Property Visit Requests</h2>
+                  <p className="text-xs text-[#687586] mt-0.5">
+                    Prospective student visit schedules and campus accommodation tours.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-[#102B50] px-3 py-1 rounded-full bg-[#FAF8F3] border border-[#E8E5DE]">
+                  {properties.length} Active Properties
+                </span>
+              </div>
+              <div className="p-8 rounded-2xl bg-[#FAF8F3] border border-dashed border-[#E8E5DE] text-center space-y-2">
+                <Calendar className="w-8 h-8 text-[#102B50] mx-auto opacity-70" />
+                <h3 className="text-sm font-bold text-[#102B50]">No Pending Physical Visits</h3>
+                <p className="text-xs text-[#687586] max-w-md mx-auto">
+                  When students schedule in-person room inspections through your verified Trust Passport listings, their contact details and requested time slots will appear here.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: Earnings */}
+          {activeTab === 'earnings' && (
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E5DE] shadow-sm space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-[#E8E5DE]">
+                <div>
+                  <h2 className="text-base font-extrabold text-[#102B50]">Earnings & Payout Settlements</h2>
+                  <p className="text-xs text-[#687586] mt-0.5">
+                    Track gross rental collections, security deposits, and bank disbursements.
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE]">
+                  <span className="text-xs font-semibold text-[#687586]">Total Bookings Revenue</span>
+                  <p className="text-2xl font-black text-[#102B50] mt-1">
+                    ₹{bookings.reduce((sum, b) => sum + (b.rentAmount || 0), 0).toLocaleString('en-IN')}
+                  </p>
+                </div>
+                <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE]">
+                  <span className="text-xs font-semibold text-[#687586]">Occupancy Rate</span>
+                  <p className="text-2xl font-black text-[#21865B] mt-1">
+                    {overview?.occupancyRate ?? 0}%
+                  </p>
+                </div>
+                <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E5DE]">
+                  <span className="text-xs font-semibold text-[#687586]">Settlement Account</span>
+                  <p className="text-sm font-bold text-[#102B50] mt-2 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#21865B]" />
+                    Direct Bank Transfer Active
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </AuthGuard>
+  );
+}
+
+export default function OwnerDashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FAF8F3] py-12 flex items-center justify-center">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#102B50]">
+            <Clock className="w-4 h-4 animate-spin text-[#F5A623]" />
+            Loading House Owner Portal...
+          </div>
+        </div>
+      }
+    >
+      <OwnerDashboardInner />
+    </Suspense>
   );
 }
