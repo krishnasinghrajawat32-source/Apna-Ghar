@@ -23,6 +23,7 @@ import { useAuthStore } from '@/features/auth/auth-store';
 import { apiClient } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/utils';
 import { UserRole, Booking, BookingStatus, VisitStatus } from '@apna-ghar/shared-types';
+import { ScrollHeroAnimation } from '@/components/home/scroll-hero-animation';
 
 interface StudentVisit {
   id: string;
@@ -69,7 +70,12 @@ export default function StudentDashboardPage() {
   );
 
   return (
-    <AuthGuard allowedRoles={[UserRole.STUDENT, UserRole.ADMIN]}>
+    <AuthGuard allowedRoles={[UserRole.STUDENT, UserRole.ADMIN, UserRole.OWNER]}>
+      {/* Full-width 3D Scrolling Animation Hero (Identical to Home Page) */}
+      <ScrollHeroAnimation />
+
+      <div id="student-dashboard-content" className="scroll-mt-12" />
+
       <div className="min-h-screen bg-[#FAF8F3] py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Welcome Header */}

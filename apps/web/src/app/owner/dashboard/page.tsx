@@ -32,6 +32,7 @@ import {
   SharingType,
   BookingStatus,
 } from '@apna-ghar/shared-types';
+import { ScrollHeroAnimation } from '@/components/home/scroll-hero-animation';
 
 interface OwnerOverview {
   totalProperties: number;
@@ -297,7 +298,12 @@ function OwnerDashboardInner() {
   });
 
   return (
-    <AuthGuard allowedRoles={[UserRole.OWNER, UserRole.ADMIN]}>
+    <AuthGuard allowedRoles={[UserRole.OWNER, UserRole.ADMIN, UserRole.STUDENT]}>
+      {/* Full-width 3D Scrolling Animation Hero (Identical to Home Page) */}
+      <ScrollHeroAnimation />
+
+      <div id="owner-dashboard-content" className="scroll-mt-12" />
+
       <div className="min-h-screen bg-[#FAF8F3] py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Header */}
