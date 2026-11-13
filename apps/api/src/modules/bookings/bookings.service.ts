@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { randomBytes } from 'crypto';
+import { randomBytes, randomUUID } from 'crypto';
 import {
   BookingStatus,
   BedStatus,
@@ -103,24 +103,37 @@ export class BookingsService {
       throw new BadRequestException('Move-in date cannot be more than 60 days in advance.');
     }
 
-    // 2. Validate Redis Temporary Hold ownership
+    // 2. Validate Redis Temporary Hold ownership with resilient fallback
     const holdKey = `booking:hold:${dto.bedId}`;
-    const holdRaw = await this.redisService.get(holdKey);
+    let holdRaw = await this.redisService.get(holdKey);
 
-    if (!holdRaw) {
-      throw new BadRequestException(
-        'You do not have an active reservation hold on this bed. Please select and hold the bed before booking.',
-      );
-    }
-
-    try {
-      const holdPayload = JSON.parse(holdRaw);
-      if (holdPayload.studentId !== studentId) {
-        throw new ForbiddenException('This bed reservation is held by another student.');
+    if (holdRaw) {
+      try {
+        const holdPayload = JSON.parse(holdRaw);
+        if (holdPayload.studentId && holdPayload.studentId !== studentId) {
+          throw new ForbiddenException('This bed reservation is held by another student.');
+        }
+      } catch (err: unknown) {
+        if (err instanceof ForbiddenException) throw err;
+        throw new BadRequestException('Invalid bed hold state.');
       }
-    } catch (err: unknown) {
-      if (err instanceof ForbiddenException) throw err;
-      throw new BadRequestException('Invalid bed hold state.');
+    } else {
+      // If temporary hold expired while filling form, verify permanent availability and re-acquire
+      const bedCheck = await this.bedModel.findById(dto.bedId);
+      if (!bedCheck || bedCheck.permanentStatus !== BedStatus.AVAILABLE) {
+        throw new BadRequestException('This bed is no longer available for booking.');
+      }
+      const now = Date.now();
+      const expiresAt = new Date(now + 900 * 1000).toISOString();
+      const autoPayload = JSON.stringify({
+        holdId: randomUUID(),
+        studentId,
+        bedId: dto.bedId,
+        createdAt: now,
+        expiresAt,
+      });
+      await this.redisService.set(holdKey, autoPayload, 900);
+      holdRaw = autoPayload;
     }
 
     // 3. Look up Bed and hierarchy
