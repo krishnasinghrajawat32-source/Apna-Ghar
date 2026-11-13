@@ -21,3 +21,5 @@ export * from './session.schema';
 export * from './otp-record.schema';
 export * from './password-reset-challenge.schema';
 export * from './admin-audit-log.schema';
+export * from './conversation.schema';
+export * from './message.schema';

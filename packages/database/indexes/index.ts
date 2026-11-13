@@ -92,4 +92,12 @@ export async function ensureDatabaseIndexes(connection: Connection): Promise<voi
   } catch (err: any) {
     // Index may already exist
   }
+
+  await db.collection('conversations').createIndex(
+    { studentId: 1, propertyId: 1 },
+    { unique: true },
+  );
+  await db.collection('conversations').createIndex({ ownerId: 1, updatedAt: -1 });
+  await db.collection('conversations').createIndex({ studentId: 1, updatedAt: -1 });
+  await db.collection('messages').createIndex({ conversationId: 1, createdAt: 1 });
 }

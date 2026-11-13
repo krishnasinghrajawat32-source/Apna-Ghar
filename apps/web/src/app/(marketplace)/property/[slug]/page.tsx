@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,15 +15,17 @@ import {
   CheckCircle2,
   Calendar,
   ArrowRight,
+  MessageCircle,
 } from 'lucide-react';
-import { apiClient } from '@/lib/api-client';
+import { apiClient, ApiError } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/utils';
-import { Property, RoomType, PropertyStatus, TrustPassport } from '@apna-ghar/shared-types';
+import { Property, RoomType, PropertyStatus, TrustPassport, UserRole } from '@apna-ghar/shared-types';
 import { TrustPassportCard } from '@/components/verification/trust-passport-card';
 import { TotalLivingCostWidget } from '@/components/pricing/total-living-cost-widget';
 import { ScheduleVisitModal } from '@/components/visits/schedule-visit-modal';
 import { RoomBedSelector } from '@/components/inventory/room-bed-selector';
 import { PropertyReviewsSection } from '@/components/reviews/property-reviews-section';
+import { useAuthStore } from '@/features/auth/auth-store';
 
 interface PropertyDetailResponse {
   property: Property;
@@ -34,6 +36,10 @@ interface PropertyDetailResponse {
 export default function PropertyDetailPage() {
   const params = useParams();
   const slug = params?.slug as string;
+  const router = useRouter();
+  const { user } = useAuthStore();
+  const [chatError, setChatError] = useState('');
+  const [openingChat, setOpeningChat] = useState(false);
 
   const { data, isLoading, isError } = useQuery<PropertyDetailResponse>({
     queryKey: ['property-detail', slug],
@@ -51,6 +57,31 @@ export default function PropertyDetailPage() {
 
   const passport = (passportRes as any)?.data ?? passportRes ?? null;
   const [visitModalOpen, setVisitModalOpen] = useState(false);
+
+  const openOwnerChat = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(`/property/${slug}`)}`);
+      return;
+    }
+    if (user.role !== UserRole.STUDENT) {
+      setChatError('Only student accounts can start property enquiries.');
+      return;
+    }
+
+    setOpeningChat(true);
+    setChatError('');
+    try {
+      const conversation = await apiClient<{ id: string }>('/messages/conversations', {
+        method: 'POST',
+        body: JSON.stringify({ propertyId: data?.property.id }),
+      });
+      router.push(`/chat/${conversation.id}`);
+    } catch (error) {
+      setChatError(error instanceof ApiError ? error.message : 'Unable to open a chat right now.');
+    } finally {
+      setOpeningChat(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -364,6 +395,20 @@ export default function PropertyDetailPage() {
                 <Calendar className="w-4 h-4 text-[#102B50]" />
                 <span>Schedule a Free Visit</span>
               </button>
+              <button
+                type="button"
+                onClick={openOwnerChat}
+                disabled={openingChat || property.status !== PropertyStatus.ACTIVE}
+                className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#102B50] hover:bg-[#183D68] transition-all flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <MessageCircle className="w-4 h-4 text-[#F5A623]" />
+                <span>{openingChat ? 'Opening chat…' : 'Chat with Owner'}</span>
+              </button>
+              {chatError && (
+                <p role="alert" className="text-xs text-red-600">
+                  {chatError}
+                </p>
+              )}
             </div>
           </div>
         </div>

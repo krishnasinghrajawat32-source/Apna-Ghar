@@ -12,6 +12,7 @@ import {
   Utensils,
   Calendar,
   BookOpen,
+  MessageCircle,
   Sun,
   Moon,
 } from 'lucide-react';
@@ -79,6 +80,12 @@ export function Navbar() {
     { label: 'Mess Plans', href: '/mess', icon: Utensils },
     { label: 'My Visits', href: '/student/visits', icon: Calendar },
     { label: 'My Bookings', href: '/student/bookings', icon: BookOpen },
+    ...(user?.role === UserRole.STUDENT
+      ? [{ label: 'Messages', href: '/student/messages', icon: MessageCircle }]
+      : []),
+    ...(user?.role === UserRole.OWNER
+      ? [{ label: 'Owner Inbox', href: '/owner/inbox', icon: MessageCircle }]
+      : []),
   ];
 
   const isActive = (href: string) => {

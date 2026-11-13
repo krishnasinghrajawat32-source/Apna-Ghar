@@ -6,6 +6,12 @@ const PROD_API_FALLBACK = 'https://apna-ghar-2-4766.onrender.com/api/v1';
 export function getBaseUrl(): string {
   if (typeof window !== 'undefined') {
     const currentHost = window.location.hostname;
+    const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (configuredApiUrl) {
+      const clean = configuredApiUrl.replace(/\/+$/, '');
+      return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
+    }
+
     const isLocalhost =
       currentHost === 'localhost' ||
       currentHost === '127.0.0.1' ||
@@ -27,21 +33,18 @@ export function getBaseUrl(): string {
       return `${window.location.protocol}//${currentHost}:4000/api/v1`;
     }
 
-    // When running on public cloud (e.g. Vercel: apna-ghar-mauve.vercel.app):
-    // If NEXT_PUBLIC_API_URL is explicitly set to an external URL (not localhost), use it
-    const envUrl = process.env.NEXT_PUBLIC_API_URL;
-    if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-      const clean = envUrl.replace(/\/+$/, '');
-      return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
-    }
-
     // Otherwise, use same-origin relative '/api/v1', which Next.js rewrites/proxies
     // to the backend server. This completely bypasses browser CORS errors and preflight checks!
     return '/api/v1';
   }
 
   // Server-side execution
-  const envUrl = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_API_URL;
+  const configuredUrl =
+    process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_API_URL;
+  const envUrl =
+    configuredUrl?.startsWith('/')
+      ? process.env.BACKEND_API_URL
+      : configuredUrl;
   if (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1')) {
     const isCloud = Boolean(process.env.VERCEL || process.env.RENDER);
     return isCloud
@@ -50,6 +53,20 @@ export function getBaseUrl(): string {
   }
   const clean = envUrl.replace(/\/+$/, '');
   return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
+}
+
+export function getSocketUrl(): string {
+  const apiUrl = getBaseUrl();
+  if (!apiUrl.startsWith('/')) return new URL(apiUrl).origin;
+
+  const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const resolvedApiUrl =
+    configuredApiUrl &&
+    /^https?:\/\//i.test(configuredApiUrl) &&
+    !configuredApiUrl.includes('localhost')
+      ? configuredApiUrl
+      : PROD_API_FALLBACK;
+  return new URL(resolvedApiUrl).origin;
 }
 
 export class ApiError extends Error {
@@ -105,13 +122,12 @@ export async function apiClient<T>(
       errMsg.includes('ECONNREFUSED');
 
     if (isConnRefused) {
-      const isLocalhost =
-        typeof window !== 'undefined' &&
-        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      const isLocalApiServer =
+        /^https?:\/\/(localhost|127\.0\.0\.1):4000\//i.test(url);
 
-      const message = isLocalhost
+      const message = isLocalApiServer
         ? `Unable to connect to the Apna Ghar API server at ${url}. Please verify that the backend API server is running on port 4000.`
-        : `Unable to reach the backend server. If the server was sleeping, please wait a few seconds and try again.`;
+        : `Unable to reach the Apna Ghar API at ${url}. Check your network connection and API configuration.`;
 
       throw new ApiError('NETWORK_ERROR', message);
     }

@@ -16,6 +16,7 @@ import {
   Phone,
   Mail,
   Calendar,
+  MessageCircle,
 } from 'lucide-react';
 import { AuthGuard } from '@/features/auth/auth-guard';
 import { useAuthStore } from '@/features/auth/auth-store';
@@ -309,6 +310,13 @@ export default function OwnerDashboardPage() {
             </div>
 
             <div className="flex items-center gap-3">
+              <Link
+                href="/owner/inbox"
+                className="inline-flex items-center gap-2 rounded-xl border border-[#E8E5DE] bg-white px-4 py-2.5 text-xs font-bold text-[#102B50] transition hover:border-[#F5A623]"
+              >
+                <MessageCircle className="h-4 w-4 text-[#F5A623]" />
+                Owner Inbox
+              </Link>
               <button
                 type="button"
                 onClick={() => {
