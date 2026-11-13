@@ -48,4 +48,5 @@ tmp/
 *.tsbuildinfo
 
 # Temporary backups
+*.zip
 APNA-GHAR-CLEAN/

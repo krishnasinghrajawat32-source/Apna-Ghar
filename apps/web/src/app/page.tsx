@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Clock, Calculator, MapPin, Sparkles, Building2, Users, Utensils, CheckCircle2, ArrowRight } from 'lucide-react';
 import { CollegeSearchHero } from '@/components/search/college-search-hero';
+import { ScrollHeroAnimation } from '@/components/home/scroll-hero-animation';
 
 export default function HomePage() {
   const verifiedColleges = [
@@ -53,8 +54,13 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
+      {/* 3D Cinematic Scroll-Based Hero Animation */}
+      <ScrollHeroAnimation />
+
+      <div id="main-content-start" className="scroll-mt-12" />
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      <section className="relative overflow-hidden pt-12 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="text-center space-y-6">
           {/* Brand Tagline Pill */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-[#102B50]/10 text-[#102B50] border border-[#102B50]/15 shadow-xs">
